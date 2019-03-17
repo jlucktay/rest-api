@@ -1,18 +1,5 @@
 # Unused code snippets that seem very handy
 
-## Enum for storage type/interface
-
-How to leverage something like this?
-
-``` go
-type StorageType int
-
-const (
-  Dummy StorageType = iota
-  Mongo
-)
-```
-
 ## Closure to prepare thing once and use many times
 
 ``` go
