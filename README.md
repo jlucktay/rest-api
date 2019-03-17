@@ -1,2 +1,1 @@
-# rest-api
-RESTful API
+# RESTful API
