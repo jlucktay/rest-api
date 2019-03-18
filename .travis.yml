@@ -1,0 +1,4 @@
+language: go
+
+notifications:
+  webhooks: https://maker.ifttt.com/use/dwiBSDVl8eIxqouRrXoePZ
