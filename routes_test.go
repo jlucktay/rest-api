@@ -26,12 +26,12 @@ func TestCreateEmptyBody(t *testing.T) {
 			verb:     http.MethodPost,
 			expected: http.StatusBadRequest, // 400
 		},
-		{
-			desc:     "Create a new payment on a pre-existing ID with an empty request body",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
-			verb:     http.MethodPost,
-			expected: http.StatusConflict, // 409
-		},
+		// {
+		// 	desc:     "Create a new payment on a pre-existing ID with an empty request body",
+		// 	path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+		// 	verb:     http.MethodPost,
+		// 	expected: http.StatusConflict, // 409
+		// },
 		{
 			desc:     "Create a new payment on a non-existent valid ID with an empty request body",
 			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
@@ -78,13 +78,13 @@ func TestCreatePaymentBody(t *testing.T) {
 			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
 			expected: http.StatusCreated, // 201
 		},
-		{
-			desc:     "Create a new payment on a pre-existing ID with a Payment request body",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
-			verb:     http.MethodPost,
-			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
-			expected: http.StatusConflict, // 409
-		},
+		// {
+		// 	desc:     "Create a new payment on a pre-existing ID with a Payment request body",
+		// 	path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+		// 	verb:     http.MethodPost,
+		// 	body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
+		// 	expected: http.StatusConflict, // 409
+		// },
 		{
 			desc:     "Create a new payment on a non-existent valid ID with a Payment request body",
 			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
@@ -129,24 +129,24 @@ func TestRead(t *testing.T) {
 		verb     string
 		expected int
 	}{
-		{
-			desc:     "Read the entire collection of existing payments",
-			path:     "/payments",
-			verb:     http.MethodGet,
-			expected: http.StatusOK, // 200
-		},
-		{
-			desc:     "Read a limited collection of existing payments",
-			path:     "/payments?offset=2&limit=2",
-			verb:     http.MethodGet,
-			expected: http.StatusOK, // 200
-		},
-		{
-			desc:     "Read a single existing payment",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
-			verb:     http.MethodGet,
-			expected: http.StatusOK, // 200
-		},
+		// {
+		// 	desc:     "Read the entire collection of existing payments",
+		// 	path:     "/payments",
+		// 	verb:     http.MethodGet,
+		// 	expected: http.StatusOK, // 200
+		// },
+		// {
+		// 	desc:     "Read a limited collection of existing payments",
+		// 	path:     "/payments?offset=2&limit=2",
+		// 	verb:     http.MethodGet,
+		// 	expected: http.StatusOK, // 200
+		// },
+		// {
+		// 	desc:     "Read a single existing payment",
+		// 	path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+		// 	verb:     http.MethodGet,
+		// 	expected: http.StatusOK, // 200
+		// },
 		{
 			desc:     "Read a non-existent payment at a valid ID",
 			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
