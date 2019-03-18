@@ -1,5 +1,5 @@
 # RESTful API
 
-Yeah, I know I need modules. 😅
+Yeah, I know I should split things out into smaller packages. 😅
 
 What else?
