@@ -33,6 +33,12 @@ func TestStorage(t *testing.T) {
 			readPay, errRead := tC.ps.Read(newId)
 			i.NoErr(errRead)
 			i.True(reflect.DeepEqual(testPayment, readPay))
+			_, _ = tC.ps.Create(testPayment)
+			readAllPay, errReadAll := tC.ps.ReadAll()
+			i.NoErr(errReadAll)
+			i.Equal(len(readAllPay), 2)
+			i.True(reflect.DeepEqual(testPayment, readAllPay[0]))
+			i.True(reflect.DeepEqual(testPayment, readAllPay[1]))
 
 			// U
 			testPayment.Reference = "ref"

@@ -34,6 +34,14 @@ func (ims *inMemoryStorage) Read(id uuid.UUID) (Payment, error) {
 	return Payment{}, &NotFoundError{id}
 }
 
+func (ims *inMemoryStorage) ReadAll() ([]Payment, error) {
+	payments := make([]Payment, 0)
+	for _, p := range ims.store {
+		payments = append(payments, p)
+	}
+	return payments, nil
+}
+
 func (ims *inMemoryStorage) Update(id uuid.UUID, p Payment) error {
 	if _, exists := ims.store[id]; exists {
 		ims.store[id] = p
