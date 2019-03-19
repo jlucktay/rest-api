@@ -10,13 +10,21 @@ type apiServer struct {
 	storage PaymentStorage
 }
 
+// StorageType is an enum to differentiate between storage implementations.
 type StorageType byte
 
 const (
+	// InMemory describes a storage system that is held in memory only, and not
+	// persisted to disk.
 	InMemory StorageType = iota
+
+	// Mongo describes a storage system that persists Payment records in a
+	// MongoDB database.
 	Mongo
 )
 
+// Payment is the top-level struct of a payment record containing transaction
+// details.
 type Payment struct {
 	Amount               decimal.Decimal    `json:"amount"`
 	BeneficiaryParty     BeneficiaryParty   `json:"beneficiary_party"`
@@ -37,6 +45,8 @@ type Payment struct {
 	SponsorParty         SponsorParty       `json:"sponsor_party"`
 }
 
+// BeneficiaryParty details the party being credited from the payment
+// transaction.
 type BeneficiaryParty struct {
 	AccountName       string `json:"account_name"`
 	AccountNumber     string `json:"account_number"`
@@ -48,11 +58,8 @@ type BeneficiaryParty struct {
 	Name              string `json:"name"`
 }
 
-type SenderCharges struct {
-	Amount   decimal.Decimal `json:"amount"`
-	Currency string          `json:"currency"`
-}
-
+// ChargesInformation describes the charges involved with processing the
+// payment transaction.
 type ChargesInformation struct {
 	BearerCode              string          `json:"bearer_code"`
 	ReceiverChargesAmount   decimal.Decimal `json:"receiver_charges_amount"`
@@ -60,6 +67,13 @@ type ChargesInformation struct {
 	SenderCharges           []SenderCharges `json:"sender_charges"`
 }
 
+// SenderCharges stores the currency and amount charged to the payment sender.
+type SenderCharges struct {
+	Amount   decimal.Decimal `json:"amount"`
+	Currency string          `json:"currency"`
+}
+
+// DebtorParty details the party being debited for the payment transaction.
 type DebtorParty struct {
 	AccountName       string `json:"account_name"`
 	AccountNumber     string `json:"account_number"`
@@ -70,6 +84,8 @@ type DebtorParty struct {
 	Name              string `json:"name"`
 }
 
+// Fx describes the foreign exchange details salient to the payment
+// transaction.
 type Fx struct {
 	ContractReference string          `json:"contract_reference"`
 	ExchangeRate      string          `json:"exchange_rate"`
@@ -77,6 +93,7 @@ type Fx struct {
 	OriginalCurrency  string          `json:"original_currency"`
 }
 
+// SponsorParty details the party sponsoring the payment transaction.
 type SponsorParty struct {
 	AccountNumber string `json:"account_number"`
 	BankID        string `json:"bank_id"`

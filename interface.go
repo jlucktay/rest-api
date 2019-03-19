@@ -4,6 +4,8 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// PaymentStorage allows storage, retrieval, updating, and deletion of Payment
+// structs.
 type PaymentStorage interface {
 	Init() error
 	Create(Payment) (uuid.UUID, error)
