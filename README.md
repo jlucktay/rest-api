@@ -6,6 +6,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jlucktay/rest-api)](https://goreportcard.com/report/github.com/jlucktay/rest-api)
 [![GitHub](https://img.shields.io/github/license/jlucktay/rest-api.svg)](https://github.com/jlucktay/rest-api/blob/master/LICENSE)
 
-Yeah, I know I should split things out into smaller packages. 😅
+Yeah, I know I should [split things out into smaller packages](TODO.md). 😅
 
 What else?
