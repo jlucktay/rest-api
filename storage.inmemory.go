@@ -19,6 +19,14 @@ func (ims *inMemoryStorage) Create(p Payment) (uuid.UUID, error) {
 	return newId, nil
 }
 
+func (ims *inMemoryStorage) createSpecificId(id uuid.UUID, p Payment) error {
+	if _, exists := ims.store[id]; exists {
+		return &AlreadyExistsError{id}
+	}
+	ims.store[id] = p
+	return nil
+}
+
 func (ims *inMemoryStorage) Read(id uuid.UUID) (Payment, error) {
 	if p, exists := ims.store[id]; exists {
 		return p, nil

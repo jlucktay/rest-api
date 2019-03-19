@@ -123,6 +123,12 @@ func TestCreatePaymentBody(t *testing.T) {
 }
 
 func TestRead(t *testing.T) {
+	srv := newApiServer(InMemory)
+	existingId := uuid.Must(uuid.NewV4())
+	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	is.New(t).NoErr(errCreate)
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -143,7 +149,7 @@ func TestRead(t *testing.T) {
 		},
 		{
 			desc:     "Read a single existing payment",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/payments/%s", existingId),
 			verb:     http.MethodGet,
 			expected: http.StatusOK, // 200
 		},
@@ -160,9 +166,6 @@ func TestRead(t *testing.T) {
 			expected: http.StatusNotFound, // 404
 		},
 	}
-
-	srv := newApiServer(InMemory)
-
 	for _, tC := range testCases {
 		w := httptest.NewRecorder()
 
