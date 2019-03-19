@@ -14,7 +14,7 @@ import (
 
 func TestCreateNewPayment(t *testing.T) {
 	a := newApiServer(InMemory)
-	w := httptest.NewRecorder()
+	var w *httptest.ResponseRecorder
 	i := is.New(t)
 
 	// Construct a HTTP request which creates a payment
@@ -27,6 +27,7 @@ func TestCreateNewPayment(t *testing.T) {
 	reqCreate.Header.Set("Content-Type", "application/json")
 
 	// Send it, and gather the ID of the new payment
+	w = httptest.NewRecorder()
 	a.router.ServeHTTP(w, reqCreate)
 	i.Equal(http.StatusCreated, w.Result().StatusCode)
 
@@ -41,6 +42,7 @@ func TestCreateNewPayment(t *testing.T) {
 	i.NoErr(errRead)
 
 	// Read the payment under the given ID, as it should exist now
+	w = httptest.NewRecorder()
 	a.router.ServeHTTP(w, reqRead)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 }
