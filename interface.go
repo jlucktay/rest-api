@@ -11,7 +11,12 @@ type PaymentStorage interface {
 	Create(Payment) (uuid.UUID, error)
 	createSpecificId(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)
-	ReadAll() ([]Payment, error)
+	ReadAll(ReadAllOptions) ([]Payment, error)
 	Update(uuid.UUID, Payment) error
 	Delete(uuid.UUID) error
+}
+
+type ReadAllOptions struct {
+	limit  uint
+	offset uint
 }
