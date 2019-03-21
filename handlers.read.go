@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
@@ -15,11 +16,35 @@ func (a *apiServer) readPayments() httprouter.Handle {
 		limit := r.URL.Query().Get("limit")
 		offset := r.URL.Query().Get("offset")
 
-		if limit != "" || offset != "" {
-			w.WriteHeader(http.StatusNotImplemented) // 501
+		var opts ReadAllOptions
+
+		if limit != "" {
+			l, errLimit := strconv.Atoi(limit)
+			if errLimit != nil || l <= 0 {
+				http.Error(
+					w,
+					"The 'limit' parameter should be a positive integer.",
+					http.StatusBadRequest,
+				)
+				return
+			}
+			opts.limit = uint(l)
 		}
 
-		allPayments, errRead := a.storage.ReadAll()
+		if offset != "" {
+			o, errOffset := strconv.Atoi(offset)
+			if errOffset != nil || o <= 0 {
+				http.Error(
+					w,
+					"The 'offset' parameter should be a positive integer.",
+					http.StatusBadRequest,
+				)
+				return
+			}
+			opts.offset = uint(o)
+		}
+
+		allPayments, errRead := a.storage.ReadAll(opts)
 		if errRead != nil {
 			http.Error(
 				w,
