@@ -34,7 +34,8 @@ func TestStorage(t *testing.T) {
 			i.NoErr(errRead)
 			i.True(reflect.DeepEqual(testPayment, readPay))
 			_, _ = tC.ps.Create(testPayment)
-			readAllPay, errReadAll := tC.ps.ReadAll()
+			var opts ReadAllOptions
+			readAllPay, errReadAll := tC.ps.ReadAll(opts)
 			i.NoErr(errReadAll)
 			i.Equal(len(readAllPay), 2)
 			i.True(reflect.DeepEqual(testPayment, readAllPay[0]))

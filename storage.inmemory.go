@@ -1,12 +1,16 @@
 package main
 
 import (
+	"sort"
+
 	uuid "github.com/satori/go.uuid"
 )
 
 type inMemoryStorage struct {
 	store map[uuid.UUID]Payment
 }
+
+const defaultLimit = 100
 
 func (ims *inMemoryStorage) Init() error {
 	ims.store = make(map[uuid.UUID]Payment)
@@ -34,11 +38,28 @@ func (ims *inMemoryStorage) Read(id uuid.UUID) (Payment, error) {
 	return Payment{}, &NotFoundError{id}
 }
 
-func (ims *inMemoryStorage) ReadAll() ([]Payment, error) {
-	payments := make([]Payment, 0)
-	for _, p := range ims.store {
-		payments = append(payments, p)
+func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) ([]Payment, error) {
+	if rao.limit == 0 {
+		rao.limit = defaultLimit
 	}
+
+	var keys []string
+	for k := range ims.store {
+		keys = append(keys, k.String())
+	}
+	sort.Strings(keys)
+
+	if uint(len(keys)) >= rao.offset {
+		keys = keys[rao.offset:]
+	} else {
+		return []Payment{}, &OffsetOutOfBounds{rao.offset}
+	}
+
+	payments := make([]Payment, 0, rao.limit)
+	for i := uint(0); i < rao.limit && i < uint(len(keys)); i++ {
+		payments = append(payments, ims.store[uuid.FromStringOrNil(keys[i])])
+	}
+
 	return payments, nil
 }
 
