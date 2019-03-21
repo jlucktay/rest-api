@@ -14,6 +14,12 @@ import (
 )
 
 func TestCreateEmptyBody(t *testing.T) {
+	srv := newApiServer(InMemory)
+	existingId := uuid.Must(uuid.NewV4())
+	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	is.New(t).NoErr(errCreate)
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -28,7 +34,7 @@ func TestCreateEmptyBody(t *testing.T) {
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with an empty request body",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/payments/%s", existingId),
 			verb:     http.MethodPost,
 			expected: http.StatusConflict, // 409
 		},
@@ -45,9 +51,6 @@ func TestCreateEmptyBody(t *testing.T) {
 			expected: http.StatusNotFound, // 404
 		},
 	}
-
-	srv := newApiServer(InMemory)
-
 	for _, tC := range testCases {
 		w := httptest.NewRecorder()
 
@@ -64,6 +67,12 @@ func TestCreateEmptyBody(t *testing.T) {
 }
 
 func TestCreatePaymentBody(t *testing.T) {
+	srv := newApiServer(InMemory)
+	existingId := uuid.Must(uuid.NewV4())
+	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	is.New(t).NoErr(errCreate)
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -80,7 +89,7 @@ func TestCreatePaymentBody(t *testing.T) {
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with a Payment request body",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/payments/%s", existingId),
 			verb:     http.MethodPost,
 			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
 			expected: http.StatusConflict, // 409
@@ -100,9 +109,6 @@ func TestCreatePaymentBody(t *testing.T) {
 			expected: http.StatusNotFound, // 404
 		},
 	}
-
-	srv := newApiServer(InMemory)
-
 	for _, tC := range testCases {
 		w := httptest.NewRecorder()
 
