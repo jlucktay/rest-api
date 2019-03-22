@@ -196,6 +196,12 @@ func TestRead(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
+	srv := newAPIServer(InMemory)
+	existingID := uuid.Must(uuid.NewV4())
+	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	is.New(t).NoErr(errCreate)
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -210,7 +216,7 @@ func TestUpdate(t *testing.T) {
 		},
 		{
 			desc:     "Update an existing payment",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodPut,
 			expected: http.StatusNoContent, // 204; update is OK, but response has no body/content
 		},
@@ -228,8 +234,17 @@ func TestUpdate(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
+		w := httptest.NewRecorder()
+
 		t.Run(tC.desc, func(t *testing.T) {
-			t.Skip("not yet implemented")
+			i := is.New(t)
+
+			req, err := http.NewRequest(tC.verb, tC.path, nil)
+			i.NoErr(err)
+
+			srv.router.ServeHTTP(w, req)
+			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}
 }
