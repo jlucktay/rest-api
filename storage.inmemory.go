@@ -52,7 +52,7 @@ func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) ([]Payment, error) {
 	if uint(len(keys)) >= rao.offset {
 		keys = keys[rao.offset:]
 	} else {
-		return []Payment{}, &OffsetOutOfBounds{rao.offset}
+		return []Payment{}, &OffsetOutOfBoundsError{rao.offset}
 	}
 
 	payments := make([]Payment, 0, rao.limit)
