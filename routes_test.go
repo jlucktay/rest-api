@@ -137,6 +137,11 @@ func TestRead(t *testing.T) {
 	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
+	for count := 0; count < 20; count++ {
+		_, errCreate := srv.storage.Create(existingPayment)
+		is.New(t).NoErr(errCreate)
+	}
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -151,7 +156,7 @@ func TestRead(t *testing.T) {
 		},
 		{
 			desc:     "Read a limited collection of existing payments",
-			path:     "/payments?offset=2&limit=2",
+			path:     "/payments?offset=5&limit=5",
 			verb:     http.MethodGet,
 			expected: http.StatusOK, // 200
 		},
