@@ -85,7 +85,7 @@ func applyFromQuery(input string, setting *uint) error {
 	if input != "" {
 		i, errConvert := strconv.Atoi(input)
 		if errConvert != nil || i <= 0 {
-			return errors.New("The query parameter should be a positive integer.")
+			return errors.New("the query parameter should be a positive integer")
 		}
 		*setting = uint(i)
 	}
