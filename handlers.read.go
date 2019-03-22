@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,35 +14,14 @@ import (
 
 func (a *apiServer) readPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		limit := r.URL.Query().Get("limit")
-		offset := r.URL.Query().Get("offset")
-
 		var opts ReadAllOptions
-
-		if limit != "" {
-			l, errLimit := strconv.Atoi(limit)
-			if errLimit != nil || l <= 0 {
-				http.Error(
-					w,
-					"The 'limit' parameter should be a positive integer.",
-					http.StatusBadRequest,
-				)
-				return
-			}
-			opts.limit = uint(l)
+		if errLimit := applyFromQuery(r.URL.Query().Get("limit"), &opts.limit); errLimit != nil {
+			http.Error(w, "'limit':"+errLimit.Error(), http.StatusBadRequest)
+			return
 		}
-
-		if offset != "" {
-			o, errOffset := strconv.Atoi(offset)
-			if errOffset != nil || o <= 0 {
-				http.Error(
-					w,
-					"The 'offset' parameter should be a positive integer.",
-					http.StatusBadRequest,
-				)
-				return
-			}
-			opts.offset = uint(o)
+		if errOffset := applyFromQuery(r.URL.Query().Get("offset"), &opts.offset); errOffset != nil {
+			http.Error(w, "'offset':"+errOffset.Error(), http.StatusBadRequest)
+			return
 		}
 
 		allPayments, errRead := a.storage.ReadAll(opts)
@@ -97,4 +77,17 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 
 		http.Error(w, (&NotFoundError{id}).Error(), http.StatusNotFound) // 404
 	}
+}
+
+// applyFromQuery takes a string (from an HTTP request query) as well as a
+// pointer to a uint which it will apply the value of the string to.
+func applyFromQuery(input string, setting *uint) error {
+	if input != "" {
+		i, errConvert := strconv.Atoi(input)
+		if errConvert != nil || i <= 0 {
+			return errors.New("The query parameter should be a positive integer.")
+		}
+		*setting = uint(i)
+	}
+	return nil
 }
