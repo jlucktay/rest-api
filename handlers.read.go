@@ -72,7 +72,7 @@ func (a *apiServer) readPayments() httprouter.Handle {
 	}
 }
 
-func (a *apiServer) readPaymentById() httprouter.Handle {
+func (a *apiServer) readPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 

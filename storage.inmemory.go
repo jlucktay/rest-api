@@ -18,12 +18,12 @@ func (ims *inMemoryStorage) Init() error {
 }
 
 func (ims *inMemoryStorage) Create(p Payment) (uuid.UUID, error) {
-	newId := uuid.Must(uuid.NewV4())
-	ims.store[newId] = p
-	return newId, nil
+	newID := uuid.Must(uuid.NewV4())
+	ims.store[newID] = p
+	return newID, nil
 }
 
-func (ims *inMemoryStorage) createSpecificId(id uuid.UUID, p Payment) error {
+func (ims *inMemoryStorage) createSpecificID(id uuid.UUID, p Payment) error {
 	if _, exists := ims.store[id]; exists {
 		return &AlreadyExistsError{id}
 	}

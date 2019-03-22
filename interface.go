@@ -9,7 +9,7 @@ import (
 type PaymentStorage interface {
 	Init() error
 	Create(Payment) (uuid.UUID, error)
-	createSpecificId(uuid.UUID, Payment) error
+	createSpecificID(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)
 	ReadAll(ReadAllOptions) ([]Payment, error)
 	Update(uuid.UUID, Payment) error

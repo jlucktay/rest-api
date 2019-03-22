@@ -40,7 +40,7 @@ func (a *apiServer) createPayments() httprouter.Handle {
 	}
 }
 
-func (a *apiServer) createPaymentById() httprouter.Handle {
+func (a *apiServer) createPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 

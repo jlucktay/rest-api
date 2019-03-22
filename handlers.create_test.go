@@ -13,7 +13,7 @@ import (
 )
 
 func TestCreateNewPayment(t *testing.T) {
-	a := newApiServer(InMemory)
+	a := newAPIServer(InMemory)
 	var w *httptest.ResponseRecorder
 	i := is.New(t)
 
@@ -35,10 +35,10 @@ func TestCreateNewPayment(t *testing.T) {
 	loc := w.Result().Header.Get("Location")
 	r := regexp.MustCompile("^/payments/([0-9a-f-]{36})$")
 	i.True(r.MatchString(loc))
-	newId := r.FindStringSubmatch(loc)[1]
+	newID := r.FindStringSubmatch(loc)[1]
 
 	// Construct another HTTP request to read the new payment
-	reqRead, errRead := http.NewRequest(http.MethodGet, "/payments/"+newId, nil)
+	reqRead, errRead := http.NewRequest(http.MethodGet, "/payments/"+newID, nil)
 	i.NoErr(errRead)
 
 	// Read the payment under the given ID, as it should exist now

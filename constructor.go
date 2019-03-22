@@ -6,7 +6,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func newApiServer(st StorageType) (a *apiServer) {
+func newAPIServer(st StorageType) (a *apiServer) {
 	a = &apiServer{
 		router: httprouter.New(),
 	}

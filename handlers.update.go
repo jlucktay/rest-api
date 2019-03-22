@@ -6,7 +6,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (a *apiServer) updatePaymentById() httprouter.Handle {
+func (a *apiServer) updatePaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		w.WriteHeader(http.StatusNotImplemented)
 	}

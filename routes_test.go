@@ -14,10 +14,10 @@ import (
 )
 
 func TestCreateEmptyBody(t *testing.T) {
-	srv := newApiServer(InMemory)
-	existingId := uuid.Must(uuid.NewV4())
+	srv := newAPIServer(InMemory)
+	existingID := uuid.Must(uuid.NewV4())
 	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
@@ -34,7 +34,7 @@ func TestCreateEmptyBody(t *testing.T) {
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with an empty request body",
-			path:     fmt.Sprintf("/payments/%s", existingId),
+			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodPost,
 			expected: http.StatusConflict, // 409
 		},
@@ -67,10 +67,10 @@ func TestCreateEmptyBody(t *testing.T) {
 }
 
 func TestCreatePaymentBody(t *testing.T) {
-	srv := newApiServer(InMemory)
-	existingId := uuid.Must(uuid.NewV4())
+	srv := newAPIServer(InMemory)
+	existingID := uuid.Must(uuid.NewV4())
 	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
@@ -89,7 +89,7 @@ func TestCreatePaymentBody(t *testing.T) {
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with a Payment request body",
-			path:     fmt.Sprintf("/payments/%s", existingId),
+			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodPost,
 			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
 			expected: http.StatusConflict, // 409
@@ -129,10 +129,10 @@ func TestCreatePaymentBody(t *testing.T) {
 }
 
 func TestRead(t *testing.T) {
-	srv := newApiServer(InMemory)
-	existingId := uuid.Must(uuid.NewV4())
+	srv := newAPIServer(InMemory)
+	existingID := uuid.Must(uuid.NewV4())
 	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificId(existingId, existingPayment)
+	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
@@ -155,7 +155,7 @@ func TestRead(t *testing.T) {
 		},
 		{
 			desc:     "Read a single existing payment",
-			path:     fmt.Sprintf("/payments/%s", existingId),
+			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodGet,
 			expected: http.StatusOK, // 200
 		},

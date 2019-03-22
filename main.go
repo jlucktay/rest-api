@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	a := newApiServer(Mongo)
+	a := newAPIServer(Mongo)
 	log.Fatal(http.ListenAndServe(":8080", a.router))
 }

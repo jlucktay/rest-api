@@ -26,11 +26,11 @@ func TestStorage(t *testing.T) {
 			testPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
 
 			// C
-			newId, errCreate := tC.ps.Create(testPayment)
+			newID, errCreate := tC.ps.Create(testPayment)
 			i.NoErr(errCreate)
 
 			// R
-			readPay, errRead := tC.ps.Read(newId)
+			readPay, errRead := tC.ps.Read(newID)
 			i.NoErr(errRead)
 			i.True(reflect.DeepEqual(testPayment, readPay))
 			_, _ = tC.ps.Create(testPayment)
@@ -43,14 +43,14 @@ func TestStorage(t *testing.T) {
 
 			// U
 			testPayment.Reference = "ref"
-			i.NoErr(tC.ps.Update(newId, testPayment))
-			updatedPay, _ := tC.ps.Read(newId)
+			i.NoErr(tC.ps.Update(newID, testPayment))
+			updatedPay, _ := tC.ps.Read(newID)
 			i.True(reflect.DeepEqual(testPayment, updatedPay))
 
 			// D
-			i.NoErr(tC.ps.Delete(newId))
-			_, errDeleted := tC.ps.Read(newId)
-			i.Equal(errDeleted, &NotFoundError{newId})
+			i.NoErr(tC.ps.Delete(newID))
+			_, errDeleted := tC.ps.Read(newID)
+			i.Equal(errDeleted, &NotFoundError{newID})
 		})
 	}
 }
