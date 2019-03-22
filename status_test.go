@@ -17,18 +17,6 @@ func TestStatusCode(t *testing.T) {
 		expected int
 	}{
 		{
-			desc:     "Create a new payment",
-			path:     "/payments",
-			verb:     http.MethodPost,
-			expected: http.StatusCreated,
-		},
-		{
-			desc:     "Create a new payment on a pre-existing ID",
-			path:     "/payments/b2e3ccaa-ac37-45e0-b889-1e6acadf31c8",
-			verb:     http.MethodPost,
-			expected: http.StatusConflict,
-		},
-		{
 			desc:     "Create a new payment on a non-existent valid ID",
 			path:     "/payments/60c4feb1-bf67-488a-8d04-627bac487c05",
 			verb:     http.MethodPost,
@@ -43,18 +31,6 @@ func TestStatusCode(t *testing.T) {
 		{
 			desc:     "Read the entire collection of existing payments",
 			path:     "/payments",
-			verb:     http.MethodGet,
-			expected: http.StatusOK,
-		},
-		{
-			desc:     "Read a limited collection of existing payments",
-			path:     "/payments?offset=2&limit=2",
-			verb:     http.MethodGet,
-			expected: http.StatusOK,
-		},
-		{
-			desc:     "Read a single existing payment",
-			path:     "/payments/2c2a4c63-67a3-43a9-bce1-7fd5268486e2s",
 			verb:     http.MethodGet,
 			expected: http.StatusOK,
 		},
