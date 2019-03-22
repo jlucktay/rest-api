@@ -124,6 +124,7 @@ func TestStatusCode(t *testing.T) {
 
 	// Act & Assert
 	for _, tC := range testCases {
+		tC := tC // pin!
 		w := httptest.NewRecorder()
 
 		t.Run(tC.desc, func(t *testing.T) {

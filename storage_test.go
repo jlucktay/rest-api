@@ -19,6 +19,7 @@ func TestStorage(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
 		t.Run(tC.desc, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)

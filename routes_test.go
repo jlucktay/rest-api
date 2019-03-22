@@ -52,6 +52,7 @@ func TestCreateEmptyBody(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
 		w := httptest.NewRecorder()
 
 		t.Run(tC.desc, func(t *testing.T) {
@@ -110,6 +111,7 @@ func TestCreatePaymentBody(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
 		w := httptest.NewRecorder()
 
 		t.Run(tC.desc, func(t *testing.T) {
@@ -173,6 +175,7 @@ func TestRead(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
 		w := httptest.NewRecorder()
 
 		t.Run(tC.desc, func(t *testing.T) {
