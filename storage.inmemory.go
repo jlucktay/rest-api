@@ -43,7 +43,7 @@ func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) ([]Payment, error) {
 		rao.limit = defaultLimit
 	}
 
-	var keys []string
+	keys := make([]string, 0, len(ims.store))
 	for k := range ims.store {
 		keys = append(keys, k.String())
 	}
