@@ -17,7 +17,7 @@ func TestCreateNewPayment(t *testing.T) {
 	var w *httptest.ResponseRecorder
 	i := is.New(t)
 
-	// Construct a HTTP request which creates a payment
+	// Construct a HTTP request which creates a payment.
 	p := Payment{Amount: decimal.NewFromFloat(123.45)}
 	j, errMarshal := json.Marshal(p)
 	i.NoErr(errMarshal)
@@ -26,22 +26,22 @@ func TestCreateNewPayment(t *testing.T) {
 	i.NoErr(errCreate)
 	reqCreate.Header.Set("Content-Type", "application/json")
 
-	// Send it, and gather the ID of the new payment
+	// Send it, and record the HTTP back and forth.
 	w = httptest.NewRecorder()
 	a.router.ServeHTTP(w, reqCreate)
 	i.Equal(http.StatusCreated, w.Result().StatusCode)
 
-	// Make sure the response had a Location header pointing at the new payment
+	// Make sure the response had a Location header pointing at the new payment.
 	loc := w.Result().Header.Get("Location")
 	r := regexp.MustCompile("^/payments/([0-9a-f-]{36})$")
 	i.True(r.MatchString(loc))
 	newID := r.FindStringSubmatch(loc)[1]
 
-	// Construct another HTTP request to read the new payment
+	// Construct another HTTP request to read the new payment.
 	reqRead, errRead := http.NewRequest(http.MethodGet, "/payments/"+newID, nil)
 	i.NoErr(errRead)
 
-	// Read the payment under the given ID, as it should exist now
+	// Read the new payment using the ID returned.
 	w = httptest.NewRecorder()
 	a.router.ServeHTTP(w, reqRead)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
