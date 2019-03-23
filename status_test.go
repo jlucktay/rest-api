@@ -65,12 +65,6 @@ func TestStatusCode(t *testing.T) {
 			expected: http.StatusMethodNotAllowed, // 405
 		},
 		{
-			desc:     "Delete an existing payment at a valid ID",
-			path:     "/payments/a300eb47-efe0-44b0-b729-bed75123bf3a",
-			verb:     http.MethodDelete,
-			expected: http.StatusOK, // 200
-		},
-		{
 			desc:     "Delete a non-existent payment at a valid ID",
 			path:     "/payments/943c4811-f66a-4cb1-8d5b-3ed7da0ce934",
 			verb:     http.MethodDelete,
