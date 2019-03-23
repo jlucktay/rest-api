@@ -53,18 +53,6 @@ func TestStatusCode(t *testing.T) {
 			expected: http.StatusMethodNotAllowed, // 405
 		},
 		{
-			desc:     "Update an existing payment",
-			path:     "/payments/67191210-3e30-40c9-af61-3f2abb110363",
-			verb:     http.MethodPut,
-			expected: http.StatusNoContent, // 204
-		},
-		{
-			desc:     "Update a non-existent payment at a valid ID",
-			path:     "/payments/ac5f6fcd-8e69-4949-ad93-d15c51991802",
-			verb:     http.MethodPut,
-			expected: http.StatusNotFound, // 404
-		},
-		{
 			desc:     "Update a non-existent payment at an invalid ID",
 			path:     "/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodPut,
