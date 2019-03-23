@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -15,12 +14,12 @@ import (
 func (a *apiServer) readPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		var opts ReadAllOptions
-		if errLimit := applyFromQuery(r.URL.Query().Get("limit"), &opts.limit); errLimit != nil {
-			http.Error(w, "'limit':"+errLimit.Error(), http.StatusBadRequest)
+		if errLimit := applyFromQuery(r, "limit", &opts.limit); errLimit != nil {
+			http.Error(w, errLimit.Error(), http.StatusBadRequest)
 			return
 		}
-		if errOffset := applyFromQuery(r.URL.Query().Get("offset"), &opts.offset); errOffset != nil {
-			http.Error(w, "'offset':"+errOffset.Error(), http.StatusBadRequest)
+		if errOffset := applyFromQuery(r, "offset", &opts.offset); errOffset != nil {
+			http.Error(w, errOffset.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -81,11 +80,11 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 
 // applyFromQuery takes a string (from an HTTP request query) as well as a
 // pointer to a uint which it will apply the value of the string to.
-func applyFromQuery(input string, setting *uint) error {
-	if input != "" {
-		i, errConvert := strconv.Atoi(input)
+func applyFromQuery(req *http.Request, query string, setting *uint) error {
+	if q := req.URL.Query().Get(query); q != "" {
+		i, errConvert := strconv.Atoi(q)
 		if errConvert != nil || i <= 0 {
-			return errors.New("the query parameter should be a positive integer")
+			return fmt.Errorf("the query parameter '%s' should be a positive integer", query)
 		}
 		*setting = uint(i)
 	}
