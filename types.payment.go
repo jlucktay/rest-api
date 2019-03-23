@@ -8,12 +8,12 @@ import (
 // details.
 type Payment struct {
 	Amount               decimal.Decimal    `json:"amount"`
-	BeneficiaryParty     BeneficiaryParty   `json:"beneficiary_party"`
-	ChargesInformation   ChargesInformation `json:"charges_information"`
+	BeneficiaryParty     beneficiaryParty   `json:"beneficiary_party"`
+	ChargesInformation   chargesInformation `json:"charges_information"`
 	Currency             string             `json:"currency"`
-	DebtorParty          DebtorParty        `json:"debtor_party"`
+	DebtorParty          debtorParty        `json:"debtor_party"`
 	EndToEndReference    string             `json:"end_to_end_reference"`
-	Fx                   Fx                 `json:"fx"`
+	Fx                   fx                 `json:"fx"`
 	NumericReference     string             `json:"numeric_reference"`
 	PaymentID            string             `json:"payment_id"`
 	PaymentPurpose       string             `json:"payment_purpose"`
@@ -23,12 +23,12 @@ type Payment struct {
 	Reference            string             `json:"reference"`
 	SchemePaymentSubType string             `json:"scheme_payment_sub_type"`
 	SchemePaymentType    string             `json:"scheme_payment_type"`
-	SponsorParty         SponsorParty       `json:"sponsor_party"`
+	SponsorParty         sponsorParty       `json:"sponsor_party"`
 }
 
-// BeneficiaryParty details the party being credited from the payment
+// beneficiaryParty details the party being credited from the payment
 // transaction.
-type BeneficiaryParty struct {
+type beneficiaryParty struct {
 	AccountName       string `json:"account_name"`
 	AccountNumber     string `json:"account_number"`
 	AccountNumberCode string `json:"account_number_code"`
@@ -39,23 +39,23 @@ type BeneficiaryParty struct {
 	Name              string `json:"name"`
 }
 
-// ChargesInformation describes the charges involved with processing the
+// chargesInformation describes the charges involved with processing the
 // payment transaction.
-type ChargesInformation struct {
+type chargesInformation struct {
 	BearerCode              string          `json:"bearer_code"`
 	ReceiverChargesAmount   decimal.Decimal `json:"receiver_charges_amount"`
 	ReceiverChargesCurrency string          `json:"receiver_charges_currency"`
-	SenderCharges           []SenderCharges `json:"sender_charges"`
+	SenderCharges           []senderCharges `json:"sender_charges"`
 }
 
-// SenderCharges stores the currency and amount charged to the payment sender.
-type SenderCharges struct {
+// senderCharges stores the currency and amount charged to the payment sender.
+type senderCharges struct {
 	Amount   decimal.Decimal `json:"amount"`
 	Currency string          `json:"currency"`
 }
 
-// DebtorParty details the party being debited for the payment transaction.
-type DebtorParty struct {
+// debtorParty details the party being debited for the payment transaction.
+type debtorParty struct {
 	AccountName       string `json:"account_name"`
 	AccountNumber     string `json:"account_number"`
 	AccountNumberCode string `json:"account_number_code"`
@@ -65,17 +65,17 @@ type DebtorParty struct {
 	Name              string `json:"name"`
 }
 
-// Fx describes the foreign exchange details salient to the payment
+// fx describes the foreign exchange details salient to the payment
 // transaction.
-type Fx struct {
+type fx struct {
 	ContractReference string          `json:"contract_reference"`
 	ExchangeRate      string          `json:"exchange_rate"`
 	OriginalAmount    decimal.Decimal `json:"original_amount"`
 	OriginalCurrency  string          `json:"original_currency"`
 }
 
-// SponsorParty details the party sponsoring the payment transaction.
-type SponsorParty struct {
+// sponsorParty details the party sponsoring the payment transaction.
+type sponsorParty struct {
 	AccountNumber string `json:"account_number"`
 	BankID        string `json:"bank_id"`
 	BankIDCode    string `json:"bank_id_code"`
