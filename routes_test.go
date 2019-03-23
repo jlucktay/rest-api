@@ -13,7 +13,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func TestCreateEmptyBody(t *testing.T) {
+func TestNilBodyCreateDelete(t *testing.T) {
 	srv := newAPIServer(InMemory)
 	existingID := uuid.Must(uuid.NewV4())
 	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
@@ -50,6 +50,30 @@ func TestCreateEmptyBody(t *testing.T) {
 			verb:     http.MethodPost,
 			expected: http.StatusNotFound, // 404
 		},
+		{
+			desc:     "Delete all existing payments",
+			path:     "/payments",
+			verb:     http.MethodDelete,
+			expected: http.StatusMethodNotAllowed, // 405
+		},
+		{
+			desc:     "Delete an existing payment at a valid ID",
+			path:     fmt.Sprintf("/payments/%s", existingID),
+			verb:     http.MethodDelete,
+			expected: http.StatusOK, // 200
+		},
+		{
+			desc:     "Delete a non-existent payment at a valid ID",
+			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			verb:     http.MethodDelete,
+			expected: http.StatusNotFound, // 404
+		},
+		{
+			desc:     "Delete a non-existent payment at an invalid ID",
+			path:     "/payments/not-a-valid-v4-uuid",
+			verb:     http.MethodDelete,
+			expected: http.StatusNotFound, // 404
+		},
 	}
 	for _, tC := range testCases {
 		tC := tC // pin!
@@ -67,7 +91,7 @@ func TestCreateEmptyBody(t *testing.T) {
 	}
 }
 
-func TestCreateAndUpdate(t *testing.T) {
+func TestDummyBodyCreateUpdate(t *testing.T) {
 	srv := newAPIServer(InMemory)
 	existingID := uuid.Must(uuid.NewV4())
 	dummyPayment := &Payment{Amount: decimal.NewFromFloat(123.45)}
@@ -204,60 +228,6 @@ func TestRead(t *testing.T) {
 			desc:     "Read a non-existent payment at an invalid ID",
 			path:     "/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodGet,
-			expected: http.StatusNotFound, // 404
-		},
-	}
-	for _, tC := range testCases {
-		tC := tC // pin!
-		w := httptest.NewRecorder()
-
-		t.Run(tC.desc, func(t *testing.T) {
-			i := is.New(t)
-
-			req, err := http.NewRequest(tC.verb, tC.path, nil)
-			i.NoErr(err)
-
-			srv.router.ServeHTTP(w, req)
-			i.Equal(tC.expected, w.Result().StatusCode)
-		})
-	}
-}
-
-func TestDelete(t *testing.T) {
-	srv := newAPIServer(InMemory)
-	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
-	is.New(t).NoErr(errCreate)
-
-	testCases := []struct {
-		desc     string
-		path     string
-		verb     string
-		expected int
-	}{
-		{
-			desc:     "Delete all existing payments",
-			path:     "/payments",
-			verb:     http.MethodDelete,
-			expected: http.StatusMethodNotAllowed, // 405
-		},
-		{
-			desc:     "Delete an existing payment at a valid ID",
-			path:     fmt.Sprintf("/payments/%s", existingID),
-			verb:     http.MethodDelete,
-			expected: http.StatusOK, // 200
-		},
-		{
-			desc:     "Delete a non-existent payment at a valid ID",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
-			verb:     http.MethodDelete,
-			expected: http.StatusNotFound, // 404
-		},
-		{
-			desc:     "Delete a non-existent payment at an invalid ID",
-			path:     "/payments/not-a-valid-v4-uuid",
-			verb:     http.MethodDelete,
 			expected: http.StatusNotFound, // 404
 		},
 	}
