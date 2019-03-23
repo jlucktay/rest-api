@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	"bytes"
 	"encoding/json"
@@ -24,3 +25,4 @@ func (this Payment) UnmarshalJSON(b []byte) error {
 	}
 	return nil
 }
+*/
