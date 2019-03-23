@@ -224,6 +224,12 @@ func TestRead(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
+	srv := newAPIServer(InMemory)
+	existingID := uuid.Must(uuid.NewV4())
+	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	is.New(t).NoErr(errCreate)
+
 	testCases := []struct {
 		desc     string
 		path     string
@@ -238,7 +244,7 @@ func TestDelete(t *testing.T) {
 		},
 		{
 			desc:     "Delete an existing payment at a valid ID",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodDelete,
 			expected: http.StatusOK, // 200
 		},
@@ -256,8 +262,17 @@ func TestDelete(t *testing.T) {
 		},
 	}
 	for _, tC := range testCases {
+		tC := tC // pin!
+		w := httptest.NewRecorder()
+
 		t.Run(tC.desc, func(t *testing.T) {
-			t.Skip("not yet implemented")
+			i := is.New(t)
+
+			req, err := http.NewRequest(tC.verb, tC.path, nil)
+			i.NoErr(err)
+
+			srv.router.ServeHTTP(w, req)
+			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}
 }
