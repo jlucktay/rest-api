@@ -70,8 +70,8 @@ func TestCreateEmptyBody(t *testing.T) {
 func TestCreatePaymentBody(t *testing.T) {
 	srv := newAPIServer(InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	dummyPayment := &Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificID(existingID, *dummyPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
@@ -85,28 +85,28 @@ func TestCreatePaymentBody(t *testing.T) {
 			desc:     "Create a new payment with a Payment request body",
 			path:     "/payments",
 			verb:     http.MethodPost,
-			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
+			body:     dummyPayment,
 			expected: http.StatusCreated, // 201
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with a Payment request body",
 			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodPost,
-			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
+			body:     dummyPayment,
 			expected: http.StatusConflict, // 409
 		},
 		{
 			desc:     "Create a new payment on a non-existent valid ID with a Payment request body",
 			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
 			verb:     http.MethodPost,
-			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
+			body:     dummyPayment,
 			expected: http.StatusNotFound, // 404
 		},
 		{
 			desc:     "Create a new payment on an invalid ID with a Payment request body",
 			path:     "/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodPost,
-			body:     &Payment{Amount: decimal.NewFromFloat(123.45)},
+			body:     dummyPayment,
 			expected: http.StatusNotFound, // 404
 		},
 	}
@@ -198,38 +198,43 @@ func TestRead(t *testing.T) {
 func TestUpdate(t *testing.T) {
 	srv := newAPIServer(InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	dummyPayment := &Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.storage.createSpecificID(existingID, *dummyPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
 		desc     string
 		path     string
 		verb     string
+		body     *Payment
 		expected int
 	}{
 		{
 			desc:     "Update all existing payments",
 			path:     "/payments",
 			verb:     http.MethodPut,
+			body:     dummyPayment,
 			expected: http.StatusMethodNotAllowed, // 405
 		},
 		{
 			desc:     "Update an existing payment",
 			path:     fmt.Sprintf("/payments/%s", existingID),
 			verb:     http.MethodPut,
+			body:     dummyPayment,
 			expected: http.StatusNoContent, // 204; update is OK, but response has no body/content
 		},
 		{
 			desc:     "Update a non-existent payment at a valid ID",
 			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
 			verb:     http.MethodPut,
+			body:     dummyPayment,
 			expected: http.StatusNotFound, // 404
 		},
 		{
 			desc:     "Update a non-existent payment at an invalid ID",
 			path:     "/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodPut,
+			body:     dummyPayment,
 			expected: http.StatusNotFound, // 404
 		},
 	}
@@ -240,7 +245,11 @@ func TestUpdate(t *testing.T) {
 		t.Run(tC.desc, func(t *testing.T) {
 			i := is.New(t)
 
-			req, err := http.NewRequest(tC.verb, tC.path, nil)
+			var buf bytes.Buffer
+			errEncode := json.NewEncoder(&buf).Encode(tC.body)
+			i.NoErr(errEncode)
+
+			req, err := http.NewRequest(tC.verb, tC.path, &buf)
 			i.NoErr(err)
 
 			srv.router.ServeHTTP(w, req)
