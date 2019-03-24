@@ -10,7 +10,7 @@ type inMemoryStorage struct {
 	store map[uuid.UUID]Payment
 }
 
-const defaultLimit = 100
+const defaultLimit = 10
 
 func (ims *inMemoryStorage) Init() error {
 	ims.store = make(map[uuid.UUID]Payment)
