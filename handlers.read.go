@@ -33,7 +33,13 @@ func (a *apiServer) readPayments() httprouter.Handle {
 			return
 		}
 
-		allBytes, errMarshal := json.Marshal(allPayments)
+		var wrappedPayments readWrapper
+		wrappedPayments.init(r)
+		for id, payment := range allPayments {
+			wrappedPayments.addPayment(id, payment)
+		}
+
+		allBytes, errMarshal := json.Marshal(wrappedPayments)
 		if errMarshal != nil {
 			http.Error(
 				w,

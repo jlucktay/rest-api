@@ -38,7 +38,7 @@ func (ims *inMemoryStorage) Read(id uuid.UUID) (Payment, error) {
 	return Payment{}, &NotFoundError{id}
 }
 
-func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) ([]Payment, error) {
+func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) (map[uuid.UUID]Payment, error) {
 	if rao.limit == 0 {
 		rao.limit = defaultLimit
 	}
@@ -52,12 +52,14 @@ func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) ([]Payment, error) {
 	if uint(len(keys)) >= rao.offset {
 		keys = keys[rao.offset:]
 	} else {
-		return []Payment{}, &OffsetOutOfBoundsError{rao.offset}
+		return map[uuid.UUID]Payment{}, &OffsetOutOfBoundsError{rao.offset}
 	}
 
-	payments := make([]Payment, 0, rao.limit)
+	payments := make(map[uuid.UUID]Payment, 0)
+
 	for i := uint(0); i < rao.limit && i < uint(len(keys)); i++ {
-		payments = append(payments, ims.store[uuid.FromStringOrNil(keys[i])])
+		id := uuid.FromStringOrNil(keys[i])
+		payments[id] = ims.store[id]
 	}
 
 	return payments, nil
