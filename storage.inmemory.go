@@ -55,7 +55,7 @@ func (ims *inMemoryStorage) ReadAll(rao ReadAllOptions) (map[uuid.UUID]Payment, 
 		return map[uuid.UUID]Payment{}, &OffsetOutOfBoundsError{rao.offset}
 	}
 
-	payments := make(map[uuid.UUID]Payment, 0)
+	payments := make(map[uuid.UUID]Payment)
 
 	for i := uint(0); i < rao.limit && i < uint(len(keys)); i++ {
 		id := uuid.FromStringOrNil(keys[i])
