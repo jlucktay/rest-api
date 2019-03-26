@@ -6,6 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// orgId is hard-coded for now.
 var orgId = uuid.FromStringOrNil("a6781162-0f4f-429c-aca1-ac7a0cff4edf")
 
 type readWrapper struct {

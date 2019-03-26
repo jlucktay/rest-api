@@ -11,7 +11,7 @@ type PaymentStorage interface {
 	Create(Payment) (uuid.UUID, error)
 	createSpecificID(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)
-	ReadAll(ReadAllOptions) ([]Payment, error)
+	ReadAll(ReadAllOptions) (map[uuid.UUID]Payment, error)
 	Update(uuid.UUID, Payment) error
 	Delete(uuid.UUID) error
 }
