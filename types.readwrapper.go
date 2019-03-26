@@ -3,11 +3,9 @@ package main
 import (
 	"net/http"
 
+	"github.com/jlucktay/rest-api/internal/pkg/org"
 	uuid "github.com/satori/go.uuid"
 )
-
-// orgId is hard-coded for now.
-var orgId = uuid.FromStringOrNil("a6781162-0f4f-429c-aca1-ac7a0cff4edf")
 
 type readWrapper struct {
 	Data  []paymentData    `json:"data"`
@@ -37,7 +35,7 @@ func (rw *readWrapper) addPayment(id uuid.UUID, p Payment) {
 	newPD := &paymentData{
 		Attributes:     p,
 		ID:             id,
-		OrganisationID: orgId,
+		OrganisationID: org.ID(),
 		Type:           "Payment",
 		Version:        0,
 	}
