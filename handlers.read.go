@@ -67,7 +67,11 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 		}
 
 		if payRead, errRead := a.storage.Read(id); errRead == nil {
-			payBytes, errMarshal := json.Marshal(payRead)
+			var wrappedPayment readWrapper
+			wrappedPayment.init(r)
+			wrappedPayment.addPayment(id, payRead)
+
+			payBytes, errMarshal := json.Marshal(wrappedPayment)
 			if errMarshal != nil {
 				log.Fatal(errMarshal)
 			}

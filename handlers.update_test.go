@@ -67,10 +67,10 @@ func TestUpdatePayment(t *testing.T) {
 	i.True(len(string(respBodyBytes)) > 0)
 
 	// Unmarshal into a slice of Payment structs.
-	var returnedPayment Payment
+	var returnedPayment readWrapper
 	errUnmarshal := json.Unmarshal(respBodyBytes, &returnedPayment)
 	i.NoErr(errUnmarshal)
 
 	// Assert that the Amount of the Payment returned has been updated appropriately.
-	i.Equal(updatedAmount, returnedPayment.Amount)
+	i.Equal(updatedAmount, returnedPayment.Data[0].Attributes.Amount)
 }

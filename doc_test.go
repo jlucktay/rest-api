@@ -46,7 +46,7 @@ func TestDocumentationSingle(t *testing.T) {
 
 	var actual readWrapper
 	// actual.init(req)
-	errUmResponse := json.Unmarshal(responseBytes, &actual.Data)
+	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
 
 	fmt.Printf("expected: '%+v'\n", expected)
