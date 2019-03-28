@@ -1,3 +1,4 @@
+// Package org represents an organisation that makes payment transactions.
 package org
 
 import (
