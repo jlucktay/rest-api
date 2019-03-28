@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
@@ -33,10 +34,17 @@ func (a *apiServer) readPayments() httprouter.Handle {
 			return
 		}
 
+		keys := []string{}
+		for a := range allPayments {
+			keys = append(keys, a.String())
+		}
+		sort.Strings(keys)
+
 		var wrappedPayments readWrapper
 		wrappedPayments.init(r)
-		for id, payment := range allPayments {
-			wrappedPayments.addPayment(id, payment)
+		for _, sID := range keys {
+			id := uuid.FromStringOrNil(sID)
+			wrappedPayments.addPayment(id, allPayments[id])
 		}
 
 		allBytes, errMarshal := json.Marshal(wrappedPayments)

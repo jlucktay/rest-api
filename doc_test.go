@@ -52,3 +52,42 @@ func TestDocumentationSingle(t *testing.T) {
 	i.NoErr(errUmResponse)
 	i.True(reflect.DeepEqual(expected, actual))
 }
+
+func TestDocumentationMultiple(t *testing.T) {
+	// Set up an API server to test against.
+	srv := newAPIServer(InMemory)
+	w := httptest.NewRecorder()
+	i := is.New(t)
+
+	// Put the multiple payments from the documentation into the server.
+	multipleBytes, errReadFile := ioutil.ReadFile("testdata/doc.multiple.json")
+	i.NoErr(errReadFile)
+	var multiple []testDataWrapper
+	errUmMultiple := json.Unmarshal(multipleBytes, &multiple)
+	i.NoErr(errUmMultiple)
+	for _, testdata := range multiple {
+		errCreate := srv.storage.createSpecificID(testdata.ID, testdata.Attributes)
+		i.NoErr(errCreate)
+	}
+
+	// Do a HTTP request for the multiple payments.
+	req, errReq := http.NewRequest(http.MethodGet, "/payments", nil)
+	i.NoErr(errReq)
+	srv.router.ServeHTTP(w, req)
+	i.Equal(http.StatusOK, w.Result().StatusCode)
+
+	// Put info from the ./testdata/ JSON file into a wrapper struct.
+	var expected readWrapper
+	expected.init(req)
+	for _, testdata := range multiple {
+		expected.addPayment(testdata.ID, testdata.Attributes)
+	}
+
+	// Assert that it matches the JSON returned by the API.
+	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
+	i.NoErr(errReadResponse)
+	var actual readWrapper
+	errUmResponse := json.Unmarshal(responseBytes, &actual)
+	i.NoErr(errUmResponse)
+	i.True(reflect.DeepEqual(expected, actual))
+}
