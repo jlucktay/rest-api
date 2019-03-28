@@ -14,12 +14,12 @@ import (
 )
 
 func TestDocumentationSingle(t *testing.T) {
-	// set up server
+	// Set up an API server to test against.
 	srv := newAPIServer(InMemory)
 	w := httptest.NewRecorder()
 	i := is.New(t)
 
-	// put the documentation payment into it
+	// Put the single payment from the documentation into the server.
 	singleBytes, errReadFile := ioutil.ReadFile("testdata/doc.single.json")
 	i.NoErr(errReadFile)
 	var single Payment
@@ -29,28 +29,22 @@ func TestDocumentationSingle(t *testing.T) {
 	errCreate := srv.storage.createSpecificID(existingID, single)
 	i.NoErr(errCreate)
 
-	// do a http request for the ID of the payment
+	// Do a HTTP request for the single payment.
 	req, errReq := http.NewRequest(http.MethodGet, fmt.Sprintf("/payments/%s", existingID), nil)
 	i.NoErr(errReq)
 	srv.router.ServeHTTP(w, req)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
-	// assert that it matches the documentation JSON
+	// Put info from the ./testdata/ JSON file into a wrapper struct.
 	var expected readWrapper
 	expected.init(req)
 	expected.addPayment(existingID, single)
+
+	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
 	i.NoErr(errReadResponse)
-
-	fmt.Printf("responseBytes: '%+v'\n", string(responseBytes))
-
 	var actual readWrapper
-	// actual.init(req)
 	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
-
-	fmt.Printf("expected: '%+v'\n", expected)
-	fmt.Printf("actual: '%+v'\n", actual)
-
 	i.True(reflect.DeepEqual(expected, actual))
 }
