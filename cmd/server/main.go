@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net/http"
+
+	_ "github.com/jlucktay/rest-api"
 )
 
 func main() {
