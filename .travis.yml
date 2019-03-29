@@ -12,7 +12,7 @@ install:
 
 script:
   - golangci-lint run --enable-all
-  - go test -race -coverprofile=coverage.txt -covermode=atomic
+  - go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

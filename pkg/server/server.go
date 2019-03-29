@@ -1,12 +1,13 @@
-package main
+package server
 
 import (
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
 )
 
-type apiServer struct {
-	router  *httprouter.Router
-	storage PaymentStorage
+type Server struct {
+	Router  *httprouter.Router
+	Storage storage.PaymentStorage
 }
 
 // StorageType is an enum to differentiate between storage implementations.

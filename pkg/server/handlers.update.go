@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -6,11 +6,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
 )
 
-func (a *apiServer) updatePaymentByID() httprouter.Handle {
+func (s *Server) updatePaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 
@@ -30,17 +31,17 @@ func (a *apiServer) updatePaymentByID() httprouter.Handle {
 		}
 		defer r.Body.Close()
 
-		var payment Payment
+		var payment storage.Payment
 		errUm := json.Unmarshal(bodyBytes, &payment)
 		if errUm != nil {
 			log.Fatal(errUm)
 		}
 
-		if errUpdate := a.storage.Update(id, payment); errUpdate == nil {
+		if errUpdate := s.Storage.Update(id, payment); errUpdate == nil {
 			w.WriteHeader(http.StatusNoContent) // 204
 			return
 		}
 
-		http.Error(w, (&NotFoundError{id}).Error(), http.StatusNotFound) // 404
+		http.Error(w, (&storage.NotFoundError{ID: id}).Error(), http.StatusNotFound) // 404
 	}
 }

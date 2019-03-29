@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -8,23 +8,24 @@ import (
 	"sort"
 	"strconv"
 
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
 )
 
-func (a *apiServer) readPayments() httprouter.Handle {
+func (s *Server) readPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		var opts ReadAllOptions
-		if errLimit := applyFromQuery(r, "limit", &opts.limit); errLimit != nil {
+		var opts storage.ReadAllOptions
+		if errLimit := applyFromQuery(r, "limit", &opts.Limit); errLimit != nil {
 			http.Error(w, errLimit.Error(), http.StatusBadRequest)
 			return
 		}
-		if errOffset := applyFromQuery(r, "offset", &opts.offset); errOffset != nil {
+		if errOffset := applyFromQuery(r, "offset", &opts.Offset); errOffset != nil {
 			http.Error(w, errOffset.Error(), http.StatusBadRequest)
 			return
 		}
 
-		allPayments, errRead := a.storage.ReadAll(opts)
+		allPayments, errRead := s.Storage.ReadAll(opts)
 		if errRead != nil {
 			http.Error(
 				w,
@@ -40,11 +41,11 @@ func (a *apiServer) readPayments() httprouter.Handle {
 		}
 		sort.Strings(keys)
 
-		var wrappedPayments readWrapper
-		wrappedPayments.init(r)
+		var wrappedPayments ReadWrapper
+		wrappedPayments.Init(r)
 		for _, sID := range keys {
 			id := uuid.FromStringOrNil(sID)
-			wrappedPayments.addPayment(id, allPayments[id])
+			wrappedPayments.AddPayment(id, allPayments[id])
 		}
 
 		allBytes, errMarshal := json.Marshal(wrappedPayments)
@@ -65,7 +66,7 @@ func (a *apiServer) readPayments() httprouter.Handle {
 	}
 }
 
-func (a *apiServer) readPaymentByID() httprouter.Handle {
+func (s *Server) readPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 
@@ -74,10 +75,10 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 			return
 		}
 
-		if payRead, errRead := a.storage.Read(id); errRead == nil {
-			var wrappedPayment readWrapper
-			wrappedPayment.init(r)
-			wrappedPayment.addPayment(id, payRead)
+		if payRead, errRead := s.Storage.Read(id); errRead == nil {
+			var wrappedPayment ReadWrapper
+			wrappedPayment.Init(r)
+			wrappedPayment.AddPayment(id, payRead)
 
 			payBytes, errMarshal := json.Marshal(wrappedPayment)
 			if errMarshal != nil {
@@ -92,7 +93,7 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 			return
 		}
 
-		http.Error(w, (&NotFoundError{id}).Error(), http.StatusNotFound) // 404
+		http.Error(w, (&storage.NotFoundError{ID: id}).Error(), http.StatusNotFound) // 404
 	}
 }
 

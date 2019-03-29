@@ -1,4 +1,4 @@
-package main
+package storage
 
 import (
 	uuid "github.com/satori/go.uuid"
@@ -9,14 +9,17 @@ import (
 type PaymentStorage interface {
 	Init() error
 	Create(Payment) (uuid.UUID, error)
-	createSpecificID(uuid.UUID, Payment) error
+	CreateSpecificID(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)
 	ReadAll(ReadAllOptions) (map[uuid.UUID]Payment, error)
 	Update(uuid.UUID, Payment) error
 	Delete(uuid.UUID) error
 }
 
+// ReadAllOptions is a config struct for calling 'PaymentStorage.ReadAll()'.
 type ReadAllOptions struct {
-	limit  uint
-	offset uint
+	Limit  uint
+	Offset uint
 }
+
+const DefaultLimit = 10

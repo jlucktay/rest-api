@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -7,11 +7,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
 )
 
-func (a *apiServer) createPayments() httprouter.Handle {
+func (s *Server) createPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		if r.ContentLength == 0 {
 			http.Error(w, "Empty request body.", http.StatusBadRequest) // 400
@@ -24,13 +25,13 @@ func (a *apiServer) createPayments() httprouter.Handle {
 		}
 		defer r.Body.Close()
 
-		var p Payment
+		var p storage.Payment
 		errUm := json.Unmarshal(bodyBytes, &p)
 		if errUm != nil {
 			log.Fatal(errUm)
 		}
 
-		id, errCreate := a.storage.Create(p)
+		id, errCreate := s.Storage.Create(p)
 		if errCreate != nil {
 			log.Fatal(errCreate)
 		}
@@ -40,7 +41,7 @@ func (a *apiServer) createPayments() httprouter.Handle {
 	}
 }
 
-func (a *apiServer) createPaymentByID() httprouter.Handle {
+func (s *Server) createPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 
@@ -49,9 +50,9 @@ func (a *apiServer) createPaymentByID() httprouter.Handle {
 			return
 		}
 
-		_, errRead := a.storage.Read(id)
+		_, errRead := s.Storage.Read(id)
 		if errRead == nil {
-			http.Error(w, (&AlreadyExistsError{id}).Error(), http.StatusConflict) // 409
+			http.Error(w, (&storage.AlreadyExistsError{ID: id}).Error(), http.StatusConflict) // 409
 			return
 		}
 

@@ -1,10 +1,11 @@
-package main
+package test
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/matryer/is"
 )
 
@@ -78,7 +79,7 @@ func TestStatusCode(t *testing.T) {
 		},
 	}
 
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 
 	// Act & Assert
 	for _, tC := range testCases {
@@ -91,7 +92,7 @@ func TestStatusCode(t *testing.T) {
 			req, err := http.NewRequest(tC.verb, tC.path, nil)
 			i.NoErr(err)
 
-			srv.router.ServeHTTP(w, req)
+			srv.Router.ServeHTTP(w, req)
 			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}

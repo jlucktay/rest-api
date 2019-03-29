@@ -1,4 +1,4 @@
-package main
+package server_test
 
 import (
 	"bytes"
@@ -8,17 +8,19 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/jlucktay/rest-api/pkg/server"
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
 	"github.com/shopspring/decimal"
 )
 
 func TestCreateNewPayment(t *testing.T) {
-	a := newAPIServer(InMemory)
+	s := server.New(server.InMemory)
 	var w *httptest.ResponseRecorder
 	i := is.New(t)
 
 	// Construct a HTTP request which creates a payment.
-	p := Payment{Amount: decimal.NewFromFloat(123.45)}
+	p := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
 	j, errMarshal := json.Marshal(p)
 	i.NoErr(errMarshal)
 	reqBody := bytes.NewBuffer(j)
@@ -28,7 +30,7 @@ func TestCreateNewPayment(t *testing.T) {
 
 	// Send it, and record the HTTP back and forth.
 	w = httptest.NewRecorder()
-	a.router.ServeHTTP(w, reqCreate)
+	s.Router.ServeHTTP(w, reqCreate)
 	i.Equal(http.StatusCreated, w.Result().StatusCode)
 
 	// Make sure the response had a Location header pointing at the new payment.
@@ -43,6 +45,6 @@ func TestCreateNewPayment(t *testing.T) {
 
 	// Read the new payment using the ID returned.
 	w = httptest.NewRecorder()
-	a.router.ServeHTTP(w, reqRead)
+	s.Router.ServeHTTP(w, reqRead)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 }
