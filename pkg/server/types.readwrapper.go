@@ -25,7 +25,7 @@ type ReadWrapperLinks struct {
 	Self string `json:"self"`
 }
 
-func (rw *ReadWrapper) init(r *http.Request) {
+func (rw *ReadWrapper) Init(r *http.Request) {
 	rw.Data = make([]paymentData, 0)
 	rw.Links = ReadWrapperLinks{
 		Self: r.URL.String(),

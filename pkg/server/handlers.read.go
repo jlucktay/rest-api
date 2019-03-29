@@ -42,7 +42,7 @@ func (s *Server) readPayments() httprouter.Handle {
 		sort.Strings(keys)
 
 		var wrappedPayments ReadWrapper
-		wrappedPayments.init(r)
+		wrappedPayments.Init(r)
 		for _, sID := range keys {
 			id := uuid.FromStringOrNil(sID)
 			wrappedPayments.addPayment(id, allPayments[id])
@@ -77,7 +77,7 @@ func (s *Server) readPaymentByID() httprouter.Handle {
 
 		if payRead, errRead := s.Storage.Read(id); errRead == nil {
 			var wrappedPayment readWrapper
-			wrappedPayment.init(r)
+			wrappedPayment.Init(r)
 			wrappedPayment.addPayment(id, payRead)
 
 			payBytes, errMarshal := json.Marshal(wrappedPayment)

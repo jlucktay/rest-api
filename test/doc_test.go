@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"encoding/json"
@@ -9,18 +9,20 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/jlucktay/rest-api/pkg/server"
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
 	uuid "github.com/satori/go.uuid"
 )
 
 type testDataWrapper struct {
-	Attributes Payment   `json:"attributes"`
-	ID         uuid.UUID `json:"id"`
+	Attributes storage.Payment `json:"attributes"`
+	ID         uuid.UUID       `json:"id"`
 }
 
 func TestDocumentationSingle(t *testing.T) {
 	// Set up an API server to test against.
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 	w := httptest.NewRecorder()
 	i := is.New(t)
 
@@ -30,24 +32,24 @@ func TestDocumentationSingle(t *testing.T) {
 	var single testDataWrapper
 	errUmSingle := json.Unmarshal(singleBytes, &single)
 	i.NoErr(errUmSingle)
-	errCreate := srv.storage.createSpecificID(single.ID, single.Attributes)
+	errCreate := srv.Storage.CreateSpecificID(single.ID, single.Attributes)
 	i.NoErr(errCreate)
 
 	// Do a HTTP request for the single payment.
 	req, errReq := http.NewRequest(http.MethodGet, fmt.Sprintf("/payments/%s", single.ID), nil)
 	i.NoErr(errReq)
-	srv.router.ServeHTTP(w, req)
+	srv.Router.ServeHTTP(w, req)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
-	var expected readWrapper
-	expected.init(req)
+	var expected server.ReadWrapper
+	expected.Init(req)
 	expected.addPayment(single.ID, single.Attributes)
 
 	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
 	i.NoErr(errReadResponse)
-	var actual readWrapper
+	var actual server.ReadWrapper
 	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
 	i.True(reflect.DeepEqual(expected, actual))
@@ -55,7 +57,7 @@ func TestDocumentationSingle(t *testing.T) {
 
 func TestDocumentationMultiple(t *testing.T) {
 	// Set up an API server to test against.
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 	w := httptest.NewRecorder()
 	i := is.New(t)
 
@@ -66,19 +68,19 @@ func TestDocumentationMultiple(t *testing.T) {
 	errUmMultiple := json.Unmarshal(multipleBytes, &multiple)
 	i.NoErr(errUmMultiple)
 	for _, testdata := range multiple {
-		errCreate := srv.storage.createSpecificID(testdata.ID, testdata.Attributes)
+		errCreate := srv.Storage.createSpecificID(testdata.ID, testdata.Attributes)
 		i.NoErr(errCreate)
 	}
 
 	// Do a HTTP request for the multiple payments.
 	req, errReq := http.NewRequest(http.MethodGet, "/payments", nil)
 	i.NoErr(errReq)
-	srv.router.ServeHTTP(w, req)
+	srv.Router.ServeHTTP(w, req)
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
 	var expected readWrapper
-	expected.init(req)
+	expected.Init(req)
 	for _, testdata := range multiple {
 		expected.addPayment(testdata.ID, testdata.Attributes)
 	}
