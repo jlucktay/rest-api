@@ -7,5 +7,5 @@ import (
 
 // ID is hard-coded for now.
 func ID() uuid.UUID {
-	return uuid.FromStringOrNil("a6781162-0f4f-429c-aca1-ac7a0cff4edf")
+	return uuid.FromStringOrNil("743d5b63-8e6f-432e-a8fa-c5d8d2ee5fcb")
 }
