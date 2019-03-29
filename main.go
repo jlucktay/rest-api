@@ -1,3 +1,4 @@
+// Package main launches an instance of the API server backed by Mongo for persistent storage.
 package main
 
 import (
