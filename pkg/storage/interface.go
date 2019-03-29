@@ -9,7 +9,7 @@ import (
 type PaymentStorage interface {
 	Init() error
 	Create(Payment) (uuid.UUID, error)
-	createSpecificID(uuid.UUID, Payment) error
+	CreateSpecificID(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)
 	ReadAll(ReadAllOptions) (map[uuid.UUID]Payment, error)
 	Update(uuid.UUID, Payment) error
@@ -21,3 +21,5 @@ type ReadAllOptions struct {
 	Limit  uint
 	Offset uint
 }
+
+const DefaultLimit = 10

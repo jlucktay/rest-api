@@ -17,7 +17,7 @@ func TestStorage(t *testing.T) {
 	}{
 		{
 			desc: "In-memory storage (map); won't persist across app restarts",
-			ps:   &inmemory.InMemoryStorage{},
+			ps:   &inmemory.Storage{},
 		},
 	}
 	for _, tC := range testCases {
@@ -59,7 +59,7 @@ func TestStorage(t *testing.T) {
 			// D
 			i.NoErr(tC.ps.Delete(newID))
 			_, errDeleted := tC.ps.Read(newID)
-			i.Equal(errDeleted, &NotFoundError{newID})
+			i.Equal(errDeleted, &storage.NotFoundError{newID})
 		})
 	}
 }

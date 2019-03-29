@@ -1,37 +1,38 @@
-package storage
+package server
 
 import (
 	"net/http"
 
 	"github.com/jlucktay/rest-api/internal/pkg/org"
+	"github.com/jlucktay/rest-api/pkg/storage"
 	uuid "github.com/satori/go.uuid"
 )
 
-type readWrapper struct {
+type ReadWrapper struct {
 	Data  []paymentData    `json:"data"`
-	Links readWrapperLinks `json:"links"`
+	Links ReadWrapperLinks `json:"links"`
 }
 
 type paymentData struct {
-	Attributes     Payment   `json:"attributes"`
-	ID             uuid.UUID `json:"id"`
-	OrganisationID uuid.UUID `json:"organisation_id"`
-	Type           string    `json:"type"`
-	Version        int       `json:"version"`
+	Attributes     storage.Payment `json:"attributes"`
+	ID             uuid.UUID       `json:"id"`
+	OrganisationID uuid.UUID       `json:"organisation_id"`
+	Type           string          `json:"type"`
+	Version        int             `json:"version"`
 }
 
-type readWrapperLinks struct {
+type ReadWrapperLinks struct {
 	Self string `json:"self"`
 }
 
-func (rw *readWrapper) init(r *http.Request) {
+func (rw *ReadWrapper) init(r *http.Request) {
 	rw.Data = make([]paymentData, 0)
-	rw.Links = readWrapperLinks{
+	rw.Links = ReadWrapperLinks{
 		Self: r.URL.String(),
 	}
 }
 
-func (rw *readWrapper) addPayment(id uuid.UUID, p Payment) {
+func (rw *ReadWrapper) addPayment(id uuid.UUID, p storage.Payment) {
 	newPD := &paymentData{
 		Attributes:     p,
 		ID:             id,

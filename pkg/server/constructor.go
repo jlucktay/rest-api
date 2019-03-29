@@ -1,25 +1,26 @@
-package main
+package server
 
 import (
 	"log"
 
+	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/julienschmidt/httprouter"
 )
 
-func newAPIServer(st StorageType) (a *apiServer) {
-	a = &apiServer{
-		router: httprouter.New(),
+func New(st StorageType) (s *Server) {
+	s = &Server{
+		Router: httprouter.New(),
 	}
-	a.setupRoutes()
+	s.setupRoutes()
 
 	switch st {
 	case InMemory:
-		a.storage = &inMemoryStorage{}
+		s.Storage = &inmemory.Storage{}
 	case Mongo:
 		panic("Mongo storage is not yet implemented")
 	}
 
-	if errStorageInit := a.storage.Init(); errStorageInit != nil {
+	if errStorageInit := s.Storage.Init(); errStorageInit != nil {
 		log.Fatal(errStorageInit)
 	}
 

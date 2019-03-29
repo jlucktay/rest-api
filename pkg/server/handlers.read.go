@@ -12,7 +12,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func (a *Server) readPayments() httprouter.Handle {
+func (s *Server) readPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		var opts storage.ReadAllOptions
 		if errLimit := applyFromQuery(r, "limit", &opts.Limit); errLimit != nil {
@@ -24,7 +24,7 @@ func (a *Server) readPayments() httprouter.Handle {
 			return
 		}
 
-		allPayments, errRead := a.Storage.ReadAll(opts)
+		allPayments, errRead := s.Storage.ReadAll(opts)
 		if errRead != nil {
 			http.Error(
 				w,
@@ -58,7 +58,7 @@ func (a *Server) readPayments() httprouter.Handle {
 	}
 }
 
-func (a *Server) readPaymentByID() httprouter.Handle {
+func (s *Server) readPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 
@@ -67,7 +67,7 @@ func (a *Server) readPaymentByID() httprouter.Handle {
 			return
 		}
 
-		if payRead, errRead := a.Storage.Read(id); errRead == nil {
+		if payRead, errRead := s.Storage.Read(id); errRead == nil {
 			payBytes, errMarshal := json.Marshal(payRead)
 			if errMarshal != nil {
 				log.Fatal(errMarshal)

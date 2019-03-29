@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/jlucktay/rest-api"
+	"github.com/jlucktay/rest-api/pkg/server"
 )
 
 func main() {
-	a := newAPIServer(Mongo)
-	log.Fatal(http.ListenAndServe(":8080", a.router))
+	s := server.New(server.Mongo)
+	log.Fatal(http.ListenAndServe(":8080", s.Router))
 }

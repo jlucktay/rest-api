@@ -7,45 +7,43 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type InMemoryStorage struct {
+type Storage struct {
 	store map[uuid.UUID]storage.Payment
 }
 
-const defaultLimit = 10
-
-func (ims *InMemoryStorage) Init() error {
-	ims.store = make(map[uuid.UUID]storage.Payment)
+func (s *Storage) Init() error {
+	s.store = make(map[uuid.UUID]storage.Payment)
 	return nil
 }
 
-func (ims *InMemoryStorage) Create(p storage.Payment) (uuid.UUID, error) {
+func (s *Storage) Create(p storage.Payment) (uuid.UUID, error) {
 	newID := uuid.Must(uuid.NewV4())
-	ims.store[newID] = p
+	s.store[newID] = p
 	return newID, nil
 }
 
-func (ims *InMemoryStorage) createSpecificID(id uuid.UUID, p storage.Payment) error {
-	if _, exists := ims.store[id]; exists {
-		return &AlreadyExistsError{id}
+func (s *Storage) CreateSpecificID(id uuid.UUID, p storage.Payment) error {
+	if _, exists := s.store[id]; exists {
+		return &storage.AlreadyExistsError{ID: id}
 	}
-	ims.store[id] = p
+	s.store[id] = p
 	return nil
 }
 
-func (ims *InMemoryStorage) Read(id uuid.UUID) (storage.Payment, error) {
-	if p, exists := ims.store[id]; exists {
+func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
+	if p, exists := s.store[id]; exists {
 		return p, nil
 	}
-	return storage.Payment{}, &NotFoundError{id}
+	return storage.Payment{}, &storage.NotFoundError{ID: id}
 }
 
-func (ims *InMemoryStorage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
+func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
 	if rao.Limit == 0 {
-		rao.Limit = defaultLimit
+		rao.Limit = storage.DefaultLimit
 	}
 
-	keys := make([]string, 0, len(ims.store))
-	for k := range ims.store {
+	keys := make([]string, 0, len(s.store))
+	for k := range s.store {
 		keys = append(keys, k.String())
 	}
 	sort.Strings(keys)
@@ -53,31 +51,31 @@ func (ims *InMemoryStorage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]s
 	if uint(len(keys)) >= rao.Offset {
 		keys = keys[rao.Offset:]
 	} else {
-		return map[uuid.UUID]storage.Payment{}, &OffsetOutOfBoundsError{rao.Offset}
+		return map[uuid.UUID]storage.Payment{}, &storage.OffsetOutOfBoundsError{Offset: rao.Offset}
 	}
 
 	payments := make(map[uuid.UUID]storage.Payment)
 
 	for i := uint(0); i < rao.Limit && i < uint(len(keys)); i++ {
 		id := uuid.FromStringOrNil(keys[i])
-		payments[id] = ims.store[id]
+		payments[id] = s.store[id]
 	}
 
 	return payments, nil
 }
 
-func (ims *InMemoryStorage) Update(id uuid.UUID, p storage.Payment) error {
-	if _, exists := ims.store[id]; exists {
-		ims.store[id] = p
+func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
+	if _, exists := s.store[id]; exists {
+		s.store[id] = p
 		return nil
 	}
-	return &NotFoundError{id}
+	return &storage.NotFoundError{ID: id}
 }
 
-func (ims *InMemoryStorage) Delete(id uuid.UUID) error {
-	if _, exists := ims.store[id]; exists {
-		delete(ims.store, id)
+func (s *Storage) Delete(id uuid.UUID) error {
+	if _, exists := s.store[id]; exists {
+		delete(s.store, id)
 		return nil
 	}
-	return &NotFoundError{id}
+	return &storage.NotFoundError{ID: id}
 }

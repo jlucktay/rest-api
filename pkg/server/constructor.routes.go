@@ -1,19 +1,19 @@
-package main
+package server
 
-func (a *apiServer) setupRoutes() {
-	a.router.HandleMethodNotAllowed = true
+func (s *Server) setupRoutes() {
+	s.Router.HandleMethodNotAllowed = true
 
 	// C
-	a.router.POST("/payments", a.createPayments())
-	a.router.POST("/payments/:id", a.createPaymentByID())
+	s.Router.POST("/payments", s.createPayments())
+	s.Router.POST("/payments/:id", s.createPaymentByID())
 
 	// R
-	a.router.GET("/payments", a.readPayments())
-	a.router.GET("/payments/:id", a.readPaymentByID())
+	s.Router.GET("/payments", s.readPayments())
+	s.Router.GET("/payments/:id", s.readPaymentByID())
 
 	// U
-	a.router.PUT("/payments/:id", a.updatePaymentByID())
+	s.Router.PUT("/payments/:id", s.updatePaymentByID())
 
 	// D
-	a.router.DELETE("/payments/:id", a.deletePaymentByID())
+	s.Router.DELETE("/payments/:id", s.deletePaymentByID())
 }
