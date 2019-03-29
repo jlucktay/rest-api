@@ -49,7 +49,7 @@ func TestReadMultiplePayments(t *testing.T) {
 	i.True(len(string(respBodyBytes)) > 0)
 
 	// Unmarshal them into a slice of Payment structs.
-	var returnedPayments server.ReadWrapper
+	returnedPayments := server.NewWrapper("")
 	errUnmarshal := json.Unmarshal(respBodyBytes, &returnedPayments)
 	i.NoErr(errUnmarshal)
 

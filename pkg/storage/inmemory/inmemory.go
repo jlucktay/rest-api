@@ -7,21 +7,26 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// Storage is an in-memory storage system that uses a map to store Payment structs indexed by UUID.
 type Storage struct {
 	store map[uuid.UUID]storage.Payment
 }
 
+// Init will initialise the internal map.
 func (s *Storage) Init() error {
 	s.store = make(map[uuid.UUID]storage.Payment)
 	return nil
 }
 
+// Create will add the given Payment to the store, and return its UUID.
 func (s *Storage) Create(p storage.Payment) (uuid.UUID, error) {
 	newID := uuid.Must(uuid.NewV4())
 	s.store[newID] = p
 	return newID, nil
 }
 
+// CreateSpecificID will create the given Payment with that specific UUID, rather than generating its own.
+// Intended for use with testing, and not in production.
 func (s *Storage) CreateSpecificID(id uuid.UUID, p storage.Payment) error {
 	if _, exists := s.store[id]; exists {
 		return &storage.AlreadyExistsError{ID: id}
@@ -30,6 +35,7 @@ func (s *Storage) CreateSpecificID(id uuid.UUID, p storage.Payment) error {
 	return nil
 }
 
+// Read will attempt to find the Payment linked to the given UUID.
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 	if p, exists := s.store[id]; exists {
 		return p, nil
@@ -37,6 +43,12 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 	return storage.Payment{}, &storage.NotFoundError{ID: id}
 }
 
+// ReadAll will read all available Payments, up to the limit which is either 1) explicit in the given ReadAllOptions
+// struct, or 2) the default limit which is also exported by this package.
+// The Payments will be returned in order based on their respective UUIDs.
+// The entire collection of Payments can be paginated through via the Offset property of the ReadAllOptions struct, and
+// by default when such an Offset is not explicitly specified, the returned collection will start from the beginning of
+// the store.
 func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
 	if rao.Limit == 0 {
 		rao.Limit = storage.DefaultLimit
@@ -64,6 +76,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 	return payments, nil
 }
 
+// Update will overwrite the Payment currently stored at the given UUID with the given Payment.
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
 	if _, exists := s.store[id]; exists {
 		s.store[id] = p
@@ -72,6 +85,7 @@ func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
 	return &storage.NotFoundError{ID: id}
 }
 
+// Delete will remove the Payment at the given UUID from the internal store.
 func (s *Storage) Delete(id uuid.UUID) error {
 	if _, exists := s.store[id]; exists {
 		delete(s.store, id)

@@ -4,8 +4,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// PaymentStorage allows storage, retrieval, updating, and deletion of Payment
-// structs.
+// PaymentStorage allows storage, retrieval, updating, and deletion of Payment structs.
 type PaymentStorage interface {
 	Init() error
 	Create(Payment) (uuid.UUID, error)
@@ -16,10 +15,11 @@ type PaymentStorage interface {
 	Delete(uuid.UUID) error
 }
 
-// ReadAllOptions is a config struct for calling 'PaymentStorage.ReadAll()'.
+// ReadAllOptions is a config struct for supplying optional parameters to ReadAll.
 type ReadAllOptions struct {
 	Limit  uint
 	Offset uint
 }
 
+// DefaultLimit is the default limit on the number of Payments returned by ReadAll.
 const DefaultLimit = 10
