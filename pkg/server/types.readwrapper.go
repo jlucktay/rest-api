@@ -1,8 +1,6 @@
 package server
 
 import (
-	"net/http"
-
 	"github.com/jlucktay/rest-api/pkg/org"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	uuid "github.com/satori/go.uuid"
@@ -10,7 +8,7 @@ import (
 
 type ReadWrapper struct {
 	Data  []paymentData    `json:"data"`
-	Links ReadWrapperLinks `json:"links"`
+	Links readWrapperLinks `json:"links"`
 }
 
 type paymentData struct {
@@ -21,17 +19,21 @@ type paymentData struct {
 	Version        int             `json:"version"`
 }
 
-type ReadWrapperLinks struct {
+type readWrapperLinks struct {
 	Self string `json:"self"`
 }
 
-func (rw *ReadWrapper) Init(r *http.Request) {
+// NewWrapper will return a new ReadWrapper.
+func NewWrapper(s string) *ReadWrapper {
+	rw := new(ReadWrapper)
 	rw.Data = make([]paymentData, 0)
-	rw.Links = ReadWrapperLinks{
-		Self: r.URL.String(),
+	rw.Links = readWrapperLinks{
+		Self: s,
 	}
+	return rw
 }
 
+// AddPayment will add a Payment with some other boilerplate attributes.
 func (rw *ReadWrapper) AddPayment(id uuid.UUID, p storage.Payment) {
 	newPD := &paymentData{
 		Attributes:     p,

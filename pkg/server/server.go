@@ -5,6 +5,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// Server is a RESTful HTTP API server offering CRUD functionality to store Payments.
 type Server struct {
 	Router  *httprouter.Router
 	Storage storage.PaymentStorage
@@ -14,11 +15,9 @@ type Server struct {
 type StorageType byte
 
 const (
-	// InMemory describes a storage system that is held in memory only, and not
-	// persisted to disk.
+	// InMemory describes a storage system that is held in memory only, and not persisted to disk.
 	InMemory StorageType = iota
 
-	// Mongo describes a storage system that persists Payment records in a
-	// MongoDB database.
+	// Mongo describes a storage system that persists Payment records in a MongoDB database.
 	Mongo
 )

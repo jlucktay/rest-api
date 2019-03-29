@@ -42,14 +42,13 @@ func TestDocumentationSingle(t *testing.T) {
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
-	var expected server.ReadWrapper
-	expected.Init(req)
+	expected := server.NewWrapper(req.URL.String())
 	expected.AddPayment(single.ID, single.Attributes)
 
 	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
 	i.NoErr(errReadResponse)
-	var actual server.ReadWrapper
+	actual := server.NewWrapper(req.URL.String())
 	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
 	i.True(reflect.DeepEqual(expected, actual))
@@ -79,8 +78,7 @@ func TestDocumentationMultiple(t *testing.T) {
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
-	var expected server.ReadWrapper
-	expected.Init(req)
+	expected := server.NewWrapper(req.URL.String())
 	for _, testdata := range multiple {
 		expected.AddPayment(testdata.ID, testdata.Attributes)
 	}
@@ -88,7 +86,7 @@ func TestDocumentationMultiple(t *testing.T) {
 	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
 	i.NoErr(errReadResponse)
-	var actual server.ReadWrapper
+	actual := server.NewWrapper(req.URL.String())
 	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
 	i.True(reflect.DeepEqual(expected, actual))
