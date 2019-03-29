@@ -14,10 +14,10 @@ What else?
 
 ## Implementation guidelines
 
-• Follow best practices, for example TDD/BDD, with a focus on full-stack testing.
-• Prioritize correctness, robustness, and extensibility over extra features and optimizations.
-• Write code with the quality bar one would expect to see in production.
-• Try to simplify by using open source frameworks and libraries where possible.
+- Follow best practices, for example TDD/BDD, with a focus on full-stack testing.
+- Prioritize correctness, robustness, and extensibility over extra features and optimizations.
+- Write code with the quality bar one would expect to see in production.
+- Try to simplify by using open source frameworks and libraries where possible.
 
 ## Documentation
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/jlucktay/rest-api/pkg/storage"
@@ -34,10 +35,17 @@ func (s *Server) readPayments() httprouter.Handle {
 			return
 		}
 
+		keys := []string{}
+		for a := range allPayments {
+			keys = append(keys, a.String())
+		}
+		sort.Strings(keys)
+
 		var wrappedPayments ReadWrapper
 		wrappedPayments.init(r)
-		for id, payment := range allPayments {
-			wrappedPayments.addPayment(id, payment)
+		for _, sID := range keys {
+			id := uuid.FromStringOrNil(sID)
+			wrappedPayments.addPayment(id, allPayments[id])
 		}
 
 		allBytes, errMarshal := json.Marshal(wrappedPayments)
@@ -68,7 +76,11 @@ func (s *Server) readPaymentByID() httprouter.Handle {
 		}
 
 		if payRead, errRead := s.Storage.Read(id); errRead == nil {
-			payBytes, errMarshal := json.Marshal(payRead)
+			var wrappedPayment readWrapper
+			wrappedPayment.init(r)
+			wrappedPayment.addPayment(id, payRead)
+
+			payBytes, errMarshal := json.Marshal(wrappedPayment)
 			if errMarshal != nil {
 				log.Fatal(errMarshal)
 			}
