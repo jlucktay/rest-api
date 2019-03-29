@@ -7,6 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
 func New(st StorageType) (s *Server) {
 	s = &Server{
 		Router: httprouter.New(),

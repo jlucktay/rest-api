@@ -6,6 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// ReadWrapper adds some extra information around Payment structs that are read from the API.
 type ReadWrapper struct {
 	Data  []paymentData    `json:"data"`
 	Links readWrapperLinks `json:"links"`
