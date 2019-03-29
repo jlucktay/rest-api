@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/jlucktay/rest-api/internal/pkg/org"
+	"github.com/jlucktay/rest-api/pkg/org"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	uuid "github.com/satori/go.uuid"
 )
@@ -32,7 +32,7 @@ func (rw *ReadWrapper) Init(r *http.Request) {
 	}
 }
 
-func (rw *ReadWrapper) addPayment(id uuid.UUID, p storage.Payment) {
+func (rw *ReadWrapper) AddPayment(id uuid.UUID, p storage.Payment) {
 	newPD := &paymentData{
 		Attributes:     p,
 		ID:             id,

@@ -69,7 +69,7 @@ func TestUpdatePayment(t *testing.T) {
 	i.True(len(string(respBodyBytes)) > 0)
 
 	// Unmarshal into a slice of Payment structs.
-	var returnedPayment readWrapper
+	var returnedPayment server.ReadWrapper
 	errUnmarshal := json.Unmarshal(respBodyBytes, &returnedPayment)
 	i.NoErr(errUnmarshal)
 

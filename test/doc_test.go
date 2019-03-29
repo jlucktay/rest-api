@@ -44,7 +44,7 @@ func TestDocumentationSingle(t *testing.T) {
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
 	var expected server.ReadWrapper
 	expected.Init(req)
-	expected.addPayment(single.ID, single.Attributes)
+	expected.AddPayment(single.ID, single.Attributes)
 
 	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
@@ -68,7 +68,7 @@ func TestDocumentationMultiple(t *testing.T) {
 	errUmMultiple := json.Unmarshal(multipleBytes, &multiple)
 	i.NoErr(errUmMultiple)
 	for _, testdata := range multiple {
-		errCreate := srv.Storage.createSpecificID(testdata.ID, testdata.Attributes)
+		errCreate := srv.Storage.CreateSpecificID(testdata.ID, testdata.Attributes)
 		i.NoErr(errCreate)
 	}
 
@@ -79,16 +79,16 @@ func TestDocumentationMultiple(t *testing.T) {
 	i.Equal(http.StatusOK, w.Result().StatusCode)
 
 	// Put info from the ./testdata/ JSON file into a wrapper struct.
-	var expected readWrapper
+	var expected server.ReadWrapper
 	expected.Init(req)
 	for _, testdata := range multiple {
-		expected.addPayment(testdata.ID, testdata.Attributes)
+		expected.AddPayment(testdata.ID, testdata.Attributes)
 	}
 
 	// Assert that it matches the JSON returned by the API.
 	responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
 	i.NoErr(errReadResponse)
-	var actual readWrapper
+	var actual server.ReadWrapper
 	errUmResponse := json.Unmarshal(responseBytes, &actual)
 	i.NoErr(errUmResponse)
 	i.True(reflect.DeepEqual(expected, actual))
