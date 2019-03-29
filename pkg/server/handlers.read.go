@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -7,23 +7,24 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
 	uuid "github.com/satori/go.uuid"
 )
 
-func (a *apiServer) readPayments() httprouter.Handle {
+func (a *Server) readPayments() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		var opts ReadAllOptions
-		if errLimit := applyFromQuery(r, "limit", &opts.limit); errLimit != nil {
+		var opts storage.ReadAllOptions
+		if errLimit := applyFromQuery(r, "limit", &opts.Limit); errLimit != nil {
 			http.Error(w, errLimit.Error(), http.StatusBadRequest)
 			return
 		}
-		if errOffset := applyFromQuery(r, "offset", &opts.offset); errOffset != nil {
+		if errOffset := applyFromQuery(r, "offset", &opts.Offset); errOffset != nil {
 			http.Error(w, errOffset.Error(), http.StatusBadRequest)
 			return
 		}
 
-		allPayments, errRead := a.storage.ReadAll(opts)
+		allPayments, errRead := a.Storage.ReadAll(opts)
 		if errRead != nil {
 			http.Error(
 				w,
@@ -33,7 +34,7 @@ func (a *apiServer) readPayments() httprouter.Handle {
 			return
 		}
 
-		var wrappedPayments readWrapper
+		var wrappedPayments ReadWrapper
 		wrappedPayments.init(r)
 		for id, payment := range allPayments {
 			wrappedPayments.addPayment(id, payment)
@@ -57,7 +58,7 @@ func (a *apiServer) readPayments() httprouter.Handle {
 	}
 }
 
-func (a *apiServer) readPaymentByID() httprouter.Handle {
+func (a *Server) readPaymentByID() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		id := uuid.FromStringOrNil(p.ByName("id"))
 
@@ -66,7 +67,7 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 			return
 		}
 
-		if payRead, errRead := a.storage.Read(id); errRead == nil {
+		if payRead, errRead := a.Storage.Read(id); errRead == nil {
 			payBytes, errMarshal := json.Marshal(payRead)
 			if errMarshal != nil {
 				log.Fatal(errMarshal)
@@ -80,7 +81,7 @@ func (a *apiServer) readPaymentByID() httprouter.Handle {
 			return
 		}
 
-		http.Error(w, (&NotFoundError{id}).Error(), http.StatusNotFound) // 404
+		http.Error(w, (&storage.NotFoundError{ID: id}).Error(), http.StatusNotFound) // 404
 	}
 }
 

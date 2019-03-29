@@ -10,6 +10,11 @@ fi
 shopt -s nullglob globstar
 IFS=$'\n\t'
 
+if ! command -v jq > /dev/null; then
+    echo "'jq' not found! Please install: https://stedolan.github.io/jq/download/"
+    exit 1
+fi
+
 Board=$(jq -r '.board' secrets.trello.json)
 FinishedListId=$(jq -r '.finishedListId' secrets.trello.json)
 Key=$(jq -r '.key' secrets.trello.json)

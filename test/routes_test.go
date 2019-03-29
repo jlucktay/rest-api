@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"bytes"
@@ -8,16 +8,18 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/jlucktay/rest-api/pkg/server"
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
 	uuid "github.com/satori/go.uuid"
 	"github.com/shopspring/decimal"
 )
 
 func TestNilBodyCreateDelete(t *testing.T) {
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	existingPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
@@ -85,24 +87,24 @@ func TestNilBodyCreateDelete(t *testing.T) {
 			req, err := http.NewRequest(tC.verb, tC.path, nil)
 			i.NoErr(err)
 
-			srv.router.ServeHTTP(w, req)
+			srv.Router.ServeHTTP(w, req)
 			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}
 }
 
 func TestDummyBodyCreateUpdate(t *testing.T) {
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	dummyPayment := &Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, *dummyPayment)
+	dummyPayment := &storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
 	is.New(t).NoErr(errCreate)
 
 	testCases := []struct {
 		desc     string
 		path     string
 		verb     string
-		body     *Payment
+		body     *storage.Payment
 		expected int
 	}{
 		{
@@ -176,21 +178,21 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 			req, err := http.NewRequest(tC.verb, tC.path, &buf)
 			i.NoErr(err)
 
-			srv.router.ServeHTTP(w, req)
+			srv.Router.ServeHTTP(w, req)
 			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}
 }
 
 func TestRead(t *testing.T) {
-	srv := newAPIServer(InMemory)
+	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := Payment{Amount: decimal.NewFromFloat(123.45)}
-	errCreate := srv.storage.createSpecificID(existingID, existingPayment)
+	existingPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
 	for count := 0; count < 20; count++ {
-		_, errCreate := srv.storage.Create(existingPayment)
+		_, errCreate := srv.Storage.Create(existingPayment)
 		is.New(t).NoErr(errCreate)
 	}
 
@@ -241,7 +243,7 @@ func TestRead(t *testing.T) {
 			req, err := http.NewRequest(tC.verb, tC.path, nil)
 			i.NoErr(err)
 
-			srv.router.ServeHTTP(w, req)
+			srv.Router.ServeHTTP(w, req)
 			i.Equal(tC.expected, w.Result().StatusCode)
 		})
 	}
