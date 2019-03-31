@@ -6,6 +6,7 @@ import (
 
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
+	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
 	"github.com/shopspring/decimal"
 )
@@ -18,6 +19,10 @@ func TestStorage(t *testing.T) {
 		{
 			desc: "In-memory storage (map); won't persist across app restarts",
 			ps:   &inmemory.Storage{},
+		},
+		{
+			desc: "Database storage (MongoDB); will persist across app restarts",
+			ps:   &mongo.Storage{},
 		},
 	}
 	for _, tC := range testCases {
