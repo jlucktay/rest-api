@@ -65,6 +65,9 @@ func TestStorage(t *testing.T) {
 			i.NoErr(tC.ps.Delete(newID))
 			_, errDeleted := tC.ps.Read(newID)
 			i.Equal(errDeleted, &storage.NotFoundError{newID})
+
+			// Cleanup
+			i.NoErr(tC.ps.Terminate())
 		})
 	}
 }
