@@ -21,7 +21,7 @@ func New(st StorageType) (s *Server) {
 		panic("Mongo storage is not yet implemented")
 	}
 
-	if errStorageInit := s.Storage.Init(); errStorageInit != nil {
+	if errStorageInit := s.Storage.Initialise(); errStorageInit != nil {
 		log.Fatal(errStorageInit)
 	}
 

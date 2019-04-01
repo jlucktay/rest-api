@@ -7,7 +7,11 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func (s *Storage) Init() error {
+func (s *Storage) Initialise() error {
+	return errors.New("not yet implemented")
+}
+
+func (s *Storage) Terminate() error {
 	return errors.New("not yet implemented")
 }
 

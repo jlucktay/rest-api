@@ -12,9 +12,16 @@ type Storage struct {
 	store map[uuid.UUID]storage.Payment
 }
 
-// Init will initialise the internal map.
-func (s *Storage) Init() error {
+// Initialise will initialise the internal map.
+func (s *Storage) Initialise() error {
 	s.store = make(map[uuid.UUID]storage.Payment)
+	return nil
+}
+
+// Terminate will terminate the internal map by setting the internal store to nil, so that the garbage collector will
+// pick up the map's contents.
+func (s *Storage) Terminate() error {
+	s.store = nil
 	return nil
 }
 

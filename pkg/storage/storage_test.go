@@ -6,6 +6,7 @@ import (
 
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
+	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
 	"github.com/shopspring/decimal"
 )
@@ -19,17 +20,17 @@ func TestStorage(t *testing.T) {
 			desc: "In-memory storage (map); won't persist across app restarts",
 			ps:   &inmemory.Storage{},
 		},
-		// { // TODO: re-enable
-		// 	desc: "Database storage (MongoDB); will persist across app restarts",
-		// 	ps:   &mongo.Storage{},
-		// },
+		{
+			desc: "Database storage (MongoDB); will persist across app restarts",
+			ps:   &mongo.Storage{},
+		},
 	}
 	for _, tC := range testCases {
 		tC := tC // pin!
 		t.Run(tC.desc, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)
-			i.NoErr(tC.ps.Init())
+			i.NoErr(tC.ps.Initialise())
 			testPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
 
 			// C
