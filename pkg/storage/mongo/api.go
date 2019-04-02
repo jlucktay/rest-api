@@ -98,7 +98,22 @@ func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) 
 }
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
-	return storage.Payment{}, errors.New("not yet implemented")
+	filter := bson.M{"_id": id.String()}
+
+	// create a value into which the result can be decoded
+	var found struct {
+		Payment storage.Payment `json:"payment"`
+	}
+
+	c := s.client.Database(thisDatabase).Collection(thisCollection)
+	errFind := c.FindOne(context.TODO(), filter).Decode(&found)
+	if errFind != nil {
+		return storage.Payment{}, errFind
+	}
+
+	fmt.Printf("Found a single document: %+v\n", found)
+
+	return storage.Payment{}, nil
 }
 
 func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
