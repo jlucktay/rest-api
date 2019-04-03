@@ -57,16 +57,7 @@ func (s *Storage) Terminate() error {
 }
 
 func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
-	newID, errNew := uuid.NewV4()
-	if errNew != nil {
-		return uuid.Nil, errNew
-	}
-
-	mongoInsert := bson.M{
-		"_id":     newID.String(),
-		"payment": newPayment,
-	}
-
+	mongoInsert := wrap(newPayment)
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
 	insertResult, errInsert := c.InsertOne(context.TODO(), mongoInsert)
@@ -76,15 +67,11 @@ func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 
-	return newID, nil
+	return mongoInsert.UUID.UUID, nil
 }
 
 func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) error {
-	mongoInsert := bson.M{
-		"_id":     newID.String(),
-		"payment": newPayment,
-	}
-
+	mongoInsert := wrap(newPayment, newID)
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
 	insertResult, errInsert := c.InsertOne(context.TODO(), mongoInsert)
@@ -98,13 +85,10 @@ func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) 
 }
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
-	filter := bson.M{"_id": id.String()}
+	filter := bson.M{"uuid": id.String()}
 
 	// create a value into which the result can be decoded
-	var found struct {
-		Payment storage.Payment `json:"payment"`
-	}
-
+	var found mongoWrapper
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 	errFind := c.FindOne(context.TODO(), filter).Decode(&found)
 	if errFind != nil {
