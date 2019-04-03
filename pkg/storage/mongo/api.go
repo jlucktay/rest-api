@@ -14,7 +14,7 @@ import (
 
 func (s *Storage) Initialise() error {
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(thisServer)
 
 	// Connect to MongoDB
 	var errConnect error

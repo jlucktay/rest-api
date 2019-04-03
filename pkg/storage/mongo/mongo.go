@@ -10,6 +10,7 @@ type Storage struct {
 }
 
 const (
+	thisServer     = "mongodb://localhost:27017"
 	thisDatabase   = "rest-api"
 	thisCollection = "payments"
 )
