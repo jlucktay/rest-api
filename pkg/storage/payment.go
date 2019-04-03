@@ -4,8 +4,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Payment is the top-level struct of a payment record containing transaction
-// details.
+// Payment is the top-level struct of a payment record containing transaction details.
 type Payment struct {
 	Amount               decimal.Decimal    `json:"amount"`
 	BeneficiaryParty     BeneficiaryParty   `json:"beneficiary_party"`
@@ -39,8 +38,7 @@ type BeneficiaryParty struct {
 	Name              string `json:"name"`
 }
 
-// ChargesInformation describes the charges involved with processing the
-// payment transaction.
+// ChargesInformation describes the charges involved with processing the payment transaction.
 type ChargesInformation struct {
 	BearerCode              string          `json:"bearer_code"`
 	ReceiverChargesAmount   decimal.Decimal `json:"receiver_charges_amount"`
@@ -65,8 +63,7 @@ type DebtorParty struct {
 	Name              string `json:"name"`
 }
 
-// Fx describes the foreign exchange details salient to the payment
-// transaction.
+// Fx describes the foreign exchange details salient to the payment transaction.
 type Fx struct {
 	ContractReference string          `json:"contract_reference"`
 	ExchangeRate      string          `json:"exchange_rate"`

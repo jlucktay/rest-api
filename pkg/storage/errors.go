@@ -24,9 +24,8 @@ func (nfe *NotFoundError) Error() string {
 	return fmt.Sprintf("Payment ID '%s' not found.", nfe.ID)
 }
 
-// OffsetOutOfBoundsError is returned when the 'offset' parameter inside a
-// ReadAllOptions struct exceeds the number of elements available in
-// PaymentStorage.
+// OffsetOutOfBoundsError is returned when the 'offset' parameter inside a ReadAllOptions struct exceeds the number of
+// elements available in PaymentStorage.
 type OffsetOutOfBoundsError struct {
 	Offset uint
 }
