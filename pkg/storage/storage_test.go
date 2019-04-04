@@ -63,7 +63,9 @@ func TestStorage(t *testing.T) {
 			i.NoErr(errReadAll)
 			i.Equal(len(readMultiple), 2)
 			for _, actualPay := range readMultiple {
-				i.True(reflect.DeepEqual(testPayment, actualPay))
+				if diff := cmp.Diff(testPayment, actualPay); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
 			}
 
 			// U
@@ -71,7 +73,9 @@ func TestStorage(t *testing.T) {
 			i.NoErr(tC.ps.Update(newID, testPayment))
 			updatedPay, errUpdate := tC.ps.Read(newID)
 			i.NoErr(errUpdate)
-			i.True(reflect.DeepEqual(testPayment, updatedPay))
+			if diff := cmp.Diff(testPayment, updatedPay); diff != "" {
+				t.Fatalf("Mismatch (-want +got):\n%s", diff)
+			}
 
 			// D
 			i.NoErr(tC.ps.Delete(newID))

@@ -5,9 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
@@ -74,7 +74,9 @@ func TestDocumentation(t *testing.T) {
 			actual := server.NewWrapper(req.URL.String())
 			errUmResponse := json.Unmarshal(responseBytes, &actual)
 			i.NoErr(errUmResponse)
-			i.True(reflect.DeepEqual(expected, actual))
+			if diff := cmp.Diff(expected, actual); diff != "" {
+				t.Fatalf("Mismatch (-want +got):\n%s", diff)
+			}
 		})
 	}
 }
