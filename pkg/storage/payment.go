@@ -21,8 +21,7 @@ type Payment struct {
 	SponsorParty         SponsorParty       `bson:"sponsor_party" json:"sponsor_party"`
 }
 
-// BeneficiaryParty details the party being credited from the payment
-// transaction.
+// BeneficiaryParty details the party being credited from the payment transaction.
 type BeneficiaryParty struct {
 	AccountName       string `bson:"account_name" json:"account_name"`
 	AccountNumber     string `bson:"account_number" json:"account_number"`

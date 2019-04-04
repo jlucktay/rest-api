@@ -10,11 +10,11 @@ import (
 func wrap(p storage.Payment, i ...uuid.UUID) mongoWrapper {
 	mw := mongoWrapper{
 		Payment: p,
-		UUID:    &mongoUUID{},
+		UUID:    "",
 	}
 
 	if len(i) > 0 {
-		mw.UUID.UUID = i[0]
+		mw.UUID = i[0].String()
 		return mw
 	}
 
@@ -23,7 +23,7 @@ func wrap(p storage.Payment, i ...uuid.UUID) mongoWrapper {
 		log.Fatal(errID)
 	}
 
-	mw.UUID.UUID = newID
+	mw.UUID = newID.String()
 
 	return mw
 }

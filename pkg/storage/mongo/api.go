@@ -60,34 +60,30 @@ func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 	mongoInsert := wrap(newPayment)
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
-	insertResult, errInsert := c.InsertOne(context.TODO(), mongoInsert)
+	_, errInsert := c.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {
 		return uuid.Nil, errInsert
 	}
 
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
-
-	return mongoInsert.UUID.UUID, nil
+	return uuid.FromStringOrNil(mongoInsert.UUID), nil
 }
 
 func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) error {
 	mongoInsert := wrap(newPayment, newID)
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
-	insertResult, errInsert := c.InsertOne(context.TODO(), mongoInsert)
+	_, errInsert := c.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {
 		return errInsert
 	}
-
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 
 	return nil
 }
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
-	filter := bson.M{"uuid": id.String()}
+	filter := bson.M{"_id": id.String()}
 
-	// create a value into which the result can be decoded
+	// Create a value into which the result can be decoded.
 	var found mongoWrapper
 	c := s.client.Database(thisDatabase).Collection(thisCollection)
 	errFind := c.FindOne(context.TODO(), filter).Decode(&found)
@@ -95,13 +91,11 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 		return storage.Payment{}, errFind
 	}
 
-	fmt.Printf("Found a single document: %+v\n", found)
-
-	return storage.Payment{}, nil
+	return found.Payment, nil
 }
 
 func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
-	return make(map[uuid.UUID]storage.Payment), errors.New("not yet implemented")
+	return map[uuid.UUID]storage.Payment{}, errors.New("not yet implemented")
 }
 
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
