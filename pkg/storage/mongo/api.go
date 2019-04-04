@@ -76,7 +76,41 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 }
 
 func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
-	return map[uuid.UUID]storage.Payment{}, errors.New("not yet implemented")
+	// Set limit from options or default constant.
+	if rao.Limit == 0 {
+		rao.Limit = storage.DefaultLimit
+	}
+
+	// Get all keys and sort in order.
+	filter := bson.D{} // #nofilter
+
+	opts := &options.FindOptions{} // Sort UUIDs ascending.
+	opts.SetLimit(int64(rao.Limit))
+	opts.SetSkip(int64(rao.Offset))
+	opts.SetSort(bson.D{{Key: "_id", Value: 1}})
+
+	cur, errFind := s.coll.Find(context.TODO(), filter, opts)
+	if errFind != nil {
+		return nil, errors.New("Find()")
+	}
+
+	defer cur.Close(context.TODO())
+	found := make(map[uuid.UUID]storage.Payment)
+
+	for cur.Next(context.TODO()) {
+		mwDec := mongoWrapper{}
+		if errDecode := cur.Decode(&mwDec); errDecode != nil {
+			return nil, fmt.Errorf("couldn't make element ready for display: %v", errDecode)
+		}
+
+		mwDecID := uuid.Must(uuid.FromString(mwDec.UUID))
+		found[mwDecID] = mwDec.Payment
+	}
+	if cur.Err() != nil {
+		return nil, errors.New("cursor error")
+	}
+
+	return found, nil
 }
 
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
