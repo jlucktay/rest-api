@@ -1,6 +1,7 @@
 package storage_test
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 
@@ -9,9 +10,15 @@ import (
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
+	uuid "github.com/satori/go.uuid"
 )
 
 func TestStorage(t *testing.T) {
+	randTestId, errRand := uuid.NewV4()
+	if errRand != nil {
+		t.Fatal(errRand)
+	}
+
 	testCases := []struct {
 		desc string
 		ps   storage.PaymentStorage
@@ -22,7 +29,16 @@ func TestStorage(t *testing.T) {
 		},
 		{
 			desc: "Database storage (MongoDB); will persist across app restarts",
-			ps:   &mongo.Storage{},
+			ps: mongo.New(
+				mongo.MongoOption{
+					Key:   mongo.Database,
+					Value: "test",
+				},
+				mongo.MongoOption{
+					Key:   mongo.Collection,
+					Value: fmt.Sprintf("test-%s", randTestId),
+				},
+			),
 		},
 	}
 	for _, tC := range testCases {

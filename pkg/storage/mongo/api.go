@@ -8,47 +8,31 @@ import (
 	"github.com/jlucktay/rest-api/pkg/storage"
 	uuid "github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (s *Storage) Initialise() error {
-	// Set client options
-	clientOptions := options.Client().ApplyURI(thisServer)
-
-	// Connect to MongoDB
-	var errConnect error
-	s.client, errConnect = mongo.Connect(context.TODO(), clientOptions)
-
-	if errConnect != nil {
-		return errConnect
-	}
-
-	// Check the connection
-	errPing := s.client.Ping(context.TODO(), nil)
-
-	if errPing != nil {
-		return errPing
-	}
-
-	fmt.Println("Connected to MongoDB!")
-
-	collection := s.client.Database(thisDatabase).Collection(thisCollection)
-	docCount, errCount := collection.CountDocuments(context.TODO(), bson.D{})
+	docCount, errCount := s.coll.CountDocuments(context.TODO(), bson.D{})
 	if errCount != nil {
 		return errCount
 	}
 
-	fmt.Printf("Collection '%s' contains %d records.\n", collection.Name(), docCount)
+	fmt.Printf("Collection '%s' contains %d records.\n", s.coll.Name(), docCount)
 
 	return nil
 }
 
 func (s *Storage) Terminate() error {
-	err := s.client.Disconnect(context.TODO())
+	errDropColl := s.coll.Drop(context.TODO())
+	if errDropColl != nil {
+		return errDropColl
+	}
 
-	if err != nil {
-		return err
+	fmt.Printf("Collection '%s' dropped.\n", s.coll.Name())
+
+	errDisconnect := s.coll.Database().Client().Disconnect(context.TODO())
+	if errDisconnect != nil {
+		return errDisconnect
 	}
 
 	fmt.Println("Connection to MongoDB closed.")
@@ -58,9 +42,8 @@ func (s *Storage) Terminate() error {
 
 func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 	mongoInsert := wrap(newPayment)
-	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
-	_, errInsert := c.InsertOne(context.TODO(), mongoInsert)
+	_, errInsert := s.coll.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {
 		return uuid.Nil, errInsert
 	}
@@ -70,9 +53,8 @@ func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 
 func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) error {
 	mongoInsert := wrap(newPayment, newID)
-	c := s.client.Database(thisDatabase).Collection(thisCollection)
 
-	_, errInsert := c.InsertOne(context.TODO(), mongoInsert)
+	_, errInsert := s.coll.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {
 		return errInsert
 	}
@@ -85,8 +67,7 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 
 	// Create a value into which the result can be decoded.
 	var found mongoWrapper
-	c := s.client.Database(thisDatabase).Collection(thisCollection)
-	errFind := c.FindOne(context.TODO(), filter).Decode(&found)
+	errFind := s.coll.FindOne(context.TODO(), filter).Decode(&found)
 	if errFind != nil {
 		return storage.Payment{}, errFind
 	}
