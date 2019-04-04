@@ -14,7 +14,7 @@ import (
 )
 
 func TestStorage(t *testing.T) {
-	randTestId, errRand := uuid.NewV4()
+	randTestID, errRand := uuid.NewV4()
 	if errRand != nil {
 		t.Fatal(errRand)
 	}
@@ -30,13 +30,13 @@ func TestStorage(t *testing.T) {
 		{
 			desc: "Database storage (MongoDB); will persist across app restarts",
 			ps: mongo.New(
-				mongo.MongoOption{
+				mongo.Option{
 					Key:   mongo.Database,
 					Value: "test",
 				},
-				mongo.MongoOption{
+				mongo.Option{
 					Key:   mongo.Collection,
-					Value: fmt.Sprintf("test-%s", randTestId),
+					Value: fmt.Sprintf("test-%s", randTestID),
 				},
 			),
 		},

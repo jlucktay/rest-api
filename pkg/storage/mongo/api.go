@@ -91,7 +91,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 
 	cur, errFind := s.coll.Find(context.TODO(), filter, opts)
 	if errFind != nil {
-		return nil, errors.New("Find()")
+		return nil, fmt.Errorf("couldn't find records with given parameters: %v", errFind)
 	}
 
 	defer cur.Close(context.TODO())

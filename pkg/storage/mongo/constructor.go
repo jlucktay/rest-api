@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func New(mo ...MongoOption) *Storage {
+func New(mo ...Option) *Storage {
 	server := defaultServer
 	database := defaultDatabase
 	collection := defaultCollection

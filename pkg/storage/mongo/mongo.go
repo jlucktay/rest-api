@@ -21,15 +21,15 @@ type mongoWrapper struct {
 	Payment storage.Payment `bson:"payment" json:"payment"`
 }
 
-type MongoOptionEnum uint
+type OptionEnum uint
 
 const (
-	Server MongoOptionEnum = iota
+	Server OptionEnum = iota
 	Database
 	Collection
 )
 
-type MongoOption struct {
-	Key   MongoOptionEnum
+type Option struct {
+	Key   OptionEnum
 	Value string
 }
