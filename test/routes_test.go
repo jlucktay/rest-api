@@ -12,13 +12,12 @@ import (
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
 	uuid "github.com/satori/go.uuid"
-	"github.com/shopspring/decimal"
 )
 
 func TestNilBodyCreateDelete(t *testing.T) {
 	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	existingPayment := storage.Payment{Amount: 123.45}
 	errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 
@@ -96,7 +95,7 @@ func TestNilBodyCreateDelete(t *testing.T) {
 func TestDummyBodyCreateUpdate(t *testing.T) {
 	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	dummyPayment := &storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	dummyPayment := &storage.Payment{Amount: 123.45}
 	errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
 	is.New(t).NoErr(errCreate)
 
@@ -187,7 +186,7 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 func TestRead(t *testing.T) {
 	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	existingPayment := storage.Payment{Amount: 123.45}
 	errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 	is.New(t).NoErr(errCreate)
 

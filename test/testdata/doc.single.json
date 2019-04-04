@@ -1,7 +1,7 @@
 [
     {
         "attributes": {
-            "amount": "100.21",
+            "amount": 100.21,
             "beneficiary_party": {
                 "account_name": "W Owens",
                 "account_number": "31926819",
@@ -14,15 +14,15 @@
             },
             "charges_information": {
                 "bearer_code": "SHAR",
-                "receiver_charges_amount": "1.00",
+                "receiver_charges_amount": 1.00,
                 "receiver_charges_currency": "USD",
                 "sender_charges": [
                     {
-                        "amount": "5.00",
+                        "amount": 5.00,
                         "currency": "GBP"
                     },
                     {
-                        "amount": "10.00",
+                        "amount": 10.00,
                         "currency": "USD"
                     }
                 ]
@@ -40,8 +40,8 @@
             "end_to_end_reference": "Wil piano Jan",
             "fx": {
                 "contract_reference": "FX123",
-                "exchange_rate": "2.00000",
-                "original_amount": "200.42",
+                "exchange_rate": 2.00000,
+                "original_amount": 200.42,
                 "original_currency": "USD"
             },
             "numeric_reference": "1002001",

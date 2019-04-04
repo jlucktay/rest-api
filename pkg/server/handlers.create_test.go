@@ -11,7 +11,6 @@ import (
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
-	"github.com/shopspring/decimal"
 )
 
 func TestCreateNewPayment(t *testing.T) {
@@ -20,7 +19,7 @@ func TestCreateNewPayment(t *testing.T) {
 	i := is.New(t)
 
 	// Construct a HTTP request which creates a payment.
-	p := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+	p := storage.Payment{Amount: 123.45}
 	j, errMarshal := json.Marshal(p)
 	i.NoErr(errMarshal)
 	reqBody := bytes.NewBuffer(j)

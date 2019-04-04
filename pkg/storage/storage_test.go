@@ -4,11 +4,11 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
-	"github.com/shopspring/decimal"
 )
 
 func TestStorage(t *testing.T) {
@@ -31,7 +31,17 @@ func TestStorage(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)
 			i.NoErr(tC.ps.Initialise())
-			testPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+			testPayment := storage.Payment{
+				Amount: 123.45,
+				ChargesInformation: storage.ChargesInformation{
+					SenderCharges: []storage.SenderCharges{
+						{Amount: 1.01},
+						{Amount: 2.02},
+						{Amount: 3.03},
+					},
+				},
+				PaymentID: "test",
+			}
 
 			// C
 			newID, errCreate := tC.ps.Create(testPayment)
@@ -43,7 +53,9 @@ func TestStorage(t *testing.T) {
 			// -> read single
 			readSingle, errRead := tC.ps.Read(newID)
 			i.NoErr(errRead)
-			i.True(reflect.DeepEqual(testPayment, readSingle))
+			if diff := cmp.Diff(testPayment, readSingle); diff != "" {
+				t.Fatalf("Mismatch (-want +got):\n%s", diff)
+			}
 
 			// -> read multiple
 			var opts storage.ReadAllOptions
