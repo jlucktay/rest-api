@@ -6,7 +6,8 @@ import (
 
 // PaymentStorage allows storage, retrieval, updating, and deletion of Payment structs.
 type PaymentStorage interface {
-	Init() error
+	Initialise() error
+	Terminate(...bool) error
 	Create(Payment) (uuid.UUID, error)
 	CreateSpecificID(uuid.UUID, Payment) error
 	Read(uuid.UUID) (Payment, error)

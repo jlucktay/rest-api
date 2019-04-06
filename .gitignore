@@ -1,5 +1,5 @@
-# Created by https://www.gitignore.io/api/go
-# Edit at https://www.gitignore.io/?templates=go
+# Created by https://www.gitignore.io/api/go,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=go,visualstudiocode
 
 ### Go ###
 # Binaries for programs and plugins
@@ -19,7 +19,18 @@
 /vendor/
 /Godeps/
 
-# End of https://www.gitignore.io/api/go
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+# !.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/go,visualstudiocode
 
 secrets.*.json
 !secrets.*.example.json

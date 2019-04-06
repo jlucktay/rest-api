@@ -4,13 +4,20 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
+	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
-	"github.com/shopspring/decimal"
+	uuid "github.com/satori/go.uuid"
 )
 
 func TestStorage(t *testing.T) {
+	randTestID, errRand := uuid.NewV4()
+	if errRand != nil {
+		t.Fatal(errRand)
+	}
+
 	testCases := []struct {
 		desc string
 		ps   storage.PaymentStorage
@@ -19,18 +26,37 @@ func TestStorage(t *testing.T) {
 			desc: "In-memory storage (map); won't persist across app restarts",
 			ps:   &inmemory.Storage{},
 		},
-		// { // TODO: re-enable
-		// 	desc: "Database storage (MongoDB); will persist across app restarts",
-		// 	ps:   &mongo.Storage{},
-		// },
+		{
+			desc: "Database storage (MongoDB); will persist across app restarts",
+			ps: mongo.New(
+				mongo.Option{
+					Key:   mongo.Database,
+					Value: "test",
+				},
+				mongo.Option{
+					Key:   mongo.Collection,
+					Value: "test-" + randTestID.String(),
+				},
+			),
+		},
 	}
 	for _, tC := range testCases {
 		tC := tC // pin!
 		t.Run(tC.desc, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)
-			i.NoErr(tC.ps.Init())
-			testPayment := storage.Payment{Amount: decimal.NewFromFloat(123.45)}
+			i.NoErr(tC.ps.Initialise())
+			testPayment := storage.Payment{
+				Amount: 123.45,
+				ChargesInformation: storage.ChargesInformation{
+					SenderCharges: []storage.SenderCharges{
+						{Amount: 1.01},
+						{Amount: 2.02},
+						{Amount: 3.03},
+					},
+				},
+				PaymentID: "test",
+			}
 
 			// C
 			newID, errCreate := tC.ps.Create(testPayment)
@@ -42,7 +68,9 @@ func TestStorage(t *testing.T) {
 			// -> read single
 			readSingle, errRead := tC.ps.Read(newID)
 			i.NoErr(errRead)
-			i.True(reflect.DeepEqual(testPayment, readSingle))
+			if diff := cmp.Diff(testPayment, readSingle); diff != "" {
+				t.Fatalf("Mismatch (-want +got):\n%s", diff)
+			}
 
 			// -> read multiple
 			var opts storage.ReadAllOptions
@@ -50,7 +78,9 @@ func TestStorage(t *testing.T) {
 			i.NoErr(errReadAll)
 			i.Equal(len(readMultiple), 2)
 			for _, actualPay := range readMultiple {
-				i.True(reflect.DeepEqual(testPayment, actualPay))
+				if diff := cmp.Diff(testPayment, actualPay); diff != "" {
+					t.Fatalf("Mismatch (-want +got):\n%s", diff)
+				}
 			}
 
 			// U
@@ -58,12 +88,17 @@ func TestStorage(t *testing.T) {
 			i.NoErr(tC.ps.Update(newID, testPayment))
 			updatedPay, errUpdate := tC.ps.Read(newID)
 			i.NoErr(errUpdate)
-			i.True(reflect.DeepEqual(testPayment, updatedPay))
+			if diff := cmp.Diff(testPayment, updatedPay); diff != "" {
+				t.Fatalf("Mismatch (-want +got):\n%s", diff)
+			}
 
 			// D
 			i.NoErr(tC.ps.Delete(newID))
 			_, errDeleted := tC.ps.Read(newID)
 			i.Equal(errDeleted, &storage.NotFoundError{newID})
+
+			// Cleanup
+			i.NoErr(tC.ps.Terminate(true))
 		})
 	}
 }

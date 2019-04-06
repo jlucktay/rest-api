@@ -12,9 +12,18 @@ type Storage struct {
 	store map[uuid.UUID]storage.Payment
 }
 
-// Init will initialise the internal map.
-func (s *Storage) Init() error {
+// Initialise will initialise the internal map.
+func (s *Storage) Initialise() error {
 	s.store = make(map[uuid.UUID]storage.Payment)
+	return nil
+}
+
+// Terminate will terminate the internal map by setting the internal store to nil, so that the garbage collector will
+// pick up the map's contents.
+// It does not bother checking the true/false argument for whether or not to destroy the stored data, due to the very
+// nature of its implementation.
+func (s *Storage) Terminate(...bool) error {
+	s.store = nil
 	return nil
 }
 
@@ -50,24 +59,27 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 // by default when such an Offset is not explicitly specified, the returned collection will start from the beginning of
 // the store.
 func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Payment, error) {
+	// Set limit from options or default constant.
 	if rao.Limit == 0 {
 		rao.Limit = storage.DefaultLimit
 	}
 
+	// Get all keys and sort in order.
 	keys := make([]string, 0, len(s.store))
 	for k := range s.store {
 		keys = append(keys, k.String())
 	}
 	sort.Strings(keys)
 
+	// Truncate keys slice if applicable.
 	if uint(len(keys)) >= rao.Offset {
 		keys = keys[rao.Offset:]
 	} else {
 		return map[uuid.UUID]storage.Payment{}, &storage.OffsetOutOfBoundsError{Offset: rao.Offset}
 	}
 
+	// Build result set.
 	payments := make(map[uuid.UUID]storage.Payment)
-
 	for i := uint(0); i < rao.Limit && i < uint(len(keys)); i++ {
 		id := uuid.FromStringOrNil(keys[i])
 		payments[id] = s.store[id]
