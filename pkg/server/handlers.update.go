@@ -6,14 +6,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/julienschmidt/httprouter"
 )
 
-func (s *Server) updatePaymentByID() httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		id := uuid.FromStringOrNil(p.ByName("id"))
+func (s *Server) updatePaymentByID() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := uuid.FromStringOrNil(chi.URLParam(r, "id"))
 
 		if id == uuid.Nil {
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404

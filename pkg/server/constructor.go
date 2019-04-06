@@ -3,15 +3,15 @@ package server
 import (
 	"log"
 
+	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/julienschmidt/httprouter"
 )
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
 func New(st StorageType) *Server {
 	s := &Server{
-		Router: httprouter.New(),
+		Router: chi.NewRouter(),
 	}
 	s.setupRoutes()
 

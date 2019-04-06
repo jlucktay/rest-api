@@ -8,13 +8,13 @@ import (
 	"sort"
 	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/julienschmidt/httprouter"
 )
 
-func (s *Server) readPayments() httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
+func (s *Server) readPayments() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		var opts storage.ReadAllOptions
 		if errLimit := applyFromQuery(r, "limit", &opts.Limit); errLimit != nil {
 			http.Error(w, errLimit.Error(), http.StatusBadRequest)
@@ -65,9 +65,9 @@ func (s *Server) readPayments() httprouter.Handle {
 	}
 }
 
-func (s *Server) readPaymentByID() httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		id := uuid.FromStringOrNil(p.ByName("id"))
+func (s *Server) readPaymentByID() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := uuid.FromStringOrNil(chi.URLParam(r, "id"))
 
 		if id == uuid.Nil {
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404

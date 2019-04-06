@@ -7,13 +7,13 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/julienschmidt/httprouter"
 )
 
-func (s *Server) createPayments() httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (s *Server) createPayments() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		if r.ContentLength == 0 {
 			http.Error(w, "Empty request body.", http.StatusBadRequest) // 400
 			return
@@ -41,9 +41,9 @@ func (s *Server) createPayments() httprouter.Handle {
 	}
 }
 
-func (s *Server) createPaymentByID() httprouter.Handle {
-	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		id := uuid.FromStringOrNil(p.ByName("id"))
+func (s *Server) createPaymentByID() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := uuid.FromStringOrNil(chi.URLParam(r, "id"))
 
 		if id == uuid.Nil {
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404
