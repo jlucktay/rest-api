@@ -1,13 +1,13 @@
 package server
 
 import (
+	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/julienschmidt/httprouter"
 )
 
 // Server is a RESTful HTTP API server offering CRUD functionality to store Payments.
 type Server struct {
-	Router  *httprouter.Router
+	Router  *chi.Mux
 	Storage storage.PaymentStorage
 }
 

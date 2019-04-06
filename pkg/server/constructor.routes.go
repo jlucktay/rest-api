@@ -1,19 +1,17 @@
 package server
 
 func (s *Server) setupRoutes() {
-	s.Router.HandleMethodNotAllowed = true
-
 	// C
-	s.Router.POST("/payments", s.createPayments())
-	s.Router.POST("/payments/:id", s.createPaymentByID())
+	s.Router.Post("/payments", s.createPayments())
+	s.Router.Post("/payments/{id}", s.createPaymentByID())
 
 	// R
-	s.Router.GET("/payments", s.readPayments())
-	s.Router.GET("/payments/:id", s.readPaymentByID())
+	s.Router.Get("/payments", s.readPayments())
+	s.Router.Get("/payments/{id}", s.readPaymentByID())
 
 	// U
-	s.Router.PUT("/payments/:id", s.updatePaymentByID())
+	s.Router.Put("/payments/{id}", s.updatePaymentByID())
 
 	// D
-	s.Router.DELETE("/payments/:id", s.deletePaymentByID())
+	s.Router.Delete("/payments/{id}", s.deletePaymentByID())
 }
