@@ -21,3 +21,8 @@ const (
 	// Mongo describes a storage system that persists Payment records in a MongoDB database.
 	Mongo
 )
+
+const (
+	defaultDatabase   = "rest-api"
+	defaultCollection = "payments"
+)

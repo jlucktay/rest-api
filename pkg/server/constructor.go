@@ -20,11 +20,11 @@ func New(st StorageType) *Server {
 		s.Storage = mongo.New(
 			mongo.Option{
 				Key:   mongo.Database,
-				Value: "rest-api",
+				Value: defaultDatabase,
 			},
 			mongo.Option{
 				Key:   mongo.Collection,
-				Value: "payments",
+				Value: defaultCollection,
 			},
 		)
 	}
