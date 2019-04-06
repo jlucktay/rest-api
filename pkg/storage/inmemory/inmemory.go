@@ -20,7 +20,9 @@ func (s *Storage) Initialise() error {
 
 // Terminate will terminate the internal map by setting the internal store to nil, so that the garbage collector will
 // pick up the map's contents.
-func (s *Storage) Terminate() error {
+// It does not bother checking the true/false argument for whether or not to destroy the stored data, due to the very
+// nature of its implementation.
+func (s *Storage) Terminate(...bool) error {
 	s.store = nil
 	return nil
 }

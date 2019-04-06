@@ -18,20 +18,22 @@ func (s *Storage) Initialise() error {
 	return nil
 }
 
-func (s *Storage) Terminate() error {
-	errDropColl := s.coll.Drop(context.TODO())
-	if errDropColl != nil {
-		return errDropColl
-	}
+func (s *Storage) Terminate(drop ...bool) error {
+	if len(drop) > 0 && drop[0] {
+		errDropColl := s.coll.Drop(context.TODO())
+		if errDropColl != nil {
+			return errDropColl
+		}
 
-	fmt.Printf("Collection '%s' dropped.\n", s.coll.Name())
+		fmt.Printf("Collection '%s' dropped.\n", s.coll.Name())
+	}
 
 	errDisconnect := s.coll.Database().Client().Disconnect(context.TODO())
 	if errDisconnect != nil {
 		return errDisconnect
 	}
 
-	fmt.Println("Connection to MongoDB closed.")
+	fmt.Println("Disconnected from MongoDB.")
 
 	return nil
 }
