@@ -10,9 +10,7 @@ import (
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
 func New(st StorageType) *Server {
-	s := &Server{
-		Router: chi.NewRouter(),
-	}
+	s := &Server{Router: chi.NewRouter()}
 	s.setupRoutes()
 
 	switch st {

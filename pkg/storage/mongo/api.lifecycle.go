@@ -18,8 +18,8 @@ func (s *Storage) Initialise() error {
 	return nil
 }
 
-// Terminate will keep or destroy data, depending on whether true or false is passed in. Will default to keeping data
-// if no bool is given.
+// Terminate will keep or destroy data, depending on whether true or false is passed in.
+// Will default to keeping data if no bool is given.
 func (s *Storage) Terminate(drop ...bool) error {
 	if len(drop) > 0 && drop[0] {
 		errDropColl := s.coll.Drop(context.TODO())

@@ -27,11 +27,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 
 		allPayments, errRead := s.Storage.ReadAll(opts)
 		if errRead != nil {
-			http.Error(
-				w,
-				fmt.Sprintf("Error reading all payments: %s", errRead),
-				http.StatusInternalServerError, // 500
-			)
+			http.Error(w, fmt.Sprintf("Error reading all: %s", errRead), http.StatusInternalServerError) // 500
 			return
 		}
 
@@ -49,11 +45,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 
 		allBytes, errMarshal := json.Marshal(wrappedPayments)
 		if errMarshal != nil {
-			http.Error(
-				w,
-				fmt.Sprintf("Error marshaling payments: %s", errMarshal),
-				http.StatusInternalServerError, // 500
-			)
+			http.Error(w, fmt.Sprintf("Error marshaling: %s", errMarshal), http.StatusInternalServerError) // 500
 			return
 		}
 

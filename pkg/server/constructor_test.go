@@ -4,9 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
-
 	"github.com/jlucktay/rest-api/pkg/server"
+	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"

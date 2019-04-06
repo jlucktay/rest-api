@@ -6,9 +6,7 @@ import (
 )
 
 func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
-	mw := mongoWrapper{
-		Payment: p,
-	}
+	mw := mongoWrapper{Payment: p}
 
 	if len(i) > 0 {
 		mw.UUID = i[0]
