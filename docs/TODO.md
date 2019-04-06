@@ -2,6 +2,7 @@
 
 - Configure auth on the MongoDB server
 - Revisit a `decimal` package, instead of using floats for money amounts
+- Database & collection defaults on Server constructor
 - Logging
 - Contexts
 - Better UUID handling ([ref](https://groups.google.com/forum/#!topic/mongodb-go-driver/vNHkY2EZq70))

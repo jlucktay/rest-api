@@ -4,12 +4,13 @@ import (
 	"log"
 
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
+	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/julienschmidt/httprouter"
 )
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
-func New(st StorageType) (s *Server) {
-	s = &Server{
+func New(st StorageType) *Server {
+	s := &Server{
 		Router: httprouter.New(),
 	}
 	s.setupRoutes()
@@ -18,12 +19,21 @@ func New(st StorageType) (s *Server) {
 	case InMemory:
 		s.Storage = &inmemory.Storage{}
 	case Mongo:
-		panic("Mongo storage is not yet implemented")
+		s.Storage = mongo.New(
+			mongo.Option{
+				Key:   mongo.Database,
+				Value: "rest-api",
+			},
+			mongo.Option{
+				Key:   mongo.Collection,
+				Value: "payments",
+			},
+		)
 	}
 
 	if errStorageInit := s.Storage.Initialise(); errStorageInit != nil {
 		log.Fatal(errStorageInit)
 	}
 
-	return
+	return s
 }
