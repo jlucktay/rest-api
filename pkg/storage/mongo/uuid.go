@@ -24,7 +24,7 @@ func (mu *mongoUUID) UnmarshalBSONValue(t bsontype.Type, raw []byte) error {
 		return fmt.Errorf("not enough bytes to unmarshal bson value")
 	}
 
-	copy(mu[:], data[:])
+	copy(mu[:], data)
 
 	return nil
 }
