@@ -1,7 +1,6 @@
 package storage_test
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 
@@ -36,7 +35,7 @@ func TestStorage(t *testing.T) {
 				},
 				mongo.Option{
 					Key:   mongo.Collection,
-					Value: fmt.Sprintf("test-%s", randTestID),
+					Value: "test-" + randTestID.String(),
 				},
 			),
 		},

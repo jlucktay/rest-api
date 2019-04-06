@@ -25,6 +25,14 @@ func New(mo ...Option) *Storage {
 		}
 	}
 
+	s := &Storage{
+		coll: connect(server).Database(database).Collection(collection),
+	}
+
+	return s
+}
+
+func connect(server string) *mongo.Client {
 	// Set client options.
 	clientOptions := options.Client().ApplyURI(server)
 
@@ -44,9 +52,5 @@ func New(mo ...Option) *Storage {
 
 	fmt.Println("Connected to MongoDB!")
 
-	s := &Storage{
-		coll: client.Database(database).Collection(collection),
-	}
-
-	return s
+	return client
 }
