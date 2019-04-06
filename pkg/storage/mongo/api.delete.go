@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

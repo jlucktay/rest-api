@@ -3,8 +3,8 @@ package mongo
 import (
 	"context"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	uuid "github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

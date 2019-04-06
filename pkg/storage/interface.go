@@ -1,7 +1,7 @@
 package storage
 
 import (
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // PaymentStorage allows storage, retrieval, updating, and deletion of Payment structs.

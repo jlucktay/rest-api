@@ -8,10 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/matryer/is"
-	uuid "github.com/satori/go.uuid"
 )
 
 func TestNilBodyCreateDelete(t *testing.T) {
