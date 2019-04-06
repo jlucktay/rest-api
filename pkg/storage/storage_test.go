@@ -4,19 +4,16 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/gofrs/uuid"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 	"github.com/matryer/is"
-	uuid "github.com/satori/go.uuid"
 )
 
 func TestStorage(t *testing.T) {
-	randTestID, errRand := uuid.NewV4()
-	if errRand != nil {
-		t.Fatal(errRand)
-	}
+	randTestID := uuid.Must(uuid.NewV4())
 
 	testCases := []struct {
 		desc string

@@ -3,8 +3,8 @@ package mongo
 import (
 	"context"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	uuid "github.com/satori/go.uuid"
 )
 
 func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {

@@ -3,7 +3,7 @@ package storage
 import (
 	"fmt"
 
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // AlreadyExistsError is returned when a Payment with a given ID exists.

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	uuid "github.com/satori/go.uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

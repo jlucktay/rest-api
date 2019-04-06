@@ -3,8 +3,8 @@ package inmemory
 import (
 	"sort"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	uuid "github.com/satori/go.uuid"
 )
 
 // Storage is an in-memory storage system that uses a map to store Payment structs indexed by UUID.

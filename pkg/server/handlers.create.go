@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/julienschmidt/httprouter"
-	uuid "github.com/satori/go.uuid"
 )
 
 func (s *Server) createPayments() httprouter.Handle {

@@ -2,7 +2,7 @@
 package org
 
 import (
-	uuid "github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // ID is hard-coded for now.

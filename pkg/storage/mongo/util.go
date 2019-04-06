@@ -1,10 +1,8 @@
 package mongo
 
 import (
-	"log"
-
+	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	uuid "github.com/satori/go.uuid"
 )
 
 func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
@@ -17,11 +15,7 @@ func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
 		return mw
 	}
 
-	newID, errID := uuid.NewV4()
-	if errID != nil {
-		log.Fatal(errID)
-	}
-
+	newID := uuid.Must(uuid.NewV4())
 	mw.UUID = mongoUUID(newID)
 
 	return mw
