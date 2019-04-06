@@ -99,7 +99,7 @@ func TestStorage(t *testing.T) {
 			i.Equal(errDeleted, &storage.NotFoundError{newID})
 
 			// Cleanup
-			i.NoErr(tC.ps.Terminate())
+			i.NoErr(tC.ps.Terminate(true))
 		})
 	}
 }
