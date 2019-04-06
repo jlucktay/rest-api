@@ -18,6 +18,9 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 	var found mongoWrapper
 	errFind := s.coll.FindOne(context.TODO(), filter).Decode(&found)
 	if errFind != nil {
+		if errFind.Error() == "mongo: no documents in result" {
+			return storage.Payment{}, &storage.NotFoundError{ID: id}
+		}
 		return storage.Payment{}, errFind
 	}
 
@@ -33,8 +36,8 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 	// Get all keys and sort in order.
 	filter := bson.D{} // #nofilter
 
-	opts := &options.FindOptions{} // Sort UUIDs ascending.
-	opts.SetLimit(int64(rao.Limit))
+	opts := &options.FindOptions{}  // Sort UUIDs ascending.
+	opts.SetLimit(int64(rao.Limit)) // No fear of losng data when casting like this, as they are both originally uint.
 	opts.SetSkip(int64(rao.Offset))
 	opts.SetSort(bson.D{{Key: "_id", Value: 1}})
 
