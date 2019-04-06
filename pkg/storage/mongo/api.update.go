@@ -9,8 +9,8 @@ import (
 )
 
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
-	filter := bson.D{{Key: "_id", Value: id.String()}}
-	mongoUpdate := bson.M{"$set": wrap(p, id)}
+	filter := bson.D{{Key: "_id", Value: mongoUUID(id)}}
+	mongoUpdate := bson.M{"$set": wrap(p, mongoUUID(id))}
 	_, errUpdate := s.coll.UpdateOne(context.TODO(), filter, mongoUpdate)
 	if errUpdate != nil {
 		return errUpdate

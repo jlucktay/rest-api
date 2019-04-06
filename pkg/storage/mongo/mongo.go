@@ -17,7 +17,7 @@ const (
 )
 
 type mongoWrapper struct {
-	UUID    string          `bson:"_id" json:"_id"`
+	UUID    mongoUUID       `bson:"_id" json:"_id"`
 	Payment storage.Payment `bson:"payment" json:"payment"`
 }
 

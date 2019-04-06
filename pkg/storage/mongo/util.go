@@ -7,14 +7,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func wrap(p storage.Payment, i ...uuid.UUID) mongoWrapper {
+func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
 	mw := mongoWrapper{
 		Payment: p,
-		UUID:    "",
 	}
 
 	if len(i) > 0 {
-		mw.UUID = i[0].String()
+		mw.UUID = i[0]
 		return mw
 	}
 
@@ -23,7 +22,7 @@ func wrap(p storage.Payment, i ...uuid.UUID) mongoWrapper {
 		log.Fatal(errID)
 	}
 
-	mw.UUID = newID.String()
+	mw.UUID = mongoUUID(newID)
 
 	return mw
 }
