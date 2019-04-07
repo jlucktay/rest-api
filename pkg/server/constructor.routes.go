@@ -5,8 +5,6 @@ import (
 )
 
 func (s *Server) setupRoutes() {
-	// s.Router.Use() // TODO middleware?
-
 	// RESTy routes for "payments" resource
 	s.Router.Route("/payments", func(r chi.Router) {
 		r.Post("/", s.createPayments())
@@ -20,10 +18,3 @@ func (s *Server) setupRoutes() {
 		})
 	})
 }
-
-/*
-// TODO - paginate?
-r.Route("/articles", func(r chi.Router) {
-	r.With(paginate).Get("/", ListArticles)
-})
-*/
