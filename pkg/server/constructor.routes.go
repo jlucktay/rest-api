@@ -1,17 +1,29 @@
 package server
 
+import (
+	"github.com/go-chi/chi"
+)
+
 func (s *Server) setupRoutes() {
-	// C
-	s.Router.Post("/payments", s.createPayments())
-	s.Router.Post("/payments/{id}", s.createPaymentByID())
+	// s.Router.Use() // TODO middleware?
 
-	// R
-	s.Router.Get("/payments", s.readPayments())
-	s.Router.Get("/payments/{id}", s.readPaymentByID())
+	// RESTy routes for "payments" resource
+	s.Router.Route("/payments", func(r chi.Router) {
+		r.Post("/", s.createPayments())
+		r.Get("/", s.readPayments())
 
-	// U
-	s.Router.Put("/payments/{id}", s.updatePaymentByID())
-
-	// D
-	s.Router.Delete("/payments/{id}", s.deletePaymentByID())
+		r.Route("/{id}", func(r chi.Router) {
+			r.Post("/", s.createPaymentByID())
+			r.Get("/", s.readPaymentByID())
+			r.Put("/", s.updatePaymentByID())
+			r.Delete("/", s.deletePaymentByID())
+		})
+	})
 }
+
+/*
+// TODO - paginate?
+r.Route("/articles", func(r chi.Router) {
+	r.With(paginate).Get("/", ListArticles)
+})
+*/
