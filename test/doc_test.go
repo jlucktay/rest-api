@@ -1,3 +1,4 @@
+// Package test runs test coverage over the API router from the outside looking in.
 package test
 
 import (
@@ -19,6 +20,7 @@ type testDataWrapper struct {
 	ID         uuid.UUID       `json:"id"`
 }
 
+// TestDocumentation is the implementation of the examples from the documentation.
 func TestDocumentation(t *testing.T) {
 	testCases := []struct {
 		desc         string
