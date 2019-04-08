@@ -2,6 +2,7 @@
 
 - Configure auth on the MongoDB server
 - Revisit a `decimal` package, instead of using floats for money amounts
+  - Wrap `decimal` with similar funcs to `mongoUUID`, to un/marshal as Decimal128?
 - Database & collection defaults on Server constructor
 - Logging
 - Contexts
