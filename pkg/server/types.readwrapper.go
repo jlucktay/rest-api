@@ -34,7 +34,7 @@ func NewWrapper(s string) *ReadWrapper {
 	return rw
 }
 
-// AddPayment will add a Payment with some other boilerplate attributes.
+// AddPayment will add a Payment with some other boilerplate attributes to a ReadWrapper.
 func (rw *ReadWrapper) AddPayment(id uuid.UUID, p storage.Payment) {
 	newPD := &paymentData{
 		Attributes:     p,
