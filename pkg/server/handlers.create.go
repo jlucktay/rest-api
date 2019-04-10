@@ -36,7 +36,7 @@ func (s *Server) createPayments() http.HandlerFunc {
 			log.Fatal(errCreate)
 		}
 
-		w.Header().Set("Location", fmt.Sprintf("/payments/%s", id))
+		w.Header().Set("Location", fmt.Sprintf("/v1/payments/%s", id))
 		w.WriteHeader(http.StatusCreated) // 201
 	}
 }

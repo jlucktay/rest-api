@@ -31,49 +31,49 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 	}{
 		{
 			desc:     "Create a new payment with a Payment request body",
-			path:     "/payments",
+			path:     "/v1/payments",
 			verb:     http.MethodPost,
 			expected: http.StatusCreated, // 201
 		},
 		{
 			desc:     "Create a new payment on a pre-existing ID with a Payment request body",
-			path:     fmt.Sprintf("/payments/%s", existingID),
+			path:     fmt.Sprintf("/v1/payments/%s", existingID),
 			verb:     http.MethodPost,
 			expected: http.StatusConflict, // 409
 		},
 		{
 			desc:     "Create a new payment on a non-existent valid ID with a Payment request body",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/v1/payments/%s", uuid.Must(uuid.NewV4())),
 			verb:     http.MethodPost,
 			expected: http.StatusNotFound, // 404
 		},
 		{
 			desc:     "Create a new payment on an invalid ID with a Payment request body",
-			path:     "/payments/not-a-valid-v4-uuid",
+			path:     "/v1/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodPost,
 			expected: http.StatusNotFound, // 404
 		},
 		{
 			desc:     "Update all existing payments",
-			path:     "/payments",
+			path:     "/v1/payments",
 			verb:     http.MethodPut,
 			expected: http.StatusMethodNotAllowed, // 405
 		},
 		{
 			desc:     "Update an existing payment",
-			path:     fmt.Sprintf("/payments/%s", existingID),
+			path:     fmt.Sprintf("/v1/payments/%s", existingID),
 			verb:     http.MethodPut,
 			expected: http.StatusNoContent, // 204; update is OK, but response has no body/content
 		},
 		{
 			desc:     "Update a non-existent payment at a valid ID",
-			path:     fmt.Sprintf("/payments/%s", uuid.Must(uuid.NewV4())),
+			path:     fmt.Sprintf("/v1/payments/%s", uuid.Must(uuid.NewV4())),
 			verb:     http.MethodPut,
 			expected: http.StatusNotFound, // 404
 		},
 		{
 			desc:     "Update a non-existent payment at an invalid ID",
-			path:     "/payments/not-a-valid-v4-uuid",
+			path:     "/v1/payments/not-a-valid-v4-uuid",
 			verb:     http.MethodPut,
 			expected: http.StatusNotFound, // 404
 		},

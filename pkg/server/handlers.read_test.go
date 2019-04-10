@@ -25,7 +25,7 @@ func TestReadMultiplePayments(t *testing.T) {
 
 	// Send it multiple times, to create multiple payments.
 	for count := 0; count < 250; count++ {
-		reqCreate, errCreate := http.NewRequest(http.MethodPost, "/payments", bytes.NewBuffer(j))
+		reqCreate, errCreate := http.NewRequest(http.MethodPost, "/v1/payments", bytes.NewBuffer(j))
 		i.NoErr(errCreate)
 		reqCreate.Header.Set("Content-Type", "application/json")
 
@@ -35,9 +35,8 @@ func TestReadMultiplePayments(t *testing.T) {
 	}
 
 	// Construct another HTTP request to read the payments.
-	// 'limit' and 'offset' are not specified here, so we are falling back onto
-	// the default values.
-	reqRead, errRead := http.NewRequest(http.MethodGet, "/payments", nil)
+	// 'limit' and 'offset' are not specified here, so we are falling back onto the default values.
+	reqRead, errRead := http.NewRequest(http.MethodGet, "/v1/payments", nil)
 	i.NoErr(errRead)
 
 	// Read the payments.
