@@ -30,12 +30,12 @@ func TestDocumentation(t *testing.T) {
 		{
 			desc:         "Get a single payment.",
 			testdataFile: "testdata/doc.single.json",
-			getPath:      "/payments/97fe60ba-1334-439f-91db-32cc3cde036a",
+			getPath:      "/v1/payments/97fe60ba-1334-439f-91db-32cc3cde036a",
 		},
 		{
 			desc:         "Get multiple payments.",
 			testdataFile: "testdata/doc.multiple.json",
-			getPath:      "/payments",
+			getPath:      "/v1/payments",
 		},
 	}
 

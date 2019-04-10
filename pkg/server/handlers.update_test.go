@@ -27,7 +27,7 @@ func TestUpdatePayment(t *testing.T) {
 	j, errMarshalCreate := json.Marshal(p)
 	i.NoErr(errMarshalCreate)
 	reqBodyCreate := bytes.NewBuffer(j)
-	reqCreate, errCreate := http.NewRequest(http.MethodPost, "/payments", reqBodyCreate)
+	reqCreate, errCreate := http.NewRequest(http.MethodPost, "/v1/payments", reqBodyCreate)
 	i.NoErr(errCreate)
 	reqCreate.Header.Set("Content-Type", "application/json")
 
@@ -38,7 +38,7 @@ func TestUpdatePayment(t *testing.T) {
 
 	// Get the Location header which points at the new payment.
 	loc := w.Result().Header.Get("Location")
-	r := regexp.MustCompile("^/payments/([0-9a-f-]{36})$")
+	r := regexp.MustCompile("^/v1/payments/([0-9a-f-]{36})$")
 	i.True(r.MatchString(loc))
 	newID := r.FindStringSubmatch(loc)[1]
 
@@ -47,7 +47,7 @@ func TestUpdatePayment(t *testing.T) {
 	k, errMarshalUpdate := json.Marshal(p)
 	i.NoErr(errMarshalUpdate)
 	reqBodyUpdate := bytes.NewBuffer(k)
-	reqUpdate, errUpdate := http.NewRequest(http.MethodPut, "/payments/"+newID, reqBodyUpdate)
+	reqUpdate, errUpdate := http.NewRequest(http.MethodPut, "/v1/payments/"+newID, reqBodyUpdate)
 	i.NoErr(errUpdate)
 
 	// Update the payment using the ID returned via 'Location' header.
@@ -56,7 +56,7 @@ func TestUpdatePayment(t *testing.T) {
 	i.Equal(http.StatusNoContent, w.Result().StatusCode)
 
 	// Construct another HTTP request to read the payment.
-	reqRead, errRead := http.NewRequest(http.MethodGet, "/payments/"+newID, nil)
+	reqRead, errRead := http.NewRequest(http.MethodGet, "/v1/payments/"+newID, nil)
 	i.NoErr(errRead)
 
 	// Send the read request and assert on the length of the response.
