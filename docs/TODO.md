@@ -10,6 +10,7 @@
 - Revisit/leverage functionality in new chi router package
   - [Pagination example](https://github.com/go-chi/chi/blob/a86787d732a6ebbe0b7a70f61cd74c1ef9d88bd9/_examples/rest/main.go#L83)
   - [Middleware](https://godoc.org/github.com/go-chi/chi/middleware)
+- Capture signals and shutdown (call `Terminate()`) properly
 
 Also tracking TODOs on [this Trello board](https://trello.com/b/e4ZeAJp4/restful-http-api) which can be scraped on the
 CLI with [this script](../scripts/trello.sh).
