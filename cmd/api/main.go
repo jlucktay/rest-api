@@ -2,6 +2,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
-	s := server.New(server.Mongo)
+	var mongoHostname = flag.String("mongo-host", "localhost", "the hostname of the MongoDB server to connect to")
+	flag.Parse()
+	s := server.New(server.Mongo, *mongoHostname)
 	log.Fatal(http.ListenAndServe(":8080", s.Router))
 }

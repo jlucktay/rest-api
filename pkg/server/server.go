@@ -23,6 +23,7 @@ const (
 )
 
 const (
+	defaultServer     = "mongodb://localhost:27017"
 	defaultDatabase   = "rest-api"
 	defaultCollection = "payments"
 )
