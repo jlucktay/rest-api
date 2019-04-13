@@ -7,6 +7,8 @@ WORKDIR /build
 ENV CGO_ENABLED 0
 ENV GOOS linux
 
+# buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
+# tags 'osusergo': https://golang.org/doc/go1.11#os/user
 RUN go build \
     -a \
     -buildmode pie \
