@@ -34,3 +34,6 @@
 
 secrets.*.json
 !secrets.*.example.json
+
+# Binary
+/rest-api
