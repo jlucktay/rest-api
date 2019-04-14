@@ -12,7 +12,7 @@ var Default = Test
 
 // Test will run all tests across all sub-directories once.
 func Test() error {
-	return sh.Run("go", "test", "./...", "--count=1")
+	return sh.Run("go", "test", "./...", "--count=1", "-v")
 }
 
 // Lint will check the Dockerfile and Go files for errors.
