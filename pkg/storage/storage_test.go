@@ -94,6 +94,10 @@ func TestStorage(t *testing.T) {
 			_, errDeleted := tC.ps.Read(newID)
 			i.Equal(errDeleted, &storage.NotFoundError{newID})
 
+			// U after D
+			errUpdateNonExistant := tC.ps.Update(newID, testPayment)
+			i.Equal(errUpdateNonExistant, &storage.NotFoundError{newID})
+
 			// Cleanup
 			i.NoErr(tC.ps.Terminate(true))
 		})
