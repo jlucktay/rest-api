@@ -1,6 +1,6 @@
-# rest-api
+# restapi
 
-Package main launches an instance of the API server backed by Mongo for persistent storage.
+Package restapi has a doc.go file at its root for documentation!
 
 
 ---
