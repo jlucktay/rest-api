@@ -1,16 +1,31 @@
 FROM golang:stretch as builder
-# RUN ["mkdir", "/build"]
-# COPY ["src", "/build/"]
-# WORKDIR /build
-# ENV CGO_ENABLED 0
-# ENV GOOS linux
 
-# RUN go build -o main -a -installsuffix cgo -ldflags '-extldflags "-static"' .
-# FROM scratch
-# COPY --from=builder /build/main /app/
-# WORKDIR /app
-# ENV VERSION v1.2
-# CMD ["./main"]
+RUN go get -d -u -v \
+    github.com/go-chi/chi \
+    github.com/gofrs/uuid \
+    go.mongodb.org/mongo-driver/...
+
+COPY . /go/src/github.com/jlucktay/rest-api/
+WORKDIR /go/src/github.com/jlucktay/rest-api
+
+ENV CGO_ENABLED 0
+ENV GOOS linux
+
+# buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
+# Can't use buildmode pie in MacOS: https://stackoverflow.com/a/3801032/380599
+# Adding it here gives a different error for which I haven't yet run down the root cause.
+# tags 'osusergo': https://golang.org/doc/go1.11#os/user
+RUN go build \
+    -a \
+    -installsuffix cgo \
+    -ldflags '-extldflags "-static"' \
+    -o rest-api \
+    -tags 'osusergo' \
+    ./cmd/api
+
+FROM scratch
+COPY --from=builder /go/src/github.com/jlucktay/rest-api/rest-api /
+ENTRYPOINT [ "/rest-api", "--mongo-host", "host.docker.internal" ]
 
 # TODO
 # Make some use of this:
