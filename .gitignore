@@ -37,3 +37,6 @@ secrets.*.json
 
 # Binary
 /rest-api
+
+# Personal project details
+deployments/env.sh
