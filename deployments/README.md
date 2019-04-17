@@ -15,6 +15,9 @@ the following permissions:
     1. `TF_VAR_gcp_zone` should contain a GCP zone, from which the region will also be derived. Can be looked up on
     [this page](https://cloud.google.com/compute/docs/regions-zones/) or listed with `gcloud compute zones list`.
     Example: `export TF_VAR_gcp_zone=europe-west2-b`
-There is an [example Bash script](env.example.sh) to help set these up. Note that this script **must be dot sourced**
-rather than executed directly.
-Note that the Bash environment variable names *are* case-sensitive.
+There is an [example Bash script](env.example.sh) to help set these up.
+
+Make note of the following:
+
+- the example Bash script **must be dot sourced** rather than executed directly
+- the Bash environment variable names are case-sensitive
