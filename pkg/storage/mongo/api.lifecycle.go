@@ -8,7 +8,8 @@ import (
 )
 
 func (s *Storage) Initialise() error {
-	docCount, errCount := s.coll.CountDocuments(context.TODO(), bson.D{})
+	filter := bson.D{} // #nofilter
+	docCount, errCount := s.coll.CountDocuments(context.TODO(), filter)
 	if errCount != nil {
 		return errCount
 	}
