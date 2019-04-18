@@ -8,11 +8,11 @@ import (
 
 // ReadWrapper adds some extra information around Payment structs that are read from the API.
 type ReadWrapper struct {
-	Data  []paymentData    `json:"data"`
-	Links readWrapperLinks `json:"links"`
+	Data  []PaymentData    `json:"data"`
+	Links ReadWrapperLinks `json:"links"`
 }
 
-type paymentData struct {
+type PaymentData struct {
 	Attributes     storage.Payment `json:"attributes"`
 	ID             uuid.UUID       `json:"id"`
 	OrganisationID uuid.UUID       `json:"organisation_id"`
@@ -20,15 +20,15 @@ type paymentData struct {
 	Version        int             `json:"version"`
 }
 
-type readWrapperLinks struct {
+type ReadWrapperLinks struct {
 	Self string `json:"self"`
 }
 
 // NewWrapper will return a new ReadWrapper.
 func NewWrapper(s string) *ReadWrapper {
 	rw := new(ReadWrapper)
-	rw.Data = make([]paymentData, 0)
-	rw.Links = readWrapperLinks{
+	rw.Data = make([]PaymentData, 0)
+	rw.Links = ReadWrapperLinks{
 		Self: s,
 	}
 	return rw
@@ -36,7 +36,7 @@ func NewWrapper(s string) *ReadWrapper {
 
 // AddPayment will add a Payment with some other boilerplate attributes to a ReadWrapper.
 func (rw *ReadWrapper) AddPayment(id uuid.UUID, p storage.Payment) {
-	newPD := &paymentData{
+	newPD := &PaymentData{
 		Attributes:     p,
 		ID:             id,
 		OrganisationID: org.ID(),
