@@ -1,6 +1,4 @@
-# restapi
-
-Package restapi has a doc.go file at its root for documentation!
+# 
 
 
 ---
