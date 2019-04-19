@@ -58,3 +58,9 @@ func main() {
 		fmt.Printf("Added payment with ID '%v'.\n", pd.ID)
 	}
 }
+
+func theShowMustGoOn(s string, e error) {
+	if e != nil {
+		log.Fatal(s, e)
+	}
+}
