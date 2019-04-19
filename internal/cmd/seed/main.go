@@ -1,17 +1,34 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/url"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
 )
 
 func main() {
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		fmt.Println("Exiting!")
+		os.Exit(0)
+	}()
+
+	fmt.Println("Continuing will delete ALL payment records in MongoDB (database: rest-api, collection: payments")
+	fmt.Print("Press 'Enter' to continue, or CTRL+C to cancel...")
+	_, errRead := bufio.NewReader(os.Stdin).ReadBytes('\n')
+	theShowMustGoOn("error reading from stdin:", errRead)
+
 	// Empty out current MongoDB collection.
 	m := mongo.New()
 	if errInit := m.Initialise(); errInit != nil {
