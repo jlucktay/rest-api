@@ -2,7 +2,7 @@ package storage
 
 // Payment is the top-level struct of a payment record containing transaction details.
 type Payment struct {
-	Amount               float64            `bson:"amount" json:"amount"`
+	Amount               float64            `bson:"amount" json:"amount,string"`
 	BeneficiaryParty     BeneficiaryParty   `bson:"beneficiary_party" json:"beneficiary_party"`
 	ChargesInformation   ChargesInformation `bson:"charges_information" json:"charges_information"`
 	Currency             string             `bson:"currency" json:"currency"`
@@ -36,14 +36,14 @@ type BeneficiaryParty struct {
 // ChargesInformation describes the charges involved with processing the payment transaction.
 type ChargesInformation struct {
 	BearerCode              string          `bson:"bearer_code" json:"bearer_code"`
-	ReceiverChargesAmount   float64         `bson:"receiver_charges_amount" json:"receiver_charges_amount"`
+	ReceiverChargesAmount   float64         `bson:"receiver_charges_amount" json:"receiver_charges_amount,string"`
 	ReceiverChargesCurrency string          `bson:"receiver_charges_currency" json:"receiver_charges_currency"`
 	SenderCharges           []SenderCharges `bson:"sender_charges" json:"sender_charges"`
 }
 
 // SenderCharges stores the currency and amount charged to the payment sender.
 type SenderCharges struct {
-	Amount   float64 `bson:"amount" json:"amount"`
+	Amount   float64 `bson:"amount" json:"amount,string"`
 	Currency string  `bson:"currency" json:"currency"`
 }
 
@@ -61,8 +61,8 @@ type DebtorParty struct {
 // Fx describes the foreign exchange details salient to the payment transaction.
 type Fx struct {
 	ContractReference string  `bson:"contract_reference" json:"contract_reference"`
-	ExchangeRate      float64 `bson:"exchange_rate" json:"exchange_rate"`
-	OriginalAmount    float64 `bson:"original_amount" json:"original_amount"`
+	ExchangeRate      float64 `bson:"exchange_rate" json:"exchange_rate,string"`
+	OriginalAmount    float64 `bson:"original_amount" json:"original_amount,string"`
 	OriginalCurrency  string  `bson:"original_currency" json:"original_currency"`
 }
 
