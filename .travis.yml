@@ -11,9 +11,9 @@ before_install:
   - go get -t -u -v ./...
 
 install:
-  - curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.16.0
-  - curl --location --remote-name --silent https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
-  - chmod -c u+x wait-for-it.sh
+  - curl --fail --location https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.16.0
+  - curl --location --remote-name https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+  - chmod --changes u+x wait-for-it.sh
 
 before_script:
   - ./wait-for-it.sh --host=localhost --port=27017
