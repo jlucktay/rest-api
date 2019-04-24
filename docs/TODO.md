@@ -1,8 +1,8 @@
 # TODO
 
 - Configure auth on the MongoDB server
-- Revisit a `decimal` package, instead of using floats for money amounts
-  - Wrap `decimal` with similar funcs to `mongoUUID`, to un/marshal as Decimal128?
+- Revisit a `decimal` package, instead of using floats for money amounts *todo*
+  - Wrap `decimal` with similar funcs to `mongoUUID`, to un/marshal as Decimal128? *todo*
 - ~~Database & collection defaults on Server constructor~~ [DONE](https://github.com/jlucktay/rest-api/commit/1f69608b3b9c6ea1c31aa6b62a3ff0944152d05c)
 - Logging
 - Contexts
