@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	"os"
 	"os/signal"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -67,6 +67,6 @@ func main() {
 
 func theShowMustGoOn(s string, e error) {
 	if e != nil {
-		log.Fatalf("%s: %s\n", s, e)
+		logrus.Fatalf("%s: %s\n", s, e)
 	}
 }

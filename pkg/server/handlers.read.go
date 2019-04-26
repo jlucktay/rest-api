@@ -3,7 +3,6 @@ package server
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"sort"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *Server) readPayments() http.HandlerFunc {
@@ -52,7 +52,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 		w.WriteHeader(http.StatusOK) // 200
 		w.Header().Set("Content-Type", "application/json")
 		if _, errWrite := w.Write(allBytes); errWrite != nil {
-			log.Fatal(errWrite)
+			logrus.Fatal(errWrite)
 		}
 	}
 }
@@ -72,13 +72,13 @@ func (s *Server) readPaymentByID() http.HandlerFunc {
 
 			payBytes, errMarshal := json.Marshal(wrappedPayment)
 			if errMarshal != nil {
-				log.Fatal(errMarshal)
+				logrus.Fatal(errMarshal)
 			}
 
 			w.WriteHeader(http.StatusOK) // 200
 			w.Header().Set("Content-Type", "application/json")
 			if _, errWrite := w.Write(payBytes); errWrite != nil {
-				log.Fatal(errWrite)
+				logrus.Fatal(errWrite)
 			}
 			return
 		}
