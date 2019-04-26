@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *Server) createPayments() http.HandlerFunc {
@@ -21,19 +21,19 @@ func (s *Server) createPayments() http.HandlerFunc {
 
 		bodyBytes, errRead := ioutil.ReadAll(r.Body)
 		if errRead != nil {
-			log.Fatal(errRead)
+			logrus.Fatal(errRead)
 		}
 		defer r.Body.Close()
 
 		var p storage.Payment
 		errUm := json.Unmarshal(bodyBytes, &p)
 		if errUm != nil {
-			log.Fatal(errUm)
+			logrus.Fatal(errUm)
 		}
 
 		id, errCreate := s.Storage.Create(p)
 		if errCreate != nil {
-			log.Fatal(errCreate)
+			logrus.Fatal(errCreate)
 		}
 
 		w.Header().Set("Location", fmt.Sprintf("/v1/payments/%s", id))

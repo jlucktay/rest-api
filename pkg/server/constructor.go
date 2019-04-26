@@ -1,11 +1,10 @@
 package server
 
 import (
-	"log"
-
 	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	"github.com/sirupsen/logrus"
 )
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
@@ -39,7 +38,7 @@ func New(st StorageType, host ...string) *Server {
 	}
 
 	if errStorageInit := s.Storage.Initialise(); errStorageInit != nil {
-		log.Fatal(errStorageInit)
+		logrus.Fatal(errStorageInit)
 	}
 
 	return s

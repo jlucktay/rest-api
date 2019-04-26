@@ -3,12 +3,12 @@ package server
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
 	"github.com/jlucktay/rest-api/pkg/storage"
+	"github.com/sirupsen/logrus"
 )
 
 func (s *Server) updatePaymentByID() http.HandlerFunc {
@@ -27,14 +27,14 @@ func (s *Server) updatePaymentByID() http.HandlerFunc {
 
 		bodyBytes, errRead := ioutil.ReadAll(r.Body)
 		if errRead != nil {
-			log.Fatal(errRead)
+			logrus.Fatal(errRead)
 		}
 		defer r.Body.Close()
 
 		var payment storage.Payment
 		errUm := json.Unmarshal(bodyBytes, &payment)
 		if errUm != nil {
-			log.Fatal(errUm)
+			logrus.Fatal(errUm)
 		}
 
 		if errUpdate := s.Storage.Update(id, payment); errUpdate == nil {
