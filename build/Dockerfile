@@ -4,6 +4,8 @@ COPY . /src/rest-api/
 WORKDIR /src/rest-api
 RUN go mod download
 
+# ENV GO111MODULE on
+
 # buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
 # Can't use buildmode pie in MacOS: https://stackoverflow.com/a/3801032/380599
 # Adding it here gives a different error for which I haven't yet run down the root cause.
