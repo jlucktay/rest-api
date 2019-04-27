@@ -1,14 +1,10 @@
 FROM golang:stretch as builder
 
-RUN go get -d -u -v \
-    github.com/go-chi/chi \
-    github.com/gofrs/uuid \
-    go.mongodb.org/mongo-driver/...
-
 COPY . /go/src/github.com/jlucktay/rest-api/
 WORKDIR /go/src/github.com/jlucktay/rest-api
 
 ENV CGO_ENABLED 0
+ENV GO111MODULE on
 ENV GOOS linux
 
 # buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
