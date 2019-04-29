@@ -14,11 +14,6 @@ func main() {
 	var mongoHostname = flag.String("mongo-host", "localhost", "the hostname of the MongoDB server to connect to")
 	flag.Parse()
 
-	if *logDebug {
-		logrus.SetLevel(logrus.DebugLevel)
-	}
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-
-	s := server.New(server.Mongo, *mongoHostname)
+	s := server.New(server.Mongo, *logDebug, *mongoHostname)
 	logrus.Fatal(http.ListenAndServe(":8080", s.Router))
 }

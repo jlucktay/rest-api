@@ -32,7 +32,7 @@ func TestNew(t *testing.T) {
 		tC := tC // pin!
 		t.Run(tC.desc, func(t *testing.T) {
 			i := is.New(t)
-			s := server.New(tC.st)
+			s := server.New(tC.st, true)
 			i.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
 		})
 	}
