@@ -5,6 +5,8 @@ import (
 )
 
 func (s *Server) setupRoutes() {
+	s.Log.Debug("Setting up routes...")
+
 	// RESTy routes for v1 "payments" resource
 	s.Router.Route("/v1", func(r chi.Router) {
 		r.Route("/payments", func(r chi.Router) {
@@ -19,4 +21,6 @@ func (s *Server) setupRoutes() {
 			})
 		})
 	})
+
+	s.Log.Debug("Set up routes.")
 }
