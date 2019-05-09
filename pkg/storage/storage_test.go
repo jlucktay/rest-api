@@ -15,16 +15,13 @@ import (
 func TestStorage(t *testing.T) {
 	randTestID := uuid.Must(uuid.NewV4())
 
-	testCases := []struct {
-		desc string
-		ps   storage.PaymentStorage
+	testCases := map[string]struct {
+		ps storage.PaymentStorage
 	}{
-		{
-			desc: "In-memory storage (map); won't persist across app restarts",
-			ps:   &inmemory.Storage{},
+		"In-memory storage (map); won't persist across app restarts": {
+			ps: &inmemory.Storage{},
 		},
-		{
-			desc: "Database storage (MongoDB); will persist across app restarts",
+		"Database storage (MongoDB); will persist across app restarts": {
 			ps: mongo.New(
 				mongo.Option{
 					Key:   mongo.Database,
@@ -37,9 +34,9 @@ func TestStorage(t *testing.T) {
 			),
 		},
 	}
-	for _, tC := range testCases {
+	for name, tC := range testCases {
 		tC := tC // pin!
-		t.Run(tC.desc, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)
 			i.NoErr(tC.ps.Initialise())
