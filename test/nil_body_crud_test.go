@@ -15,16 +15,7 @@ import (
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP
 // requests.
 func TestNilBodyCRUD(t *testing.T) {
-	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	existingPayment := storage.Payment{Amount: 123.45}
-	errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
-	is.New(t).NoErr(errCreate)
-
-	for count := 0; count < 20; count++ {
-		_, errCreate := srv.Storage.Create(existingPayment)
-		is.New(t).NoErr(errCreate)
-	}
 
 	testCases := map[string]struct {
 		path     string
@@ -109,6 +100,17 @@ func TestNilBodyCRUD(t *testing.T) {
 	}
 	for name, tC := range testCases {
 		tC := tC // pin!
+
+		srv := server.New(server.InMemory)
+		existingPayment := storage.Payment{Amount: 123.45}
+		errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
+		is.New(t).NoErr(errCreate)
+
+		for count := 0; count < 20; count++ {
+			_, errCreate := srv.Storage.Create(existingPayment)
+			is.New(t).NoErr(errCreate)
+		}
+
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {

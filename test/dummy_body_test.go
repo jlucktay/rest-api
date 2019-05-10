@@ -17,11 +17,7 @@ import (
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP
 // request body.
 func TestDummyBodyCreateUpdate(t *testing.T) {
-	srv := server.New(server.InMemory)
 	existingID := uuid.Must(uuid.NewV4())
-	dummyPayment := &storage.Payment{Amount: 123.45}
-	errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
-	is.New(t).NoErr(errCreate)
 
 	testCases := map[string]struct {
 		path     string
@@ -71,6 +67,12 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 	}
 	for name, tC := range testCases {
 		tC := tC // pin!
+
+		srv := server.New(server.InMemory)
+		dummyPayment := &storage.Payment{Amount: 123.45}
+		errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
+		is.New(t).NoErr(errCreate)
+
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
