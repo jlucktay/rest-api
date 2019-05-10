@@ -22,26 +22,23 @@ type testDataWrapper struct {
 
 // TestDocumentation is the implementation of the examples from the documentation.
 func TestDocumentation(t *testing.T) {
-	testCases := []struct {
-		desc         string
+	testCases := map[string]struct {
 		testdataFile string
 		getPath      string
 	}{
-		{
-			desc:         "Get a single payment.",
+		"Get a single payment.": {
 			testdataFile: "testdata/doc.single.json",
 			getPath:      "/v1/payments/97fe60ba-1334-439f-91db-32cc3cde036a",
 		},
-		{
-			desc:         "Get multiple payments.",
+		"Get multiple payments.": {
 			testdataFile: "testdata/doc.multiple.json",
 			getPath:      "/v1/payments",
 		},
 	}
 
-	for _, tC := range testCases {
+	for name, tC := range testCases {
 		tC := tC // pin!
-		t.Run(tC.desc, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			// Set up an API server to test against.
 			srv := server.New(server.InMemory)
 			w := httptest.NewRecorder()
@@ -62,7 +59,7 @@ func TestDocumentation(t *testing.T) {
 			req, errReq := http.NewRequest(http.MethodGet, tC.getPath, nil)
 			i.NoErr(errReq)
 			srv.Router.ServeHTTP(w, req)
-			i.Equal(http.StatusOK, w.Result().StatusCode)
+			i.Equal(w.Result().StatusCode, http.StatusOK)
 
 			// Put info from the testdata JSON file directly into a wrapper struct.
 			expected := server.NewWrapper(req.URL.String())

@@ -12,25 +12,22 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	testCases := []struct {
-		desc     string
+	testCases := map[string]struct {
 		st       server.StorageType
 		expected storage.PaymentStorage
 	}{
-		{
-			desc:     "In-memory storage (map); won't persist across app restarts",
+		"In-memory storage (map); won't persist across app restarts": {
 			st:       server.InMemory,
 			expected: &inmemory.Storage{},
 		},
-		{
-			desc:     "Database storage (MongoDB); will persist across app restarts",
+		"Database storage (MongoDB); will persist across app restarts": {
 			st:       server.Mongo,
 			expected: &mongo.Storage{},
 		},
 	}
-	for _, tC := range testCases {
+	for name, tC := range testCases {
 		tC := tC // pin!
-		t.Run(tC.desc, func(t *testing.T) {
+		t.Run(name, func(t *testing.T) {
 			i := is.New(t)
 			s := server.New(tC.st)
 			i.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
