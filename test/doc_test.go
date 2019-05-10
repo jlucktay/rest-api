@@ -59,7 +59,7 @@ func TestDocumentation(t *testing.T) {
 			req, errReq := http.NewRequest(http.MethodGet, tC.getPath, nil)
 			i.NoErr(errReq)
 			srv.Router.ServeHTTP(w, req)
-			i.Equal(http.StatusOK, w.Result().StatusCode)
+			i.Equal(w.Result().StatusCode, http.StatusOK)
 
 			// Put info from the testdata JSON file directly into a wrapper struct.
 			expected := server.NewWrapper(req.URL.String())

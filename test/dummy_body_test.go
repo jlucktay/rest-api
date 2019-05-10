@@ -84,7 +84,7 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 			i.NoErr(err)
 
 			srv.Router.ServeHTTP(w, req)
-			i.Equal(tC.expected, w.Result().StatusCode)
+			i.Equal(w.Result().StatusCode, tC.expected)
 		})
 	}
 }
