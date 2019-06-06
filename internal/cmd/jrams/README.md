@@ -1,4 +1,4 @@
-# Seed
+# jlucktay's REST API MongoDB Seeder (jrams)
 
 This utility will empty out the MongoDB collection, and then seed it with the sample payments from Mockbin.
 

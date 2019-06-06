@@ -1,4 +1,4 @@
-# RESTful API
+# jlucktay's RESTful API (`jra`)
 
 This is my implementation of a RESTful HTTP API capable of CRUD operations and persisting resource state to a database.
 
