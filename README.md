@@ -13,11 +13,11 @@ This is my implementation of a RESTful HTTP API capable of CRUD operations and p
 
 ## Badges
 
-[![Build Status](https://travis-ci.org/jlucktay/rest-api.svg?branch=master)](https://travis-ci.org/jlucktay/rest-api)
-[![codecov](https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg)](https://codecov.io/gh/jlucktay/rest-api)
-[![GoDoc](https://godoc.org/github.com/jlucktay/rest-api?status.svg)](https://godoc.org/github.com/jlucktay/rest-api)
-[![Go Report Card](https://goreportcard.com/badge/github.com/jlucktay/rest-api)](https://goreportcard.com/report/github.com/jlucktay/rest-api)
-[![License](https://img.shields.io/github/license/jlucktay/rest-api.svg)](https://github.com/jlucktay/rest-api/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/jlucktay/rest-api.svg?branch=master)][badge-travis]
+[![codecov](https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg)][badge-codecov]
+[![GoDoc](https://godoc.org/github.com/jlucktay/rest-api?status.svg)][badge-godoc]
+[![Go Report Card](https://goreportcard.com/badge/github.com/jlucktay/rest-api)][badge-goreportcard]
+[![License](https://img.shields.io/github/license/jlucktay/rest-api.svg)][badge-license]
 
 ## Installation
 
@@ -77,5 +77,10 @@ Please make sure to update tests as appropriate.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
+[badge-codecov]: https://codecov.io/gh/jlucktay/rest-api
+[badge-godoc]: https://godoc.org/github.com/jlucktay/rest-api
+[badge-goreportcard]: https://goreportcard.com/report/github.com/jlucktay/rest-api
+[badge-license]: https://github.com/jlucktay/rest-api/blob/master/LICENSE
+[badge-travis]: https://travis-ci.org/jlucktay/rest-api
 [design-doc]: https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4
 [trello]: https://trello.com/b/e4ZeAJp4
