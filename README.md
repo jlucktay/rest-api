@@ -60,12 +60,13 @@ $ curl --request GET http://localhost:8080/v1/payments?limit=1 --silent
 
 ### Documentation
 
-Here is [the full design doc][design-doc] for this API, which describes the various endpoints, how to call them, and what to expect in return.
+Here is [the full design doc][design-doc] for this API, which describes the various endpoints, how to call them, and
+what to expect in return.
 
 ## Roadmap
 
-Features and functionality yet to be implemented are captured in [the TODO markdown file in this repo](./docs/TODO.md) as
-well as on [the Trello board][trello].
+Features and functionality yet to be implemented are captured in [the TODO markdown file in this repo](./docs/TODO.md)
+as well as on [the Trello board][trello].
 
 ## Contributing
 
