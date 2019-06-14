@@ -1,15 +1,10 @@
 FROM golang:stretch as builder
 
-RUN go get -d -u -v \
-    github.com/go-chi/chi \
-    github.com/gofrs/uuid \
-    go.mongodb.org/mongo-driver/...
-
-COPY . /go/src/github.com/jlucktay/rest-api/
-WORKDIR /go/src/github.com/jlucktay/rest-api
-
 ENV CGO_ENABLED 0
 ENV GOOS linux
+COPY . /src/rest-api/
+WORKDIR /src/rest-api
+RUN go mod download
 
 # buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
 # Can't use buildmode pie in MacOS: https://stackoverflow.com/a/3801032/380599
@@ -24,7 +19,7 @@ RUN go build \
     ./cmd/api
 
 FROM scratch
-COPY --from=builder /go/src/github.com/jlucktay/rest-api/rest-api /
+COPY --from=builder /src/rest-api/rest-api /
 ENTRYPOINT [ "/rest-api", "--mongo-host", "host.docker.internal" ]
 
 # TODO
