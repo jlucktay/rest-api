@@ -1,7 +1,5 @@
 FROM golang:stretch as builder
 
-ENV CGO_ENABLED 0
-ENV GOOS linux
 COPY . /src/rest-api/
 WORKDIR /src/rest-api
 RUN go mod download
@@ -10,7 +8,7 @@ RUN go mod download
 # Can't use buildmode pie in MacOS: https://stackoverflow.com/a/3801032/380599
 # Adding it here gives a different error for which I haven't yet run down the root cause.
 # tags 'osusergo': https://golang.org/doc/go1.11#os/user
-RUN go build \
+RUN CGO_ENABLED=0 GOOS=linux go build \
     -a \
     -installsuffix cgo \
     -ldflags '-extldflags "-static"' \
