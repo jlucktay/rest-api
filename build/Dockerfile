@@ -17,8 +17,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
     ./cmd/api
 
 FROM scratch
+ARG MONGO_HOST=host.docker.internal
+ENV MONGO_HOST=${MONGO_HOST}
 COPY --from=builder /src/rest-api/rest-api /
-ENTRYPOINT [ "/rest-api", "--mongo-host", "host.docker.internal" ]
+ENTRYPOINT [ "/rest-api" ]
 
 # TODO
 # Make some use of this:
