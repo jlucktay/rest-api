@@ -15,6 +15,11 @@ This is my implementation of a RESTful HTTP API capable of CRUD operations and p
 - Write code with the quality bar one would expect to see in production.
 - Try to simplify by using open source frameworks and libraries where possible.
 
+## Usage
+
+The Magefile contains targets for various tasks.
+Check them out with `mage -l` after [installing Mage](https://magefile.org).
+
 ## Documentation
 
 Here is [the design doc](https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4) for this API.

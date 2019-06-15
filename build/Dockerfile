@@ -23,3 +23,4 @@ ENTRYPOINT [ "/rest-api", "--mongo-host", "host.docker.internal" ]
 # TODO
 # Make some use of this:
 # https://cloud.google.com/appengine/docs/flexible/custom-runtimes/build
+# And/or check out Cloud Run on GCP
