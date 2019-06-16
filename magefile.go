@@ -38,7 +38,10 @@ func LintGo() error {
 func Build() error {
 	mg.Deps(Clean)
 
-	return sh.Run(
+	return sh.RunWith(
+		map[string]string{
+			"CGO_ENABLED": "0",
+		},
 		"go", "build",
 		"-a",
 		"-installsuffix", "cgo",
