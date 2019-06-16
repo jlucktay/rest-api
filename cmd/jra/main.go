@@ -21,6 +21,6 @@ func main() {
 		*mongoHostname = envMongo
 	}
 
-	s := server.New(server.Mongo, *mongoHostname)
+	s := server.New(server.Mongo, false, *mongoHostname)
 	log.Fatal(http.ListenAndServe(":8080", s.Router))
 }
