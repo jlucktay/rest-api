@@ -3,12 +3,10 @@ package server
 import (
 	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/sirupsen/logrus"
 )
 
 // Server is a RESTful HTTP API server offering CRUD functionality to store Payments.
 type Server struct {
-	Log     *logrus.Logger
 	Router  *chi.Mux
 	Storage storage.PaymentStorage
 }

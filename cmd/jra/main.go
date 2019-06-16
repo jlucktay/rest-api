@@ -3,11 +3,11 @@ package main
 
 import (
 	"flag"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/jlucktay/rest-api/pkg/server"
+	log "github.com/sirupsen/logrus"
 )
 
 const defaultMongo = "localhost"
