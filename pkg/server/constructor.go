@@ -1,16 +1,17 @@
 package server
 
 import (
-	"log"
+	"os"
 
 	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	log "github.com/sirupsen/logrus"
 )
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
 // It takes an optional string argument which will set the hostname of the MongoDB server to connect to.
-func New(st StorageType, host ...string) *Server {
+func New(st StorageType, logDebug bool, host ...string) *Server {
 	s := &Server{Router: chi.NewRouter()}
 	s.setupRoutes()
 
@@ -36,6 +37,16 @@ func New(st StorageType, host ...string) *Server {
 				Value: defaultCollection,
 			},
 		)
+	}
+
+	log.SetLevel(log.ErrorLevel)
+	log.SetOutput(os.Stderr)
+	log.SetFormatter(new(log.JSONFormatter))
+
+	if logDebug {
+		log.SetLevel(log.DebugLevel)
+		log.SetReportCaller(true)
+		log.Debug("Debug logging is enabled.")
 	}
 
 	if errStorageInit := s.Storage.Initialise(); errStorageInit != nil {

@@ -2,9 +2,12 @@ package server
 
 import (
 	"github.com/go-chi/chi"
+	log "github.com/sirupsen/logrus"
 )
 
 func (s *Server) setupRoutes() {
+	log.Debug("Setting up routes...")
+
 	// RESTy routes for v1 "payments" resource
 	s.Router.Route("/v1", func(r chi.Router) {
 		r.Route("/payments", func(r chi.Router) {
@@ -19,4 +22,6 @@ func (s *Server) setupRoutes() {
 			})
 		})
 	})
+
+	log.Debug("Set up routes.")
 }

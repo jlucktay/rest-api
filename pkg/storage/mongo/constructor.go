@@ -3,8 +3,8 @@ package mongo
 import (
 	"context"
 	"fmt"
-	"log"
 
+	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -40,14 +40,14 @@ func connect(server string) *mongo.Client {
 	client, errConnect := mongo.Connect(context.TODO(), clientOptions)
 
 	if errConnect != nil {
-		log.Fatal(errConnect)
+		logrus.Fatal(errConnect)
 	}
 
 	// Check the connection.
 	errPing := client.Ping(context.TODO(), nil)
 
 	if errPing != nil {
-		log.Fatal(errPing)
+		logrus.Fatal(errPing)
 	}
 
 	fmt.Println("Connected to MongoDB!")

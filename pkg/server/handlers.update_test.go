@@ -15,7 +15,7 @@ import (
 )
 
 func TestUpdatePayment(t *testing.T) {
-	s := server.New(server.InMemory)
+	s := server.New(server.InMemory, false)
 	var w *httptest.ResponseRecorder
 	i := is.New(t)
 
