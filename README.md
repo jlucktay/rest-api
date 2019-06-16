@@ -24,6 +24,7 @@ This is my implementation of a RESTful HTTP API capable of CRUD operations and p
 ### Prerequisites
 
 You should have a [working Go environment](https://golang.org/doc/install) and have `$GOPATH/bin` in your `$PATH`.
+Mage is being used for various build/run/test tasks, and should also [be installed](https://magefile.org).
 
 ### Compiling
 
@@ -36,6 +37,10 @@ go get github.com/jlucktay/rest-api/...
 The source code will be located in `$GOPATH/src/github.com/jlucktay/rest-api`.
 
 Newly compiled `jra` and `jrams` binaries will be in `$GOPATH/bin/`.
+
+#### Mage
+
+The Magefile contains targets for various tasks, which can be listed out with `mage -l`.
 
 ## Usage
 
