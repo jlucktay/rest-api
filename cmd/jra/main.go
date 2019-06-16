@@ -3,11 +3,11 @@ package main
 
 import (
 	"flag"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/jlucktay/rest-api/pkg/server"
+	log "github.com/sirupsen/logrus"
 )
 
 const defaultMongo = "localhost"
@@ -21,6 +21,6 @@ func main() {
 		*mongoHostname = envMongo
 	}
 
-	s := server.New(server.Mongo, *mongoHostname)
+	s := server.New(server.Mongo, false, *mongoHostname)
 	log.Fatal(http.ListenAndServe(":8080", s.Router))
 }
