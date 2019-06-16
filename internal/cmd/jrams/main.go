@@ -24,7 +24,7 @@ func main() {
 		os.Exit(0)
 	}()
 
-	fmt.Println("Continuing will delete ALL payment records in MongoDB (database: rest-api, collection: payments")
+	fmt.Println("Continuing will delete ALL payment records in MongoDB (database: rest-api, collection: payments)")
 	fmt.Print("Press 'Enter' to continue, or CTRL+C to cancel...")
 	_, errRead := bufio.NewReader(os.Stdin).ReadBytes('\n')
 	theShowMustGoOn("error reading from stdin", errRead)

@@ -47,10 +47,26 @@ Connected to MongoDB!
 Collection 'payments' contains 0 records.
 ```
 
-Accessing the server from another terminal:
+Seeding the server with some sample records:
 
 ``` shell
-$ curl --request GET http://localhost:8080/v1/payments?limit=1 --silent
+$ jrams
+Continuing will delete ALL payment records in MongoDB (database: rest-api, collection: payments)
+Press 'Enter' to continue, or CTRL+C to cancel...
+Connected to MongoDB!
+Collection 'payments' contains 14 records.
+Collection 'payments' dropped.
+Disconnected from MongoDB.
+Connected to MongoDB!
+Collection 'payments' contains 0 records.
+Added payment with ID '4ee3a8d8-ca7b-4290-a52c-dd5b6165ec43'.
+...
+```
+
+Accessing the server:
+
+``` shell
+$ curl --silent --request GET http://localhost:8080/v1/payments
 {
   "data": [
     {
