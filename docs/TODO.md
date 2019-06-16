@@ -13,5 +13,5 @@
 - Capture signals and shutdown (call `Terminate()`) properly
   - [A working example](https://github.com/jlucktay/golang-workbench/blob/master/stdlib/os/signal/cleanup.go)
 
-Also tracking TODOs on [this Trello board](https://trello.com/b/e4ZeAJp4/restful-http-api) which can be scraped on the
+Also tracking TODOs on [this Trello board](https://trello.com/b/e4ZeAJp4) which can be scraped on the
 CLI with [this script](../scripts/trello.sh).
