@@ -1,6 +1,8 @@
 package server
 
 import (
+	"os"
+
 	"github.com/go-chi/chi"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
@@ -37,16 +39,14 @@ func New(st StorageType, logDebug bool, host ...string) *Server {
 		)
 	}
 
-	s.Log = &logrus.Logger{
-		Formatter: new(logrus.JSONFormatter),
-		Level:     logrus.ErrorLevel,
-		Out:       os.Stderr,
-	}
+	log.SetLevel(log.ErrorLevel)
+	log.SetOutput(os.Stderr)
+	log.SetFormatter(new(log.JSONFormatter))
 
 	if logDebug {
-		s.Log.SetLevel(logrus.DebugLevel)
-		s.Log.SetReportCaller(true)
-		s.Log.Debug("Debug logging is enabled.")
+		log.SetLevel(log.DebugLevel)
+		log.SetReportCaller(true)
+		log.Debug("Debug logging is enabled.")
 	}
 
 	if errStorageInit := s.Storage.Initialise(); errStorageInit != nil {
