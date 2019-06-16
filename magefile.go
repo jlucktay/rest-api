@@ -37,7 +37,15 @@ func LintGo() error {
 // Build will compile the REST API binary locally.
 func Build() error {
 	mg.Deps(Clean)
-	return sh.Run("go", "build", "-a", "-installsuffix", "cgo", "-ldflags", `-extldflags "-static"`, "-o", "rest-api", "./cmd/api")
+
+	return sh.Run(
+		"go", "build",
+		"-a",
+		"-installsuffix", "cgo",
+		"-ldflags", `-extldflags "-static"`,
+		"-o", "rest-api",
+		"./cmd/api",
+	)
 }
 
 // DockerBuild will build the Docker image, which executes a layered build of the REST API.
