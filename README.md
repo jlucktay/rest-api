@@ -38,7 +38,7 @@ The source code will be located in `$GOPATH/src/github.com/jlucktay/rest-api`.
 
 Newly compiled `jra` and `jrams` binaries will be in `$GOPATH/bin/`.
 
-#### Mage
+#### Mage
 
 The Magefile contains targets for various tasks, which can be listed out with `mage -l`.
 
