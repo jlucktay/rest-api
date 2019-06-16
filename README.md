@@ -84,6 +84,25 @@ $ curl --silent --request GET http://localhost:8080/v1/payments
 Here is [the full design doc][design-doc] for this API, which describes the various endpoints, how to call them, and
 what to expect in return.
 
+## Testing
+
+There is a Mage target to run tests across all packages in the repo:
+
+``` shell
+$ mage test
+?       github.com/jlucktay/rest-api/cmd/jra    [no test files]
+?       github.com/jlucktay/rest-api/internal/cmd/jrams [no test files]
+?       github.com/jlucktay/rest-api/pkg/org    [no test files]
+ok      github.com/jlucktay/rest-api/pkg/server 0.187s
+ok      github.com/jlucktay/rest-api/pkg/storage        0.262s
+?       github.com/jlucktay/rest-api/pkg/storage/inmemory       [no test files]
+?       github.com/jlucktay/rest-api/pkg/storage/mongo  [no test files]
+ok      github.com/jlucktay/rest-api/test       0.128s
+```
+
+For more details on how Go itself discovers and executes tests, and the various flags with which to alter behaviour
+when doing so, run `go help test` and `go help testflag`.
+
 ## Roadmap
 
 Features and functionality yet to be implemented are captured in [the TODO markdown file in this repo](./docs/TODO.md)
