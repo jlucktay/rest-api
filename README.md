@@ -106,3 +106,28 @@ Please make sure to update tests as appropriate.
 [badge-travis]: https://travis-ci.org/jlucktay/rest-api
 [design-doc]: https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4
 [trello]: https://trello.com/b/e4ZeAJp4
+
+## Content-Type branch TODOs
+
+### TODO
+
+- C - Outgoing
+- R - Incoming
+- R - Outgoing
+- U - Incoming
+- U - Outgoing
+- D - Incoming
+- D - Outgoing
+
+### DOING
+
+- C - Incoming
+
+### DONE
+
+## Further reading
+
+- [Wikipedia](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields)
+- [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)
+- [IETF spec - Media Type](https://tools.ietf.org/html/rfc7231#section-3.1.1.1)
+- [IETF spec - `Content-Type`](https://tools.ietf.org/html/rfc7231#section-3.1.1.5)
