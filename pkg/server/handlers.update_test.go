@@ -15,6 +15,8 @@ import (
 )
 
 func TestUpdatePayment(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	s := server.New(server.InMemory, false)
 	var w *httptest.ResponseRecorder
 	i := is.New(t)

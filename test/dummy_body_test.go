@@ -17,6 +17,8 @@ import (
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP
 // request body.
 func TestDummyBodyCreateUpdate(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	existingID := uuid.Must(uuid.NewV4())
 
 	testCases := map[string]struct {
@@ -76,6 +78,8 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			i := is.New(t)
 
 			var buf bytes.Buffer

@@ -12,6 +12,8 @@ import (
 )
 
 func TestNew(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	testCases := map[string]struct {
 		st       server.StorageType
 		expected storage.PaymentStorage
@@ -28,6 +30,8 @@ func TestNew(t *testing.T) {
 	for name, tC := range testCases {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			i := is.New(t)
 			s := server.New(tC.st, true)
 			i.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))

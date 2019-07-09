@@ -13,6 +13,8 @@ import (
 )
 
 func TestStorage(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	randTestID := uuid.Must(uuid.NewV4())
 
 	testCases := map[string]struct {
@@ -37,6 +39,8 @@ func TestStorage(t *testing.T) {
 	for name, tC := range testCases {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			i := is.New(t)
 			i.NoErr(tC.ps.Initialise())

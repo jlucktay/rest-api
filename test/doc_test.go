@@ -22,6 +22,8 @@ type testDataWrapper struct {
 
 // TestDocumentation is the implementation of the examples from the documentation.
 func TestDocumentation(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	testCases := map[string]struct {
 		testdataFile string
 		getPath      string
@@ -39,6 +41,8 @@ func TestDocumentation(t *testing.T) {
 	for name, tC := range testCases {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			// Set up an API server to test against.
 			srv := server.New(server.InMemory, false)
 			w := httptest.NewRecorder()

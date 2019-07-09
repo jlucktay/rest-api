@@ -15,6 +15,8 @@ import (
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP
 // requests.
 func TestNilBodyCRUD(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	existingID := uuid.Must(uuid.NewV4())
 
 	testCases := map[string]struct {
@@ -114,6 +116,8 @@ func TestNilBodyCRUD(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			i := is.New(t)
 
 			req, err := http.NewRequest(tC.verb, tC.path, nil)

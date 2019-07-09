@@ -15,6 +15,8 @@ import (
 // TestContentType tests creating, reading, updating, and deleting payment records, and makes sure that the
 // Content-Type header is always present.
 func TestContentType(t *testing.T) {
+	t.Parallel() // parallelise with other tests
+
 	existingID := uuid.Must(uuid.NewV4())
 
 	testCases := map[string]struct {
@@ -114,6 +116,8 @@ func TestContentType(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
+			t.Parallel() // parallelise with other sub-tests
+
 			i := is.New(t)
 
 			req, err := http.NewRequest(tC.verb, tC.path, nil)
