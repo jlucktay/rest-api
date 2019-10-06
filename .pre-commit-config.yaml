@@ -16,4 +16,4 @@ repos:
     rev: v1.19.1
     hooks:
       - id: golangci-lint
-        args: ["--enable-all"]
+        args: ["--enable-all", "--disable", "funlen"]

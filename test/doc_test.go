@@ -59,7 +59,9 @@ func TestDocumentation(t *testing.T) {
 			req, errReq := http.NewRequest(http.MethodGet, tC.getPath, nil)
 			i.NoErr(errReq)
 			srv.Router.ServeHTTP(w, req)
-			i.Equal(w.Result().StatusCode, http.StatusOK)
+			resp := w.Result()
+			defer resp.Body.Close()
+			i.Equal(resp.StatusCode, http.StatusOK)
 
 			// Put info from the testdata JSON file directly into a wrapper struct.
 			expected := server.NewWrapper(req.URL.String())
@@ -68,7 +70,7 @@ func TestDocumentation(t *testing.T) {
 			}
 
 			// Assert that it matches the JSON returned by the API.
-			responseBytes, errReadResponse := ioutil.ReadAll(w.Result().Body)
+			responseBytes, errReadResponse := ioutil.ReadAll(resp.Body)
 			i.NoErr(errReadResponse)
 			actual := server.NewWrapper(req.URL.String())
 			errUmResponse := json.Unmarshal(responseBytes, &actual)

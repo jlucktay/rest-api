@@ -30,10 +30,12 @@ func TestCreateNewPayment(t *testing.T) {
 	// Send it, and record the HTTP back and forth.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqCreate)
-	i.Equal(http.StatusCreated, w.Result().StatusCode)
+	resp := w.Result()
+	defer resp.Body.Close()
+	i.Equal(http.StatusCreated, resp.StatusCode)
 
 	// Make sure the response had a Location header pointing at the new payment.
-	loc := w.Result().Header.Get("Location")
+	loc := resp.Header.Get("Location")
 	r := regexp.MustCompile("^/v1/payments/([0-9a-f-]{36})$")
 	i.True(r.MatchString(loc))
 	newID := r.FindStringSubmatch(loc)[1]
@@ -45,5 +47,5 @@ func TestCreateNewPayment(t *testing.T) {
 	// Read the new payment using the ID returned.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
-	i.Equal(http.StatusOK, w.Result().StatusCode)
+	i.Equal(http.StatusOK, resp.StatusCode)
 }

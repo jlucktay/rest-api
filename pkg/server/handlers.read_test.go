@@ -31,7 +31,9 @@ func TestReadMultiplePayments(t *testing.T) {
 
 		w = httptest.NewRecorder()
 		s.Router.ServeHTTP(w, reqCreate)
-		i.Equal(http.StatusCreated, w.Result().StatusCode)
+		resp := w.Result()
+		defer resp.Body.Close()
+		i.Equal(http.StatusCreated, resp.StatusCode)
 	}
 
 	// Construct another HTTP request to read the payments.
@@ -42,7 +44,9 @@ func TestReadMultiplePayments(t *testing.T) {
 	// Read the payments.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
-	respBodyBytes, errReadAll := ioutil.ReadAll(w.Result().Body)
+	resp := w.Result()
+	defer resp.Body.Close()
+	respBodyBytes, errReadAll := ioutil.ReadAll(resp.Body)
 	i.NoErr(errReadAll)
 	i.True(len(string(respBodyBytes)) > 0)
 
