@@ -12,6 +12,7 @@
   - [Middleware](https://godoc.org/github.com/go-chi/chi/middleware)
 - Capture signals and shutdown (call `Terminate()`) properly
   - [A working example](https://github.com/jlucktay/golang-workbench/blob/master/stdlib/os/signal/cleanup.go)
+- Go through [this article](https://thenewstack.io/make-a-restful-json-api-go/) and just do everything it says
 
 Also tracking TODOs on [this Trello board](https://trello.com/b/e4ZeAJp4) which can be scraped on the
 CLI with [this script](../scripts/trello.sh).
