@@ -42,26 +42,26 @@ func TestDocumentation(t *testing.T) {
 			// Set up an API server to test against.
 			srv := server.New(server.InMemory, false)
 			w := httptest.NewRecorder()
-			i := is.New(t)
+			is := is.New(t)
 
 			// POST the payment(s) from the testdata JSON file into the server.
 			fileBytes, errReadFile := ioutil.ReadFile(tC.testdataFile)
-			i.NoErr(errReadFile)
+			is.NoErr(errReadFile)
 			var wrapped []testDataWrapper
 			errUm := json.Unmarshal(fileBytes, &wrapped)
-			i.NoErr(errUm)
+			is.NoErr(errUm)
 			for _, testdata := range wrapped {
 				errCreate := srv.Storage.CreateSpecificID(testdata.ID, testdata.Attributes)
-				i.NoErr(errCreate)
+				is.NoErr(errCreate)
 			}
 
 			// Do a HTTP request to GET the payment(s).
 			req, errReq := http.NewRequest(http.MethodGet, tC.getPath, nil)
-			i.NoErr(errReq)
+			is.NoErr(errReq)
 			srv.Router.ServeHTTP(w, req)
 			resp := w.Result()
 			defer resp.Body.Close()
-			i.Equal(resp.StatusCode, http.StatusOK)
+			is.Equal(resp.StatusCode, http.StatusOK)
 
 			// Put info from the testdata JSON file directly into a wrapper struct.
 			expected := server.NewWrapper(req.URL.String())
@@ -71,10 +71,10 @@ func TestDocumentation(t *testing.T) {
 
 			// Assert that it matches the JSON returned by the API.
 			responseBytes, errReadResponse := ioutil.ReadAll(resp.Body)
-			i.NoErr(errReadResponse)
+			is.NoErr(errReadResponse)
 			actual := server.NewWrapper(req.URL.String())
 			errUmResponse := json.Unmarshal(responseBytes, &actual)
-			i.NoErr(errUmResponse)
+			is.NoErr(errUmResponse)
 			if diff := cmp.Diff(expected, actual); diff != "" {
 				t.Fatalf("Mismatch (-want +got):\n%s", diff)
 			}

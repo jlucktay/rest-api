@@ -28,9 +28,9 @@ func TestNew(t *testing.T) {
 	for name, tC := range testCases {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
-			i := is.New(t)
+			is := is.New(t)
 			s := server.New(tC.st, true)
-			i.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
+			is.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
 		})
 	}
 }
