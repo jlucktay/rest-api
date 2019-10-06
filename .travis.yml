@@ -22,7 +22,7 @@ before_script:
 
 script:
     - golangci-lint run --enable-all
-    - env GO111MODULE=on go build
+    - env GO111MODULE=on go build ./...
     - env GO111MODULE=on go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
 
 after_success:
