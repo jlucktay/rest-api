@@ -1,4 +1,4 @@
-# jlucktay's RESTful API (`jra`)
+# jlucktay's RESTful API (`jra`) [![Travis][Travis-badge]][Travis] [![Codecov][Codecov-badge]][Codecov] [![GoDoc][GoDoc-badge]][GoDoc] [![Go Report Card][Go Report Card-badge]][Go Report Card] [![License][License-badge]][License]
 
 ## Description
 
@@ -10,14 +10,6 @@ This is my implementation of a RESTful HTTP API capable of CRUD operations and p
 - Prioritize correctness, robustness, and extensibility over extra features and optimizations.
 - Write code with the quality bar one would expect to see in production.
 - Try to simplify by using open source frameworks and libraries where possible.
-
-## Badges
-
-[![Build Status](https://travis-ci.org/jlucktay/rest-api.svg?branch=master)][badge-travis]
-[![codecov](https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg)][badge-codecov]
-[![GoDoc](https://godoc.org/github.com/jlucktay/rest-api?status.svg)][badge-godoc]
-[![Go Report Card](https://goreportcard.com/badge/github.com/jlucktay/rest-api)][badge-goreportcard]
-[![License](https://img.shields.io/github/license/jlucktay/rest-api.svg)][badge-license]
 
 ## Installation
 
@@ -81,7 +73,7 @@ $ curl --silent --request GET http://localhost:8080/v1/payments
 
 ### Documentation
 
-Here is [the full design doc][design-doc] for this API, which describes the various endpoints, how to call them, and
+Here is [the full design doc] for this API, which describes the various endpoints, how to call them, and
 what to expect in return.
 
 ## Testing
@@ -106,7 +98,7 @@ when doing so, run `go help test` and `go help testflag`.
 ## Roadmap
 
 Features and functionality yet to be implemented are captured in [the TODO markdown file in this repo](./docs/TODO.md)
-as well as on [the Trello board][trello].
+as well as on [the Trello board].
 
 ## Contributing
 
@@ -118,10 +110,20 @@ Please make sure to update tests as appropriate.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-[badge-codecov]: https://codecov.io/gh/jlucktay/rest-api
-[badge-godoc]: https://godoc.org/github.com/jlucktay/rest-api
-[badge-goreportcard]: https://goreportcard.com/report/github.com/jlucktay/rest-api
-[badge-license]: https://github.com/jlucktay/rest-api/blob/master/LICENSE
-[badge-travis]: https://travis-ci.org/jlucktay/rest-api
-[design-doc]: https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4
-[trello]: https://trello.com/b/e4ZeAJp4
+[Codecov-badge]: https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg
+[Codecov]: https://codecov.io/gh/jlucktay/rest-api
+
+[Go Report Card-badge]: https://goreportcard.com/badge/github.com/jlucktay/rest-api
+[Go Report Card]: https://goreportcard.com/report/github.com/jlucktay/rest-api
+
+[GoDoc-badge]: https://godoc.org/github.com/jlucktay/rest-api?status.svg
+[GoDoc]: https://godoc.org/github.com/jlucktay/rest-api
+
+[License-badge]: https://img.shields.io/github/license/jlucktay/rest-api.svg
+[License]: https://github.com/jlucktay/rest-api/blob/master/LICENSE
+
+[Travis-badge]: https://travis-ci.org/jlucktay/rest-api.svg?branch=master
+[Travis]: https://travis-ci.org/jlucktay/rest-api
+
+[the full design doc]: https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4
+[the Trello board]: https://trello.com/b/e4ZeAJp4
