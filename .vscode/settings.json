@@ -1,4 +1,4 @@
 {
-    "go.buildTags": "mage vscode",
-    "go.formatTool": "goimports"
+  "go.buildTags": "mage vscode",
+  "go.formatTool": "goimports"
 }
