@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/go-chi/chi"
+
 	"github.com/jlucktay/rest-api/pkg/storage"
 )
 

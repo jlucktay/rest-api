@@ -10,9 +10,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/sirupsen/logrus"
 )
 
 func main() {

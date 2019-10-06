@@ -6,10 +6,11 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/google/go-cmp/cmp"
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/matryer/is"
 )
 
 func TestStorage(t *testing.T) {

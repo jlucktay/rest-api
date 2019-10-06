@@ -8,9 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/matryer/is"
 )
 
 func TestReadMultiplePayments(t *testing.T) {

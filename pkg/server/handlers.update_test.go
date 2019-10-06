@@ -9,9 +9,10 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/matryer/is"
 )
 
 func TestUpdatePayment(t *testing.T) {

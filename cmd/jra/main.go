@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/jlucktay/rest-api/pkg/server"
 	log "github.com/sirupsen/logrus"
+
+	"github.com/jlucktay/rest-api/pkg/server"
 )
 
 const defaultMongo = "localhost"

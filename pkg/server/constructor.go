@@ -4,9 +4,10 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	log "github.com/sirupsen/logrus"
+
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	log "github.com/sirupsen/logrus"
 )
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
