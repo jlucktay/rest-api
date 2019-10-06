@@ -47,5 +47,7 @@ func TestCreateNewPayment(t *testing.T) {
 	// Read the new payment using the ID returned.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
-	i.Equal(http.StatusOK, resp.StatusCode)
+	resp2 := w.Result()
+	defer resp2.Body.Close()
+	i.Equal(http.StatusOK, resp2.StatusCode)
 }
