@@ -9,8 +9,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/gofrs/uuid"
-	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/sirupsen/logrus"
+
+	"github.com/jlucktay/rest-api/pkg/storage"
 )
 
 func (s *Server) readPayments() http.HandlerFunc {

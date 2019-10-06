@@ -4,11 +4,12 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/matryer/is"
 )
 
 func TestNew(t *testing.T) {
@@ -28,9 +29,9 @@ func TestNew(t *testing.T) {
 	for name, tC := range testCases {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
-			i := is.New(t)
+			is := is.New(t)
 			s := server.New(tC.st, true)
-			i.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
+			is.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected)) // wrong storage type
 		})
 	}
 }

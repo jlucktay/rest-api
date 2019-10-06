@@ -7,9 +7,10 @@ import (
 	"testing"
 
 	"github.com/gofrs/uuid"
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/matryer/is"
 )
 
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP
@@ -114,15 +115,15 @@ func TestNilBodyCRUD(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
-			i := is.New(t)
+			is := is.New(t)
 
 			req, err := http.NewRequest(tC.verb, tC.path, nil)
-			i.NoErr(err)
+			is.NoErr(err)
 
 			srv.Router.ServeHTTP(w, req)
 			resp := w.Result()
 			defer resp.Body.Close()
-			i.Equal(resp.StatusCode, tC.expected)
+			is.Equal(resp.StatusCode, tC.expected)
 		})
 	}
 }

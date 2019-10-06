@@ -1,8 +1,9 @@
 package mongo
 
 import (
-	"github.com/jlucktay/rest-api/pkg/storage"
 	"go.mongodb.org/mongo-driver/mongo"
+
+	"github.com/jlucktay/rest-api/pkg/storage"
 )
 
 // Storage is a storage system backed by MongoDB that stores Payment structs indexed by UUID.

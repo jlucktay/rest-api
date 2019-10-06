@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gofrs/uuid"
+
 	"github.com/jlucktay/rest-api/pkg/org"
 	"github.com/jlucktay/rest-api/pkg/storage"
 )

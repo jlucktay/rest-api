@@ -9,9 +9,10 @@ import (
 	"testing"
 
 	"github.com/gofrs/uuid"
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/matryer/is"
 )
 
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP
@@ -76,19 +77,19 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 		w := httptest.NewRecorder()
 
 		t.Run(name, func(t *testing.T) {
-			i := is.New(t)
+			is := is.New(t)
 
 			var buf bytes.Buffer
 			errEncode := json.NewEncoder(&buf).Encode(dummyPayment)
-			i.NoErr(errEncode)
+			is.NoErr(errEncode)
 
 			req, err := http.NewRequest(tC.verb, tC.path, &buf)
-			i.NoErr(err)
+			is.NoErr(err)
 
 			srv.Router.ServeHTTP(w, req)
 			resp := w.Result()
 			defer resp.Body.Close()
-			i.Equal(resp.StatusCode, tC.expected)
+			is.Equal(resp.StatusCode, tC.expected)
 		})
 	}
 }

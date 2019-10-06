@@ -8,38 +8,39 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/matryer/is"
 )
 
 func TestReadMultiplePayments(t *testing.T) {
 	s := server.New(server.InMemory, false)
 	var w *httptest.ResponseRecorder
-	i := is.New(t)
+	is := is.New(t)
 
 	// Construct a HTTP request which creates a payment.
 	p := storage.Payment{Amount: 123.45}
 	j, errMarshal := json.Marshal(p)
-	i.NoErr(errMarshal)
+	is.NoErr(errMarshal)
 
 	// Send it multiple times, to create multiple payments.
 	for count := 0; count < 250; count++ {
 		reqCreate, errCreate := http.NewRequest(http.MethodPost, "/v1/payments", bytes.NewBuffer(j))
-		i.NoErr(errCreate)
+		is.NoErr(errCreate)
 		reqCreate.Header.Set("Content-Type", "application/json")
 
 		w = httptest.NewRecorder()
 		s.Router.ServeHTTP(w, reqCreate)
 		resp := w.Result()
 		defer resp.Body.Close()
-		i.Equal(http.StatusCreated, resp.StatusCode)
+		is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 	}
 
 	// Construct another HTTP request to read the payments.
 	// 'limit' and 'offset' are not specified here, so we are falling back onto the default values.
 	reqRead, errRead := http.NewRequest(http.MethodGet, "/v1/payments", nil)
-	i.NoErr(errRead)
+	is.NoErr(errRead)
 
 	// Read the payments.
 	w = httptest.NewRecorder()
@@ -47,14 +48,14 @@ func TestReadMultiplePayments(t *testing.T) {
 	resp := w.Result()
 	defer resp.Body.Close()
 	respBodyBytes, errReadAll := ioutil.ReadAll(resp.Body)
-	i.NoErr(errReadAll)
-	i.True(len(string(respBodyBytes)) > 0)
+	is.NoErr(errReadAll)
+	is.True(len(string(respBodyBytes)) > 0) // response body should have some content
 
 	// Unmarshal them into a slice of Payment structs.
 	returnedPayments := server.NewWrapper("")
 	errUnmarshal := json.Unmarshal(respBodyBytes, &returnedPayments)
-	i.NoErr(errUnmarshal)
+	is.NoErr(errUnmarshal)
 
 	// Assert on the number of Payment structs returned.
-	i.Equal(storage.DefaultLimit, len(returnedPayments.Data))
+	is.Equal(storage.DefaultLimit, len(returnedPayments.Data)) // check default pagination limit
 }

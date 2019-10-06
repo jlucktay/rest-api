@@ -6,10 +6,11 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/google/go-cmp/cmp"
+	"github.com/matryer/is"
+
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/matryer/is"
 )
 
 func TestStorage(t *testing.T) {
@@ -38,8 +39,8 @@ func TestStorage(t *testing.T) {
 		tC := tC // pin!
 		t.Run(name, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
-			i := is.New(t)
-			i.NoErr(tC.ps.Initialise())
+			is := is.New(t)
+			is.NoErr(tC.ps.Initialise())
 			testPayment := storage.Payment{
 				Amount: 123.45,
 				ChargesInformation: storage.ChargesInformation{
@@ -54,14 +55,14 @@ func TestStorage(t *testing.T) {
 
 			// C
 			newID, errCreate := tC.ps.Create(testPayment)
-			i.NoErr(errCreate)
+			is.NoErr(errCreate)
 			_, errCreateAgain := tC.ps.Create(testPayment)
-			i.NoErr(errCreateAgain)
+			is.NoErr(errCreateAgain)
 
 			// R
 			// -> read single
 			readSingle, errRead := tC.ps.Read(newID)
-			i.NoErr(errRead)
+			is.NoErr(errRead)
 			if diff := cmp.Diff(testPayment, readSingle); diff != "" {
 				t.Fatalf("Mismatch (-want +got):\n%s", diff)
 			}
@@ -69,8 +70,8 @@ func TestStorage(t *testing.T) {
 			// -> read multiple
 			var opts storage.ReadAllOptions
 			readMultiple, errReadAll := tC.ps.ReadAll(opts)
-			i.NoErr(errReadAll)
-			i.Equal(len(readMultiple), 2)
+			is.NoErr(errReadAll)
+			is.Equal(len(readMultiple), 2) // expecting 2 records returned
 			for _, actualPay := range readMultiple {
 				if diff := cmp.Diff(testPayment, actualPay); diff != "" {
 					t.Fatalf("Mismatch (-want +got):\n%s", diff)
@@ -79,24 +80,24 @@ func TestStorage(t *testing.T) {
 
 			// U
 			testPayment.Reference = "ref"
-			i.NoErr(tC.ps.Update(newID, testPayment))
+			is.NoErr(tC.ps.Update(newID, testPayment))
 			updatedPay, errUpdate := tC.ps.Read(newID)
-			i.NoErr(errUpdate)
+			is.NoErr(errUpdate)
 			if diff := cmp.Diff(testPayment, updatedPay); diff != "" {
 				t.Fatalf("Mismatch (-want +got):\n%s", diff)
 			}
 
 			// D
-			i.NoErr(tC.ps.Delete(newID))
+			is.NoErr(tC.ps.Delete(newID))
 			_, errDeleted := tC.ps.Read(newID)
-			i.Equal(errDeleted, &storage.NotFoundError{newID})
+			is.Equal(errDeleted, &storage.NotFoundError{newID}) // expecting a NotFoundError
 
 			// U after D
 			errUpdateNonExistant := tC.ps.Update(newID, testPayment)
-			i.Equal(errUpdateNonExistant, &storage.NotFoundError{newID})
+			is.Equal(errUpdateNonExistant, &storage.NotFoundError{newID}) // expecting a NotFoundError
 
 			// Cleanup
-			i.NoErr(tC.ps.Terminate(true))
+			is.NoErr(tC.ps.Terminate(true))
 		})
 	}
 }
