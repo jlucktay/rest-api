@@ -33,12 +33,12 @@ func TestCreateNewPayment(t *testing.T) {
 	s.Router.ServeHTTP(w, reqCreate)
 	resp := w.Result()
 	defer resp.Body.Close()
-	is.Equal(http.StatusCreated, resp.StatusCode)
+	is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 
 	// Make sure the response had a Location header pointing at the new payment.
 	loc := resp.Header.Get("Location")
 	r := regexp.MustCompile("^/v1/payments/([0-9a-f-]{36})$")
-	is.True(r.MatchString(loc))
+	is.True(r.MatchString(loc)) // regex couldn't match Location header
 	newID := r.FindStringSubmatch(loc)[1]
 
 	// Construct another HTTP request to read the new payment.
@@ -50,5 +50,5 @@ func TestCreateNewPayment(t *testing.T) {
 	s.Router.ServeHTTP(w, reqRead)
 	resp2 := w.Result()
 	defer resp2.Body.Close()
-	is.Equal(http.StatusOK, resp2.StatusCode)
+	is.Equal(http.StatusOK, resp2.StatusCode) // expecting HTTP 200
 }

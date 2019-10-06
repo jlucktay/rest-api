@@ -34,7 +34,7 @@ func TestReadMultiplePayments(t *testing.T) {
 		s.Router.ServeHTTP(w, reqCreate)
 		resp := w.Result()
 		defer resp.Body.Close()
-		is.Equal(http.StatusCreated, resp.StatusCode)
+		is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 	}
 
 	// Construct another HTTP request to read the payments.
@@ -49,7 +49,7 @@ func TestReadMultiplePayments(t *testing.T) {
 	defer resp.Body.Close()
 	respBodyBytes, errReadAll := ioutil.ReadAll(resp.Body)
 	is.NoErr(errReadAll)
-	is.True(len(string(respBodyBytes)) > 0)
+	is.True(len(string(respBodyBytes)) > 0) // response body should have some content
 
 	// Unmarshal them into a slice of Payment structs.
 	returnedPayments := server.NewWrapper("")
@@ -57,5 +57,5 @@ func TestReadMultiplePayments(t *testing.T) {
 	is.NoErr(errUnmarshal)
 
 	// Assert on the number of Payment structs returned.
-	is.Equal(storage.DefaultLimit, len(returnedPayments.Data))
+	is.Equal(storage.DefaultLimit, len(returnedPayments.Data)) // check default pagination limit
 }

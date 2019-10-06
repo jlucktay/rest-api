@@ -31,7 +31,7 @@ func TestNew(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			is := is.New(t)
 			s := server.New(tC.st, true)
-			is.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected))
+			is.Equal(reflect.TypeOf(s.Storage), reflect.TypeOf(tC.expected)) // wrong storage type
 		})
 	}
 }

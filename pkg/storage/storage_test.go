@@ -71,7 +71,7 @@ func TestStorage(t *testing.T) {
 			var opts storage.ReadAllOptions
 			readMultiple, errReadAll := tC.ps.ReadAll(opts)
 			is.NoErr(errReadAll)
-			is.Equal(len(readMultiple), 2)
+			is.Equal(len(readMultiple), 2) // expecting 2 records returned
 			for _, actualPay := range readMultiple {
 				if diff := cmp.Diff(testPayment, actualPay); diff != "" {
 					t.Fatalf("Mismatch (-want +got):\n%s", diff)
@@ -90,11 +90,11 @@ func TestStorage(t *testing.T) {
 			// D
 			is.NoErr(tC.ps.Delete(newID))
 			_, errDeleted := tC.ps.Read(newID)
-			is.Equal(errDeleted, &storage.NotFoundError{newID})
+			is.Equal(errDeleted, &storage.NotFoundError{newID}) // expecting a NotFoundError
 
 			// U after D
 			errUpdateNonExistant := tC.ps.Update(newID, testPayment)
-			is.Equal(errUpdateNonExistant, &storage.NotFoundError{newID})
+			is.Equal(errUpdateNonExistant, &storage.NotFoundError{newID}) // expecting a NotFoundError
 
 			// Cleanup
 			is.NoErr(tC.ps.Terminate(true))

@@ -37,12 +37,12 @@ func TestUpdatePayment(t *testing.T) {
 	s.Router.ServeHTTP(w, reqCreate)
 	resp := w.Result()
 	defer resp.Body.Close()
-	is.Equal(http.StatusCreated, resp.StatusCode)
+	is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 
 	// Get the Location header which points at the new payment.
 	loc := resp.Header.Get("Location")
 	r := regexp.MustCompile("^/v1/payments/([0-9a-f-]{36})$")
-	is.True(r.MatchString(loc))
+	is.True(r.MatchString(loc)) // regex couldn't match Location header
 	newID := r.FindStringSubmatch(loc)[1]
 
 	// Construct another HTTP request to update the new payment.
@@ -58,7 +58,7 @@ func TestUpdatePayment(t *testing.T) {
 	s.Router.ServeHTTP(w, reqUpdate)
 	resp2 := w.Result()
 	defer resp2.Body.Close()
-	is.Equal(http.StatusNoContent, resp2.StatusCode)
+	is.Equal(http.StatusNoContent, resp2.StatusCode) // expecting HTTP 204
 
 	// Construct another HTTP request to read the payment.
 	reqRead, errRead := http.NewRequest(http.MethodGet, "/v1/payments/"+newID, nil)
@@ -69,10 +69,10 @@ func TestUpdatePayment(t *testing.T) {
 	s.Router.ServeHTTP(w, reqRead)
 	resp3 := w.Result()
 	defer resp3.Body.Close()
-	is.Equal(http.StatusOK, resp3.StatusCode)
+	is.Equal(http.StatusOK, resp3.StatusCode) // expecting HTTP 200
 	respBodyBytes, errReadAll := ioutil.ReadAll(resp3.Body)
 	is.NoErr(errReadAll)
-	is.True(len(string(respBodyBytes)) > 0)
+	is.True(len(string(respBodyBytes)) > 0) // response body should have some content
 
 	// Unmarshal into a slice of Payment structs.
 	returnedPayment := server.NewWrapper("")
@@ -80,5 +80,5 @@ func TestUpdatePayment(t *testing.T) {
 	is.NoErr(errUnmarshal)
 
 	// Assert that the Amount of the Payment returned has been updated appropriately.
-	is.Equal(updatedAmount, returnedPayment.Data[0].Attributes.Amount)
+	is.Equal(updatedAmount, returnedPayment.Data[0].Attributes.Amount) // amount not updated
 }

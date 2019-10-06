@@ -62,7 +62,7 @@ func TestDocumentation(t *testing.T) {
 			srv.Router.ServeHTTP(w, req)
 			resp := w.Result()
 			defer resp.Body.Close()
-			is.Equal(resp.StatusCode, http.StatusOK)
+			is.Equal(resp.StatusCode, http.StatusOK) // expecting HTTP 200
 
 			// Put info from the testdata JSON file directly into a wrapper struct.
 			expected := server.NewWrapper(req.URL.String())
