@@ -21,7 +21,7 @@ before_script:
     - mongo localhost:27017/test --eval 'db.runCommand("ping").ok'
 
 script:
-    - golangci-lint run --enable-all
+    - golangci-lint run --enable-all --disable funlen
     - env GO111MODULE=on go build ./...
     - env GO111MODULE=on go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
 
