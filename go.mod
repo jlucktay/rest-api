@@ -7,10 +7,10 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/golang/snappy v0.0.1 // indirect
-	github.com/google/go-cmp v0.3.0
+	github.com/google/go-cmp v0.3.1
 	github.com/magefile/mage v1.8.0
 	github.com/matryer/is v1.2.0
-	github.com/sirupsen/logrus v1.4.1
+	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
