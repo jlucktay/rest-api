@@ -34,10 +34,12 @@ func TestUpdatePayment(t *testing.T) {
 	// Send it, and record the HTTP back and forth.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqCreate)
-	i.Equal(http.StatusCreated, w.Result().StatusCode)
+	resp := w.Result()
+	defer resp.Body.Close()
+	i.Equal(http.StatusCreated, resp.StatusCode)
 
 	// Get the Location header which points at the new payment.
-	loc := w.Result().Header.Get("Location")
+	loc := resp.Header.Get("Location")
 	r := regexp.MustCompile("^/v1/payments/([0-9a-f-]{36})$")
 	i.True(r.MatchString(loc))
 	newID := r.FindStringSubmatch(loc)[1]
@@ -53,7 +55,9 @@ func TestUpdatePayment(t *testing.T) {
 	// Update the payment using the ID returned via 'Location' header.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqUpdate)
-	i.Equal(http.StatusNoContent, w.Result().StatusCode)
+	resp2 := w.Result()
+	defer resp2.Body.Close()
+	i.Equal(http.StatusNoContent, resp2.StatusCode)
 
 	// Construct another HTTP request to read the payment.
 	reqRead, errRead := http.NewRequest(http.MethodGet, "/v1/payments/"+newID, nil)
@@ -62,8 +66,10 @@ func TestUpdatePayment(t *testing.T) {
 	// Send the read request and assert on the length of the response.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
-	i.Equal(http.StatusOK, w.Result().StatusCode)
-	respBodyBytes, errReadAll := ioutil.ReadAll(w.Result().Body)
+	resp3 := w.Result()
+	defer resp3.Body.Close()
+	i.Equal(http.StatusOK, resp3.StatusCode)
+	respBodyBytes, errReadAll := ioutil.ReadAll(resp3.Body)
 	i.NoErr(errReadAll)
 	i.True(len(string(respBodyBytes)) > 0)
 
