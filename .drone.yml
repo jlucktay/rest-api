@@ -1,0 +1,39 @@
+---
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: fetch
+  image: docker:git
+  commands:
+  - git fetch --tags
+
+- name: test
+  image: golang
+  volumes:
+  - name: deps
+    path: /go
+
+- name: release
+  image: golang
+  commands:
+  - curl -sL https://git.io/goreleaser | bash
+  environment:
+    GITHUB_TOKEN:
+      from_secret: github_token
+  volumes:
+  - name: deps
+    path: /go
+  when:
+    event:
+    - tag
+
+volumes:
+- name: deps
+  temp: {}
+
+...
