@@ -8,10 +8,12 @@ import (
 	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
 )
 
-type mongoUUID uuid.UUID
+type mongoUUID struct {
+	uuid.UUID
+}
 
 func (mu mongoUUID) MarshalBSONValue() (bsontype.Type, []byte, error) {
-	return bsontype.Binary, bsoncore.AppendBinary(nil, 4, mu[:]), nil
+	return bsontype.Binary, bsoncore.AppendBinary(nil, 4, mu.UUID[:]), nil
 }
 
 func (mu *mongoUUID) UnmarshalBSONValue(t bsontype.Type, raw []byte) error {
@@ -24,7 +26,7 @@ func (mu *mongoUUID) UnmarshalBSONValue(t bsontype.Type, raw []byte) error {
 		return fmt.Errorf("not enough bytes to unmarshal bson value")
 	}
 
-	copy(mu[:], data)
+	copy(mu.UUID[:], data)
 
 	return nil
 }
