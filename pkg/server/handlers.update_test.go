@@ -16,8 +16,9 @@ import (
 )
 
 func TestUpdatePayment(t *testing.T) {
-	s := server.New(server.InMemory, false)
 	var w *httptest.ResponseRecorder
+
+	s := server.New(server.InMemory, false)
 	is := is.New(t)
 
 	startAmount := 123.45
@@ -27,16 +28,20 @@ func TestUpdatePayment(t *testing.T) {
 	p := storage.Payment{Amount: startAmount}
 	j, errMarshalCreate := json.Marshal(p)
 	is.NoErr(errMarshalCreate)
+
 	reqBodyCreate := bytes.NewBuffer(j)
 	reqCreate, errCreate := http.NewRequest(http.MethodPost, "/v1/payments", reqBodyCreate)
+
 	is.NoErr(errCreate)
 	reqCreate.Header.Set("Content-Type", "application/json")
 
 	// Send it, and record the HTTP back and forth.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqCreate)
+
 	resp := w.Result()
 	defer resp.Body.Close()
+
 	is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 
 	// Get the Location header which points at the new payment.
@@ -49,15 +54,19 @@ func TestUpdatePayment(t *testing.T) {
 	p.Amount = updatedAmount
 	k, errMarshalUpdate := json.Marshal(p)
 	is.NoErr(errMarshalUpdate)
+
 	reqBodyUpdate := bytes.NewBuffer(k)
 	reqUpdate, errUpdate := http.NewRequest(http.MethodPut, "/v1/payments/"+newID, reqBodyUpdate)
+
 	is.NoErr(errUpdate)
 
 	// Update the payment using the ID returned via 'Location' header.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqUpdate)
+
 	resp2 := w.Result()
 	defer resp2.Body.Close()
+
 	is.Equal(http.StatusNoContent, resp2.StatusCode) // expecting HTTP 204
 
 	// Construct another HTTP request to read the payment.
@@ -67,8 +76,10 @@ func TestUpdatePayment(t *testing.T) {
 	// Send the read request and assert on the length of the response.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
+
 	resp3 := w.Result()
 	defer resp3.Body.Close()
+
 	is.Equal(http.StatusOK, resp3.StatusCode) // expecting HTTP 200
 	respBodyBytes, errReadAll := ioutil.ReadAll(resp3.Body)
 	is.NoErr(errReadAll)
