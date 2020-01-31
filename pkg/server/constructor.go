@@ -24,6 +24,7 @@ func New(st StorageType, logDebug bool, host ...string) *Server {
 		if len(host) > 0 {
 			mongoServer = "mongodb://" + host[0] + ":27017"
 		}
+
 		s.Storage = mongo.New(
 			mongo.Option{
 				Key:   mongo.Server,

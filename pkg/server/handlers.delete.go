@@ -17,12 +17,14 @@ func (s *Server) deletePaymentByID() http.HandlerFunc {
 		if id == uuid.Nil {
 			log.Debug("ID was invalid, returning.")
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404
+
 			return
 		}
 
 		if errDelete := s.Storage.Delete(id); errDelete == nil {
 			log.Debugf("Successfully deleted record with given ID '%s'.", id)
 			w.WriteHeader(http.StatusOK) // 200
+
 			return
 		}
 
