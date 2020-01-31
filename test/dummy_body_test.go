@@ -70,7 +70,7 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 		tC := tC // pin!
 
 		srv := server.New(server.InMemory, false)
-		dummyPayment := &storage.Payment{Amount: 123.45}
+		dummyPayment := &storage.Payment{Amount: Amount}
 		errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
 		is.New(t).NoErr(errCreate)
 

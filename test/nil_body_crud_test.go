@@ -103,7 +103,7 @@ func TestNilBodyCRUD(t *testing.T) {
 		tC := tC // pin!
 
 		srv := server.New(server.InMemory, false)
-		existingPayment := storage.Payment{Amount: 123.45}
+		existingPayment := storage.Payment{Amount: Amount}
 		errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 		is.New(t).NoErr(errCreate)
 

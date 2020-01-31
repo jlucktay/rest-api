@@ -12,6 +12,7 @@ import (
 
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
+	"github.com/jlucktay/rest-api/test"
 )
 
 func TestReadMultiplePayments(t *testing.T) {
@@ -21,7 +22,7 @@ func TestReadMultiplePayments(t *testing.T) {
 	is := is.New(t)
 
 	// Construct a HTTP request which creates a payment.
-	p := storage.Payment{Amount: 123.45}
+	p := storage.Payment{Amount: test.Amount}
 	j, errMarshal := json.Marshal(p)
 	is.NoErr(errMarshal)
 
