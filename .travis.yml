@@ -1,32 +1,34 @@
 language: go
 
+os: linux
+
 go:
-    - 1.x
-    - master
+  - 1.x
+  - master
 
 branches:
-    only:
-        - master
+  only:
+    - master
 
 services:
-    - mongodb
+  - mongodb
 
 install:
-    - curl --fail --location https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.19.1
-    - curl --location --remote-name https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
-    - chmod --changes u+x wait-for-it.sh
+  - curl --fail --location https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.19.1
+  - curl --location --remote-name https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+  - chmod --changes u+x wait-for-it.sh
 
 before_script:
-    - ./wait-for-it.sh --host=localhost --port=27017
-    - mongo localhost:27017/test --eval 'db.runCommand("ping").ok'
+  - ./wait-for-it.sh --host=localhost --port=27017
+  - mongo localhost:27017/test --eval 'db.runCommand("ping").ok'
 
 script:
-    - golangci-lint run --enable-all --disable funlen
-    - env GO111MODULE=on go build ./...
-    - env GO111MODULE=on go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
+  - golangci-lint run
+  - env GO111MODULE=on go build ./...
+  - env GO111MODULE=on go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-    email: false
+  email: false

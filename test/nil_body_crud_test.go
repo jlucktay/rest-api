@@ -15,6 +15,7 @@ import (
 
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP
 // requests.
+//nolint:funlen // TODO
 func TestNilBodyCRUD(t *testing.T) {
 	existingID := uuid.Must(uuid.NewV4())
 
@@ -103,7 +104,7 @@ func TestNilBodyCRUD(t *testing.T) {
 		tC := tC // pin!
 
 		srv := server.New(server.InMemory, false)
-		existingPayment := storage.Payment{Amount: 123.45}
+		existingPayment := storage.Payment{Amount: Amount}
 		errCreate := srv.Storage.CreateSpecificID(existingID, existingPayment)
 		is.New(t).NoErr(errCreate)
 

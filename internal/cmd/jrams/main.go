@@ -19,6 +19,7 @@ import (
 func main() {
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+
 	go func() {
 		<-c
 		fmt.Println("Exiting!")
@@ -27,7 +28,9 @@ func main() {
 
 	fmt.Println("Continuing will delete ALL payment records in MongoDB (database: rest-api, collection: payments)")
 	fmt.Print("Press 'Enter' to continue, or CTRL+C to cancel...")
+
 	_, errRead := bufio.NewReader(os.Stdin).ReadBytes('\n')
+
 	theShowMustGoOn("error reading from stdin", errRead)
 
 	// Empty out current MongoDB collection.

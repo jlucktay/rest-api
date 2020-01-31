@@ -12,15 +12,17 @@ import (
 
 	"github.com/jlucktay/rest-api/pkg/server"
 	"github.com/jlucktay/rest-api/pkg/storage"
+	"github.com/jlucktay/rest-api/test"
 )
 
 func TestReadMultiplePayments(t *testing.T) {
-	s := server.New(server.InMemory, false)
 	var w *httptest.ResponseRecorder
+
+	s := server.New(server.InMemory, false)
 	is := is.New(t)
 
 	// Construct a HTTP request which creates a payment.
-	p := storage.Payment{Amount: 123.45}
+	p := storage.Payment{Amount: test.Amount}
 	j, errMarshal := json.Marshal(p)
 	is.NoErr(errMarshal)
 
@@ -32,8 +34,10 @@ func TestReadMultiplePayments(t *testing.T) {
 
 		w = httptest.NewRecorder()
 		s.Router.ServeHTTP(w, reqCreate)
+
 		resp := w.Result()
 		defer resp.Body.Close()
+
 		is.Equal(http.StatusCreated, resp.StatusCode) // expecting HTTP 201
 	}
 
@@ -45,8 +49,10 @@ func TestReadMultiplePayments(t *testing.T) {
 	// Read the payments.
 	w = httptest.NewRecorder()
 	s.Router.ServeHTTP(w, reqRead)
+
 	resp := w.Result()
 	defer resp.Body.Close()
+
 	respBodyBytes, errReadAll := ioutil.ReadAll(resp.Body)
 	is.NoErr(errReadAll)
 	is.True(len(string(respBodyBytes)) > 0) // response body should have some content

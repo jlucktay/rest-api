@@ -11,8 +11,10 @@ import (
 	"github.com/jlucktay/rest-api/pkg/storage"
 	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
 	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	"github.com/jlucktay/rest-api/test"
 )
 
+//nolint:funlen // TODO
 func TestStorage(t *testing.T) {
 	randTestID := uuid.Must(uuid.NewV4())
 
@@ -37,17 +39,18 @@ func TestStorage(t *testing.T) {
 	}
 	for name, tC := range testCases {
 		tC := tC // pin!
+
 		t.Run(name, func(t *testing.T) {
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC.ps))
 			is := is.New(t)
 			is.NoErr(tC.ps.Initialise())
 			testPayment := storage.Payment{
-				Amount: 123.45,
+				Amount: test.Amount,
 				ChargesInformation: storage.ChargesInformation{
 					SenderCharges: []storage.SenderCharges{
-						{Amount: 1.01},
-						{Amount: 2.02},
-						{Amount: 3.03},
+						{Amount: test.ChargeOne},
+						{Amount: test.ChargeTwo},
+						{Amount: test.ChargeThree},
 					},
 				},
 				PaymentID: "test",
