@@ -13,7 +13,7 @@ import (
 )
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
-	filter := bson.M{"_id": mongoUUID(id)}
+	filter := bson.M{"_id": mongoUUID{id}}
 
 	// Create a value into which the result can be decoded.
 	var found mongoWrapper
@@ -60,7 +60,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 			return nil, fmt.Errorf("couldn't make element ready for display: %v", errDecode)
 		}
 
-		found[uuid.UUID(mwDec.UUID)] = mwDec.Payment // Unwrap
+		found[mwDec.UUID.UUID] = mwDec.Payment // Unwrap
 	}
 
 	if cur.Err() != nil {

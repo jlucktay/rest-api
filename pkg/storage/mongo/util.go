@@ -15,7 +15,7 @@ func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
 	}
 
 	newID := uuid.Must(uuid.NewV4())
-	mw.UUID = mongoUUID(newID)
+	mw.UUID = mongoUUID{newID}
 
 	return mw
 }

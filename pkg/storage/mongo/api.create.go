@@ -16,11 +16,11 @@ func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 		return uuid.Nil, errInsert
 	}
 
-	return uuid.UUID(mongoInsert.UUID), nil
+	return mongoInsert.UUID.UUID, nil
 }
 
 func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) error {
-	mongoInsert := wrap(newPayment, mongoUUID(newID))
+	mongoInsert := wrap(newPayment, mongoUUID{newID})
 
 	_, errInsert := s.coll.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {
