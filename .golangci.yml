@@ -33,4 +33,4 @@ linters-settings:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.23.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.23.1 # use the fixed version to not introduce new linters unexpectedly

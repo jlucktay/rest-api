@@ -12,7 +12,7 @@ services:
   - mongodb
 
 install:
-    - curl --fail --location https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.19.1
+    - curl --fail --location https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.23.1
     - curl --location --remote-name https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
     - chmod --changes u+x wait-for-it.sh
 
