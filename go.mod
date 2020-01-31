@@ -3,6 +3,7 @@ module github.com/jlucktay/rest-api
 go 1.12
 
 require (
+	github.com/DataDog/zstd v1.4.4 // indirect
 	github.com/go-chi/chi v4.0.3+incompatible
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
@@ -10,6 +11,7 @@ require (
 	github.com/google/go-cmp v0.4.0
 	github.com/magefile/mage v1.9.0
 	github.com/matryer/is v1.2.0
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/tidwall/pretty v1.0.0 // indirect
