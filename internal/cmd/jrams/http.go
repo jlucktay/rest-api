@@ -20,7 +20,7 @@ func getResponse(get url.URL) (io.Reader, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
+	if res.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("URL '%s': status code error: [%d] %s", get.String(), res.StatusCode, res.Status)
 	}
 

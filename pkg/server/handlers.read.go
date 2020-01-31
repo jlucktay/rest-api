@@ -21,6 +21,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 			http.Error(w, errLimit.Error(), http.StatusBadRequest)
 			return
 		}
+
 		if errOffset := applyFromQuery(r, "offset", &opts.Offset); errOffset != nil {
 			http.Error(w, errOffset.Error(), http.StatusBadRequest)
 			return
@@ -36,9 +37,11 @@ func (s *Server) readPayments() http.HandlerFunc {
 		for a := range allPayments {
 			keys = append(keys, a.String())
 		}
+
 		sort.Strings(keys)
 
 		wrappedPayments := NewWrapper(r.URL.String())
+
 		for _, sID := range keys {
 			id := uuid.FromStringOrNil(sID)
 			wrappedPayments.AddPayment(id, allPayments[id])
@@ -52,6 +55,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 
 		w.WriteHeader(http.StatusOK) // 200
 		w.Header().Set("Content-Type", "application/json")
+
 		if _, errWrite := w.Write(allBytes); errWrite != nil {
 			logrus.Fatal(errWrite)
 		}
@@ -78,9 +82,11 @@ func (s *Server) readPaymentByID() http.HandlerFunc {
 
 			w.WriteHeader(http.StatusOK) // 200
 			w.Header().Set("Content-Type", "application/json")
+
 			if _, errWrite := w.Write(payBytes); errWrite != nil {
 				logrus.Fatal(errWrite)
 			}
+
 			return
 		}
 
@@ -96,7 +102,9 @@ func applyFromQuery(req *http.Request, query string, setting *uint) error {
 		if errConvert != nil || i <= 0 {
 			return fmt.Errorf("the query parameter '%s' should be a positive integer", query)
 		}
+
 		*setting = uint(i)
 	}
+
 	return nil
 }

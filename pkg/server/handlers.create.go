@@ -18,6 +18,7 @@ func (s *Server) createPayments() http.HandlerFunc {
 		if r.ContentLength == 0 {
 			log.Debug("Request body was empty, returning.")
 			http.Error(w, "Empty request body.", http.StatusBadRequest) // 400
+
 			return
 		}
 
@@ -28,6 +29,7 @@ func (s *Server) createPayments() http.HandlerFunc {
 		defer r.Body.Close()
 
 		var p storage.Payment
+
 		errUm := json.Unmarshal(bodyBytes, &p)
 		if errUm != nil {
 			log.Fatal(errUm)
@@ -50,6 +52,7 @@ func (s *Server) createPaymentByID() http.HandlerFunc {
 		if id == uuid.Nil {
 			log.Debug("ID was invalid, returning.")
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404
+
 			return
 		}
 
@@ -57,6 +60,7 @@ func (s *Server) createPaymentByID() http.HandlerFunc {
 		if errRead == nil {
 			log.Debug("ID already existed and was found, returning.")
 			http.Error(w, (&storage.AlreadyExistsError{ID: id}).Error(), http.StatusConflict) // 409
+
 			return
 		}
 

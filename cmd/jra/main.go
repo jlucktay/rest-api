@@ -15,6 +15,7 @@ const defaultMongo = "localhost"
 
 func main() {
 	var mongoHostname = flag.String("mongo-host", defaultMongo, "the hostname of the MongoDB server to connect to")
+
 	flag.Parse()
 
 	// If the flag has not been given, look for an environment variable.

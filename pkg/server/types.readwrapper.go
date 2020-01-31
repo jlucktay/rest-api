@@ -32,6 +32,7 @@ func NewWrapper(s string) *ReadWrapper {
 	rw.Links = ReadWrapperLinks{
 		Self: s,
 	}
+
 	return rw
 }
 

@@ -17,6 +17,7 @@ import (
 
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP
 // request body.
+//nolint:funlen // TODO
 func TestDummyBodyCreateUpdate(t *testing.T) {
 	existingID := uuid.Must(uuid.NewV4())
 
@@ -70,7 +71,7 @@ func TestDummyBodyCreateUpdate(t *testing.T) {
 		tC := tC // pin!
 
 		srv := server.New(server.InMemory, false)
-		dummyPayment := &storage.Payment{Amount: 123.45}
+		dummyPayment := &storage.Payment{Amount: Amount}
 		errCreate := srv.Storage.CreateSpecificID(existingID, *dummyPayment)
 		is.New(t).NoErr(errCreate)
 

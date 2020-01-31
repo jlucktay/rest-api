@@ -1,4 +1,3 @@
-// Package test runs test coverage over the API router from the outside looking in.
 package test
 
 import (
@@ -39,6 +38,7 @@ func TestDocumentation(t *testing.T) {
 
 	for name, tC := range testCases {
 		tC := tC // pin!
+
 		t.Run(name, func(t *testing.T) {
 			// Set up an API server to test against.
 			srv := server.New(server.InMemory, false)

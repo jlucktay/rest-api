@@ -33,6 +33,7 @@ func (s *Server) updatePaymentByID() http.HandlerFunc {
 		defer r.Body.Close()
 
 		var payment storage.Payment
+
 		errUm := json.Unmarshal(bodyBytes, &payment)
 		if errUm != nil {
 			logrus.Fatal(errUm)

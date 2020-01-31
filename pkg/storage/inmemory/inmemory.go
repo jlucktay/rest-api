@@ -32,6 +32,7 @@ func (s *Storage) Terminate(...bool) error {
 func (s *Storage) Create(p storage.Payment) (uuid.UUID, error) {
 	newID := uuid.Must(uuid.NewV4())
 	s.store[newID] = p
+
 	return newID, nil
 }
 
@@ -41,7 +42,9 @@ func (s *Storage) CreateSpecificID(id uuid.UUID, p storage.Payment) error {
 	if _, exists := s.store[id]; exists {
 		return &storage.AlreadyExistsError{ID: id}
 	}
+
 	s.store[id] = p
+
 	return nil
 }
 
@@ -50,6 +53,7 @@ func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
 	if p, exists := s.store[id]; exists {
 		return p, nil
 	}
+
 	return storage.Payment{}, &storage.NotFoundError{ID: id}
 }
 
@@ -70,6 +74,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 	for k := range s.store {
 		keys = append(keys, k.String())
 	}
+
 	sort.Strings(keys)
 
 	// Truncate keys slice if applicable.
@@ -81,6 +86,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 
 	// Build result set.
 	payments := make(map[uuid.UUID]storage.Payment)
+
 	for i := uint(0); i < rao.Limit && i < uint(len(keys)); i++ {
 		id := uuid.FromStringOrNil(keys[i])
 		payments[id] = s.store[id]
@@ -95,6 +101,7 @@ func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
 		s.store[id] = p
 		return nil
 	}
+
 	return &storage.NotFoundError{ID: id}
 }
 
@@ -104,5 +111,6 @@ func (s *Storage) Delete(id uuid.UUID) error {
 		delete(s.store, id)
 		return nil
 	}
+
 	return &storage.NotFoundError{ID: id}
 }

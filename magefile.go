@@ -31,7 +31,7 @@ func LintDocker() error {
 
 // LintGo lints all Go files.
 func LintGo() error {
-	return sh.Run("golangci-lint", "run", "--enable-all")
+	return sh.Run("golangci-lint", "run")
 }
 
 // Build will compile the REST API binary locally.
