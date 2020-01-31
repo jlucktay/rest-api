@@ -42,6 +42,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 	opts := &options.FindOptions{}  // Sort UUIDs ascending.
 	opts.SetLimit(int64(rao.Limit)) // No fear of losng data when casting like this, as they are both originally uint.
 	opts.SetSkip(int64(rao.Offset))
+	//nolint:gomnd // Specify 1 to set this '_id' flag as true
 	opts.SetSort(bson.D{{Key: "_id", Value: 1}})
 
 	cur, errFind := s.coll.Find(context.TODO(), filter, opts)

@@ -15,6 +15,7 @@ import (
 	"github.com/jlucktay/rest-api/pkg/storage"
 )
 
+//nolint:funlen // TODO
 func TestUpdatePayment(t *testing.T) {
 	var w *httptest.ResponseRecorder
 
