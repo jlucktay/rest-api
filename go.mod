@@ -12,7 +12,7 @@ require (
 	github.com/magefile/mage v1.9.0
 	github.com/matryer/is v1.3.0
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/sirupsen/logrus v1.4.2
+	github.com/sirupsen/logrus v1.5.0
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
