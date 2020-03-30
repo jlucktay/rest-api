@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/DataDog/zstd v1.4.4 // indirect
-	github.com/go-chi/chi v4.0.3+incompatible
+	github.com/go-chi/chi v4.0.4+incompatible
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible
 	github.com/golang/snappy v0.0.1 // indirect
