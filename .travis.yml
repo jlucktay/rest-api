@@ -1,6 +1,7 @@
 language: go
 
 os: linux
+dist: bionic
 
 go:
   - 1.x
