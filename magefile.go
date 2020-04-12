@@ -46,9 +46,9 @@ func Build() error {
 		"-a",
 		"-installsuffix", "cgo",
 		"-ldflags", `-extldflags "-static"`,
-		"-o", "rest-api",
+		"-o", "jra",
 		"-tags", "'osusergo'",
-		"./cmd/api",
+		"./cmd/jra",
 	)
 }
 
