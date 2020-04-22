@@ -1,4 +1,10 @@
-# jlucktay's RESTful API (`jra`) [![Travis][Travis-badge]][Travis] [![Codecov][Codecov-badge]][Codecov] [![GoDoc][GoDoc-badge]][GoDoc] [![Go Report Card][Go Report Card-badge]][Go Report Card] [![License][License-badge]][License]
+# jlucktay's RESTful API (`jra`)
+
+[![Travis][Travis-badge]][Travis]
+[![Codecov][Codecov-badge]][Codecov]
+[![Go Report Card][Go Report Card-badge]][Go Report Card]
+[![GoDoc][GoDoc-badge]][GoDoc]
+[![License][License-badge]][License]
 
 ## Description
 
