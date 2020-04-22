@@ -8,7 +8,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/jlucktay/rest-api/pkg/server"
+	"go.jlucktay.dev/rest-api/pkg/server"
 )
 
 const defaultMongo = "localhost"

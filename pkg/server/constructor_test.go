@@ -6,10 +6,10 @@ import (
 
 	"github.com/matryer/is"
 
-	"github.com/jlucktay/rest-api/pkg/server"
-	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
-	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	"go.jlucktay.dev/rest-api/pkg/server"
+	"go.jlucktay.dev/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage/inmemory"
+	"go.jlucktay.dev/rest-api/pkg/storage/mongo"
 )
 
 func TestNew(t *testing.T) {

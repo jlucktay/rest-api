@@ -9,8 +9,8 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/matryer/is"
 
-	"github.com/jlucktay/rest-api/pkg/server"
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/server"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP

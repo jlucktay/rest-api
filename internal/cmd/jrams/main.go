@@ -12,8 +12,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/jlucktay/rest-api/pkg/server"
-	"github.com/jlucktay/rest-api/pkg/storage/mongo"
+	"go.jlucktay.dev/rest-api/pkg/server"
+	"go.jlucktay.dev/rest-api/pkg/storage/mongo"
 )
 
 func main() {

@@ -8,10 +8,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/matryer/is"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
-	"github.com/jlucktay/rest-api/pkg/storage/inmemory"
-	"github.com/jlucktay/rest-api/pkg/storage/mongo"
-	"github.com/jlucktay/rest-api/test"
+	"go.jlucktay.dev/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage/inmemory"
+	"go.jlucktay.dev/rest-api/pkg/storage/mongo"
+	"go.jlucktay.dev/rest-api/test"
 )
 
 //nolint:funlen // TODO

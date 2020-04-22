@@ -1,4 +1,4 @@
-module github.com/jlucktay/rest-api
+module go.jlucktay.dev/rest-api
 
 go 1.14
 

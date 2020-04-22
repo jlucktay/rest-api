@@ -23,10 +23,10 @@ Mage is being used for various build/run/test tasks, and should also [be install
 To download the source, compile, and install the relevant binaries, run:
 
 ``` shell
-go get github.com/jlucktay/rest-api/...
+go get go.jlucktay.dev/rest-api/...
 ```
 
-The source code will be located in `$GOPATH/src/github.com/jlucktay/rest-api`.
+The source code will be located in `$GOPATH/src/go.jlucktay.dev/rest-api`.
 
 Newly compiled `jra` and `jrams` binaries will be in `$GOPATH/bin/`.
 
@@ -82,14 +82,14 @@ There is a Mage target to run tests across all packages in the repo:
 
 ``` shell
 $ mage test
-?       github.com/jlucktay/rest-api/cmd/jra    [no test files]
-?       github.com/jlucktay/rest-api/internal/cmd/jrams [no test files]
-?       github.com/jlucktay/rest-api/pkg/org    [no test files]
-ok      github.com/jlucktay/rest-api/pkg/server 0.187s
-ok      github.com/jlucktay/rest-api/pkg/storage        0.262s
-?       github.com/jlucktay/rest-api/pkg/storage/inmemory       [no test files]
-?       github.com/jlucktay/rest-api/pkg/storage/mongo  [no test files]
-ok      github.com/jlucktay/rest-api/test       0.128s
+?       go.jlucktay.dev/rest-api/cmd/jra    [no test files]
+?       go.jlucktay.dev/rest-api/internal/cmd/jrams [no test files]
+?       go.jlucktay.dev/rest-api/pkg/org    [no test files]
+ok      go.jlucktay.dev/rest-api/pkg/server 0.187s
+ok      go.jlucktay.dev/rest-api/pkg/storage        0.262s
+?       go.jlucktay.dev/rest-api/pkg/storage/inmemory       [no test files]
+?       go.jlucktay.dev/rest-api/pkg/storage/mongo  [no test files]
+ok      go.jlucktay.dev/rest-api/test       0.128s
 ```
 
 For more details on how Go itself discovers and executes tests, and the various flags with which to alter behaviour
@@ -113,8 +113,8 @@ Please make sure to update tests as appropriate.
 [Codecov-badge]: https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg
 [Codecov]: https://codecov.io/gh/jlucktay/rest-api
 
-[Go Report Card-badge]: https://goreportcard.com/badge/github.com/jlucktay/rest-api
-[Go Report Card]: https://goreportcard.com/report/github.com/jlucktay/rest-api
+[Go Report Card-badge]: https://goreportcard.com/badge/go.jlucktay.dev/rest-api
+[Go Report Card]: https://goreportcard.com/report/go.jlucktay.dev/rest-api
 
 [GoDoc-badge]: https://godoc.org/github.com/jlucktay/rest-api?status.svg
 [GoDoc]: https://godoc.org/github.com/jlucktay/rest-api

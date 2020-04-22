@@ -11,8 +11,8 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/matryer/is"
 
-	"github.com/jlucktay/rest-api/pkg/server"
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/server"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP

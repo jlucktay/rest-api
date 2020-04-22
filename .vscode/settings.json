@@ -1,3 +1,6 @@
 {
-  "go.buildTags": "mage vscode"
+  "go.buildTags": "mage vscode",
+  "gopls": {
+    "local": "go.jlucktay.dev/rest-api"
+  }
 }
