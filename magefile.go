@@ -26,18 +26,20 @@ func Test() error {
 	return sh.RunV("go", args...)
 }
 
+type Linter mg.Namespace
+
 // Lint will check the Dockerfile and Go files for errors.
-func Lint() {
-	mg.Deps(LintDocker, LintGo)
+func (Linter) Lint() {
+	mg.Deps(Linter.LintDocker, Linter.LintGo)
 }
 
 // LintDocker lints the Dockerfile.
-func LintDocker() error {
+func (Linter) LintDocker() error {
 	return sh.Run("hadolint", "build/Dockerfile")
 }
 
 // LintGo lints all Go files.
-func LintGo() error {
+func (Linter) LintGo() error {
 	return sh.Run("golangci-lint", "run")
 }
 
@@ -78,7 +80,7 @@ func Clean() error {
 
 // Full runs all targets; linting and testing in parallel, then the Docker build.
 func Full() {
-	mg.Deps(Lint, Test)
+	mg.Deps(Linter.Lint, Test)
 	mg.Deps(Build, DockerBuild)
 	mg.Deps(DockerRun)
 }
