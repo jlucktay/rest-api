@@ -42,6 +42,10 @@ linters:
     - wsl
 
 linters-settings:
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 50
+
   errcheck:
     # report about not checking of errors in type assetions: `a := b.(MyStruct)`;
     # default is false: such cases aren't reported by default.
