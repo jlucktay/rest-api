@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {

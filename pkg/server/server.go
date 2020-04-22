@@ -3,7 +3,7 @@ package server
 import (
 	"github.com/go-chi/chi"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 // Server is a RESTful HTTP API server offering CRUD functionality to store Payments.

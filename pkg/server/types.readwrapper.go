@@ -3,8 +3,8 @@ package server
 import (
 	"github.com/gofrs/uuid"
 
-	"github.com/jlucktay/rest-api/pkg/org"
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/org"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 // ReadWrapper adds some extra information around Payment structs that are read from the API.

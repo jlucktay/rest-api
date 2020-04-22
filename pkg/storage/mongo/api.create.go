@@ -5,7 +5,7 @@ import (
 
 	"github.com/gofrs/uuid"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {

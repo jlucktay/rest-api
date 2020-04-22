@@ -6,7 +6,7 @@ import (
 	"github.com/gofrs/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {

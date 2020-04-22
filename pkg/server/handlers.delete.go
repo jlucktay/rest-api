@@ -7,7 +7,7 @@ import (
 	"github.com/gofrs/uuid"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/jlucktay/rest-api/pkg/storage"
+	"go.jlucktay.dev/rest-api/pkg/storage"
 )
 
 func (s *Server) deletePaymentByID() http.HandlerFunc {
