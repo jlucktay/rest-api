@@ -8,6 +8,9 @@ go:
   - 1.x
   - master
 
+env:
+  - GO111MODULE=on
+
 branches:
   only:
     - master
@@ -26,8 +29,8 @@ before_script:
 
 script:
   - golangci-lint run
-  - env GO111MODULE=on go build ./...
-  - env GO111MODULE=on go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
+  - go build ./...
+  - go test --count=100 --covermode=atomic --coverprofile=coverage.txt --race ./...
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
