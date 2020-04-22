@@ -1,51 +1,51 @@
 linters:
-  disable:
-    # TODO - these linters are flaky
-    # Ref: https://github.com/golangci/golangci-lint/issues/827
-    - unused
-  # enable: # all linters in 1.23.1
-  #   - bodyclose
-  #   - deadcode
-  #   - depguard
-  #   - dogsled
-  #   - dupl
-  #   - errcheck
-  #   - funlen
-  #   - gochecknoglobals
-  #   - gochecknoinits
-  #   - gocognit
-  #   - goconst
-  #   - gocritic
-  #   - gocyclo
-  #   - godox
-  #   - gofmt
-  #   - goimports
-  #   - golint
-  #   - gomnd
-  #   - goprintffuncname
-  #   - gosec
-  #   - gosimple
-  #   - govet
-  #   - ineffassign
-  #   - interfacer
-  #   - lll
-  #   - maligned
-  #   - misspell
-  #   - nakedret
-  #   - prealloc
-  #   - rowserrcheck
-  #   - scopelint
-  #   - staticcheck
-  #   - structcheck
-  #   - stylecheck
-  #   - typecheck
-  #   - unconvert
-  #   - unparam
-  #   - varcheck
-  #   - whitespace
-  #   - wsl
+  enable: # all linters in 1.23.8
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godox
+    - gofmt
+    - goimports
+    - golint
+    - gomnd
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - lll
+    - maligned
+    - misspell
+    - nakedret
+    - prealloc
+    - rowserrcheck
+    - scopelint
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - varcheck
+    - whitespace
+    - wsl
 
 linters-settings:
+  dupl:
+    # tokens count to trigger issue, 150 by default
+    threshold: 50
+
   errcheck:
     # report about not checking of errors in type assetions: `a := b.(MyStruct)`;
     # default is false: such cases aren't reported by default.
@@ -76,8 +76,3 @@ linters-settings:
     line-length: 120
     # tab width in spaces. Default to 1.
     tab-width: 2
-
-# golangci.com configuration
-# https://github.com/golangci/golangci/wiki/Configuration
-service:
-  golangci-lint-version: 1.19.x # use a fixed minor version to not introduce new linters unexpectedly

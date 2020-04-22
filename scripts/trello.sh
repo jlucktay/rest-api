@@ -1,32 +1,26 @@
 #!/usr/bin/env bash
-# Thank you: https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md#how-to-begin-a-bash-script
-if test "$BASH" = "" || "$BASH" -uc "a=();true \"\${a[@]}\"" 2>/dev/null; then
-    # Bash 4.4, Zsh
-    set -euo pipefail
-else
-    # Bash 4.3 and older chokes on empty arrays with set -u.
-    set -eo pipefail
-fi
-shopt -s nullglob globstar
+set -euo pipefail
 IFS=$'\n\t'
 
 if ! command -v jq > /dev/null; then
-    echo "'jq' not found! Please install: https://stedolan.github.io/jq/download/"
-    exit 1
+  echo "'jq' not found! Please install: https://stedolan.github.io/jq/download/"
+  exit 1
 fi
 
-SecretsFile="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/secrets.trello.json"
+secrets_file="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)/secrets.trello.json"
 
-if ! [[ -f $SecretsFile ]]; then
-    echo "The Trello secrets file '$SecretsFile' does not exist. See the example JSON file alongside this script."
-    exit 1
+if ! [[ -r $secrets_file ]]; then
+  echo "The Trello secrets file '$secrets_file' could not be read. See the example JSON file alongside this script."
+  exit 1
 fi
 
-Board=$(jq -r '.board' "$SecretsFile")
-FinishedListId=$(jq -r '.finishedListId' "$SecretsFile")
-Key=$(jq -r '.key' "$SecretsFile")
-Token=$(jq -r '.token' "$SecretsFile")
+board=$(jq --exit-status --raw-output '.board' "$secrets_file")
+finished_list_id=$(jq --exit-status --raw-output '.finishedListId' "$secrets_file")
+key=$(jq --exit-status --raw-output '.key' "$secrets_file")
+token=$(jq --exit-status --raw-output '.token' "$secrets_file")
 
-URL="https://api.trello.com/1/boards/$Board/cards/?key=$Key&token=$Token"
+trello_get_url="https://api.trello.com/1/boards/$board/cards/?key=$key&token=$token"
 
-curl --silent "$URL" | jq -r '.[] | select( .idList != "'"$FinishedListId"'" ) | .name' | sort -f
+curl --request GET --silent "$trello_get_url" \
+  | jq --exit-status --raw-output '.[] | select( .idList != "'"$finished_list_id"'" ) | .name' \
+  | sort -f
