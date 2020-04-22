@@ -72,8 +72,3 @@ linters-settings:
     line-length: 120
     # tab width in spaces. Default to 1.
     tab-width: 2
-
-# golangci.com configuration
-# https://github.com/golangci/golangci/wiki/Configuration
-service:
-  golangci-lint-version: 1.19.x # use a fixed minor version to not introduce new linters unexpectedly
