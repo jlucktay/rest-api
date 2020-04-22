@@ -14,7 +14,6 @@ import (
 	"go.jlucktay.dev/rest-api/test"
 )
 
-//nolint:funlen // TODO
 func TestStorage(t *testing.T) {
 	randTestID := uuid.Must(uuid.NewV4())
 

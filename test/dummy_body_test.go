@@ -17,7 +17,6 @@ import (
 
 // TestDummyBodyCreateUpdate tests creating and updating payment records, with a simple dummy Payment in the HTTP
 // request body.
-//nolint:funlen // TODO
 func TestDummyBodyCreateUpdate(t *testing.T) {
 	existingID := uuid.Must(uuid.NewV4())
 

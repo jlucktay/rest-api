@@ -15,7 +15,6 @@ import (
 
 // TestNilBodyCRUD tests creating, reading, updating, and deleting payment records, without any body in the HTTP
 // requests.
-//nolint:funlen // TODO
 func TestNilBodyCRUD(t *testing.T) {
 	existingID := uuid.Must(uuid.NewV4())
 
