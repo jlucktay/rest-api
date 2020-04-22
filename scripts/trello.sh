@@ -7,18 +7,20 @@ if ! command -v jq > /dev/null; then
   exit 1
 fi
 
-SecretsFile="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )/secrets.trello.json"
+secrets_file="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null 2>&1 && pwd)/secrets.trello.json"
 
-if ! [[ -f $SecretsFile ]]; then
-  echo "The Trello secrets file '$SecretsFile' does not exist. See the example JSON file alongside this script."
+if ! [[ -r $secrets_file ]]; then
+  echo "The Trello secrets file '$secrets_file' could not be read. See the example JSON file alongside this script."
   exit 1
 fi
 
-Board=$(jq -r '.board' "$SecretsFile")
-FinishedListId=$(jq -r '.finishedListId' "$SecretsFile")
-Key=$(jq -r '.key' "$SecretsFile")
-Token=$(jq -r '.token' "$SecretsFile")
+board=$(jq --exit-status --raw-output '.board' "$secrets_file")
+finished_list_id=$(jq --exit-status --raw-output '.finishedListId' "$secrets_file")
+key=$(jq --exit-status --raw-output '.key' "$secrets_file")
+token=$(jq --exit-status --raw-output '.token' "$secrets_file")
 
-URL="https://api.trello.com/1/boards/$Board/cards/?key=$Key&token=$Token"
+trello_get_url="https://api.trello.com/1/boards/$board/cards/?key=$key&token=$token"
 
-curl --silent "$URL" | jq -r '.[] | select( .idList != "'"$FinishedListId"'" ) | .name' | sort -f
+curl --request GET --silent "$trello_get_url" \
+  | jq --exit-status --raw-output '.[] | select( .idList != "'"$finished_list_id"'" ) | .name' \
+  | sort -f
