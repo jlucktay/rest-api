@@ -10,6 +10,13 @@ import (
 // Default target to run when none is specified.
 var Default = Test
 
+// Aliases can be used interchangeably with their targets.
+var Aliases = map[string]interface{}{
+	"f": Full,
+	"l": Linter.Lint,
+	"t": Test,
+}
+
 // Test will run all tests across all sub-directories once.
 func Test() error {
 	args := []string{"test", "./...", "--count=1"}
