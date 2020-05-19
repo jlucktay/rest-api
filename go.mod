@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/go-chi/chi v4.1.1+incompatible
-	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/google/go-cmp v0.4.0
 	github.com/magefile/mage v1.9.0
 	github.com/matryer/is v1.3.0
