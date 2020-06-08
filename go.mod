@@ -3,7 +3,7 @@ module go.jlucktay.dev/rest-api
 go 1.14
 
 require (
-	github.com/go-chi/chi v4.1.1+incompatible
+	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/google/go-cmp v0.4.1
 	github.com/magefile/mage v1.9.0
