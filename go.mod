@@ -10,5 +10,5 @@ require (
 	github.com/matryer/is v1.4.0
 	github.com/sirupsen/logrus v1.6.0
 	github.com/xdg/stringprep v1.0.0 // indirect
-	go.mongodb.org/mongo-driver v1.4.1
+	go.mongodb.org/mongo-driver v1.4.2
 )
