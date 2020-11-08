@@ -18,8 +18,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
   ./cmd/jra
 
 FROM scratch
-ARG MONGO_HOST=host.docker.internal
-ENV MONGO_HOST=${MONGO_HOST}
+ARG MONGO_CS=mongodb://host.docker.internal:27017
+ENV MONGO_CS=${MONGO_CS}
 COPY --from=builder /src/rest-api/jra /
 ENTRYPOINT [ "/jra" ]
 
