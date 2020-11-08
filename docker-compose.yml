@@ -2,10 +2,9 @@ version: "3"
 services:
   web:
     build:
-      context: ..
-      dockerfile: build/Dockerfile
       args:
         MONGO_CS: mongodb://mongo:27017
+      context: .
     ports:
       - "8080:8080"
   mongo:
