@@ -27,7 +27,7 @@ install:
     --show-error
     --silent
     https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
-    | sh -s -- -b $(go env GOPATH)/bin v1.24.0
+    | sh -s -- -b $(go env GOPATH)/bin v1.32.2
 
 before_script:
   - until (echo > /dev/tcp/localhost/27017) &> /dev/null; do sleep 1; done
