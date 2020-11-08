@@ -22,6 +22,7 @@ func TestNew(t *testing.T) {
 
 	// Set up a disposable MongoDB container with Docker
 	t.Log("Docker/MongoDB starting...")
+
 	dockerPool, errPool := dockertest.NewPool("")
 	is.NoErr(errPool)
 
@@ -73,7 +74,7 @@ func TestNew(t *testing.T) {
 	}
 
 	for name, tC := range testCases {
-		tC := tC // pin!
+		name, tC := name, tC // pin!
 
 		t.Run(name, func(_ *testing.T) {
 			var s *server.Server

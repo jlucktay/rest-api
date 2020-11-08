@@ -1,28 +1,72 @@
 package storage_test
 
 import (
+	"context"
+	"fmt"
 	"reflect"
 	"testing"
 
 	"github.com/gofrs/uuid"
 	"github.com/google/go-cmp/cmp"
 	"github.com/matryer/is"
+	"github.com/ory/dockertest"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"go.jlucktay.dev/rest-api/pkg/storage"
 	"go.jlucktay.dev/rest-api/pkg/storage/inmemory"
-	"go.jlucktay.dev/rest-api/pkg/storage/mongo"
+	jramongo "go.jlucktay.dev/rest-api/pkg/storage/mongo"
 	"go.jlucktay.dev/rest-api/test"
 )
 
 func TestStorage(t *testing.T) { //nolint:funlen
+	is := is.New(t)
 	randTestID := uuid.Must(uuid.NewV4())
+
+	// Set up a disposable MongoDB container with Docker
+	t.Log("Docker/MongoDB starting...")
+
+	dockerPool, errPool := dockertest.NewPool("")
+	is.NoErr(errPool)
+
+	mongoResource, errRun := dockerPool.Run("mongo", "4", nil)
+	is.NoErr(errRun)
+
+	mongoContainerName := mongoResource.Container.Name
+
+	defer func() {
+		t.Logf("Purging Docker/MongoDB container '%s'...", mongoContainerName)
+		is.NoErr(dockerPool.Purge(mongoResource))
+		t.Logf("Purged Docker/MongoDB container '%s'!", mongoContainerName)
+	}()
+
+	directConnString := fmt.Sprintf(
+		"mongodb://localhost:%s/jra_test",
+		mongoResource.GetPort("27017/tcp"))
+
+	// Exponential backoff-retry, while MongoDB gets ready to accept connections
+	if err := dockerPool.Retry(func() error {
+		mgoOpts := (&options.ClientOptions{}).ApplyURI(directConnString)
+
+		mgoClient, errConnect := mongo.Connect(context.TODO(), mgoOpts)
+		if errConnect != nil {
+			return errConnect
+		}
+
+		return mgoClient.Ping(context.TODO(), nil)
+	}); err != nil {
+		is.NoErr(err) // could not ping Docker/MongoDB
+	}
+
+	t.Logf("Started Docker/MongoDB container '%s'!", mongoContainerName)
 
 	testCases := map[string]storage.PaymentStorage{
 		"In-memory storage (map); won't persist across app restarts": &inmemory.Storage{},
 
-		"Database storage (MongoDB); will persist across app restarts": mongo.New(
-			mongo.Option{Key: mongo.Database, Value: "test"},
-			mongo.Option{Key: mongo.Collection, Value: "test-" + randTestID.String()},
+		"Database storage (MongoDB); will persist across app restarts": jramongo.New(
+			jramongo.Option{Key: jramongo.Server, Value: directConnString},
+			jramongo.Option{Key: jramongo.Database, Value: "test"},
+			jramongo.Option{Key: jramongo.Collection, Value: "test-" + randTestID.String()},
 		),
 	}
 
@@ -31,10 +75,9 @@ func TestStorage(t *testing.T) { //nolint:funlen
 		name, tC := name, tC
 
 		t.Run(name, func(t *testing.T) {
-			t.Parallel() // Don't use .Parallel() without pinning.
+			// t.Parallel() // Don't use .Parallel() without pinning.
 
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC))
-			is := is.New(t)
 			is.NoErr(tC.Initialise())
 			testPayment := storage.Payment{
 				Amount: test.Amount,
