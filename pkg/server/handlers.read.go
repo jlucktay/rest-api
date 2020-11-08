@@ -19,17 +19,20 @@ func (s *Server) readPayments() http.HandlerFunc {
 		var opts storage.ReadAllOptions
 		if errLimit := applyFromQuery(r, "limit", &opts.Limit); errLimit != nil {
 			http.Error(w, errLimit.Error(), http.StatusBadRequest)
+
 			return
 		}
 
 		if errOffset := applyFromQuery(r, "offset", &opts.Offset); errOffset != nil {
 			http.Error(w, errOffset.Error(), http.StatusBadRequest)
+
 			return
 		}
 
 		allPayments, errRead := s.Storage.ReadAll(opts)
 		if errRead != nil {
 			http.Error(w, fmt.Sprintf("Error reading all: %s", errRead), http.StatusInternalServerError) // 500
+
 			return
 		}
 
@@ -50,6 +53,7 @@ func (s *Server) readPayments() http.HandlerFunc {
 		allBytes, errMarshal := json.Marshal(wrappedPayments)
 		if errMarshal != nil {
 			http.Error(w, fmt.Sprintf("Error marshaling: %s", errMarshal), http.StatusInternalServerError) // 500
+
 			return
 		}
 
@@ -68,6 +72,7 @@ func (s *Server) readPaymentByID() http.HandlerFunc {
 
 		if id == uuid.Nil {
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404
+
 			return
 		}
 

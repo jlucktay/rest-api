@@ -14,7 +14,7 @@ import (
 const defaultMongo = "localhost"
 
 func main() {
-	var mongoHostname = flag.String("mongo-host", defaultMongo, "the hostname of the MongoDB server to connect to")
+	mongoHostname := flag.String("mongo-host", defaultMongo, "the hostname of the MongoDB server to connect to")
 
 	flag.Parse()
 
