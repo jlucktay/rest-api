@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Storage) Delete(id uuid.UUID) error {
-	filter := bson.D{{Key: "_id", Value: mongoUUID{id}}}
+	filter := bson.D{{Key: "_id", Value: mongoUUID{UUID: id}}}
 
 	_, errDelete := s.coll.DeleteOne(context.TODO(), filter)
 	if errDelete != nil {

@@ -1,23 +1,34 @@
 linters:
-  enable: # all linters in 1.23.8
+  enable:
+    - asciicheck
     - bodyclose
     - deadcode
     - depguard
     - dogsled
     - dupl
     - errcheck
+    - errorlint
+    - exhaustive
+    # - exhaustivestruct
+    - exportloopref
     - funlen
+    - gci
     - gochecknoglobals
     - gochecknoinits
     - gocognit
     - goconst
     - gocritic
     - gocyclo
+    - godot
     - godox
+    # - goerr113
     - gofmt
+    - gofumpt
+    - goheader
     - goimports
     - golint
     - gomnd
+    - gomodguard
     - goprintffuncname
     - gosec
     - gosimple
@@ -28,17 +39,26 @@ linters:
     - maligned
     - misspell
     - nakedret
+    - nestif
+    - nlreturn
+    # - noctx
+    - nolintlint
     - prealloc
     - rowserrcheck
     - scopelint
+    - sqlclosecheck
     - staticcheck
     - structcheck
     - stylecheck
+    # - testpackage
+    # - tparallel
     - typecheck
     - unconvert
     - unparam
+    - unused
     - varcheck
     - whitespace
+    # - wrapcheck
     - wsl
 
 linters-settings:
@@ -54,6 +74,12 @@ linters-settings:
     # report about assignment of errors to blank identifier: `num, _ := strconv.Atoi(numStr)`;
     # default is false: such cases aren't reported by default.
     check-blank: true
+
+  gci:
+    # put imports beginning with prefix after 3rd-party packages;
+    # only support one prefix
+    # if not set, use goimports.local-prefixes
+    local-prefixes: go.jlucktay.dev/rest-api
 
   gocyclo:
     # minimal code complexity to report, 30 by default (but we recommend 10-20)

@@ -16,6 +16,7 @@ type Storage struct {
 // Initialise will initialise the internal map.
 func (s *Storage) Initialise() error {
 	s.store = make(map[uuid.UUID]storage.Payment)
+
 	return nil
 }
 
@@ -25,6 +26,7 @@ func (s *Storage) Initialise() error {
 // nature of its implementation.
 func (s *Storage) Terminate(...bool) error {
 	s.store = nil
+
 	return nil
 }
 
@@ -99,6 +101,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
 	if _, exists := s.store[id]; exists {
 		s.store[id] = p
+
 		return nil
 	}
 
@@ -109,6 +112,7 @@ func (s *Storage) Update(id uuid.UUID, p storage.Payment) error {
 func (s *Storage) Delete(id uuid.UUID) error {
 	if _, exists := s.store[id]; exists {
 		delete(s.store, id)
+
 		return nil
 	}
 

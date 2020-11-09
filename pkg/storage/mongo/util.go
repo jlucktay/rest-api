@@ -11,6 +11,7 @@ func wrap(p storage.Payment, i ...mongoUUID) mongoWrapper {
 
 	if len(i) > 0 {
 		mw.UUID = i[0]
+
 		return mw
 	}
 

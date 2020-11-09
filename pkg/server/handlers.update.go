@@ -18,11 +18,13 @@ func (s *Server) updatePaymentByID() http.HandlerFunc {
 
 		if id == uuid.Nil {
 			http.Error(w, "Invalid ID.", http.StatusNotFound) // 404
+
 			return
 		}
 
 		if r.ContentLength == 0 {
 			http.Error(w, "Empty request body.", http.StatusBadRequest) // 400
+
 			return
 		}
 
@@ -41,6 +43,7 @@ func (s *Server) updatePaymentByID() http.HandlerFunc {
 
 		if errUpdate := s.Storage.Update(id, payment); errUpdate == nil {
 			w.WriteHeader(http.StatusNoContent) // 204
+
 			return
 		}
 

@@ -20,7 +20,7 @@ func (s *Storage) Create(newPayment storage.Payment) (uuid.UUID, error) {
 }
 
 func (s *Storage) CreateSpecificID(newID uuid.UUID, newPayment storage.Payment) error {
-	mongoInsert := wrap(newPayment, mongoUUID{newID})
+	mongoInsert := wrap(newPayment, mongoUUID{UUID: newID})
 
 	_, errInsert := s.coll.InsertOne(context.TODO(), mongoInsert)
 	if errInsert != nil {

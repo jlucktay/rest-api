@@ -13,7 +13,7 @@ import (
 )
 
 func (s *Storage) Read(id uuid.UUID) (storage.Payment, error) {
-	filter := bson.M{"_id": mongoUUID{id}}
+	filter := bson.M{"_id": mongoUUID{UUID: id}}
 
 	// Create a value into which the result can be decoded.
 	var found mongoWrapper
@@ -47,7 +47,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 
 	cur, errFind := s.coll.Find(context.TODO(), filter, opts)
 	if errFind != nil {
-		return nil, fmt.Errorf("couldn't find records with given parameters: %v", errFind)
+		return nil, fmt.Errorf("couldn't find records with given parameters: %w", errFind)
 	}
 
 	defer cur.Close(context.TODO())
@@ -57,7 +57,7 @@ func (s *Storage) ReadAll(rao storage.ReadAllOptions) (map[uuid.UUID]storage.Pay
 	for cur.Next(context.TODO()) {
 		mwDec := mongoWrapper{}
 		if errDecode := cur.Decode(&mwDec); errDecode != nil {
-			return nil, fmt.Errorf("couldn't make element ready for display: %v", errDecode)
+			return nil, fmt.Errorf("couldn't make element ready for display: %w", errDecode)
 		}
 
 		found[mwDec.UUID.UUID] = mwDec.Payment // Unwrap
