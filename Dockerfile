@@ -1,9 +1,16 @@
 FROM golang:stretch as builder
 
-COPY . /src/rest-api
-WORKDIR /src/rest-api
+# Set up for modules
 ENV GO111MODULE=on
+WORKDIR /src/rest-api
+
+# These layers should stay cached unless dependencies change, speeding up image rebuilds
+COPY go.mod /src/rest-api
+COPY go.sum /src/rest-api
 RUN go mod download
+
+# Copy the rest of the code
+COPY . /src/rest-api
 
 # buildmode pie: https://groups.google.com/forum/#!topic/golang-nuts/Jd9tlNc6jUE
 # Can't use buildmode pie in MacOS: https://stackoverflow.com/a/3801032/380599
@@ -18,8 +25,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
   ./cmd/jra
 
 FROM scratch
-ARG MONGO_HOST=host.docker.internal
-ENV MONGO_HOST=${MONGO_HOST}
+ARG MONGO_CS=mongodb://host.docker.internal:27017
+ENV MONGO_CS=${MONGO_CS}
 COPY --from=builder /src/rest-api/jra /
 ENTRYPOINT [ "/jra" ]
 

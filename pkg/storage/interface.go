@@ -1,3 +1,4 @@
+// Package storage provides models and interfaces for persistent storage of records.
 package storage
 
 import (

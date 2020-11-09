@@ -10,19 +10,24 @@ import (
 
 	"go.jlucktay.dev/rest-api/pkg/storage"
 	"go.jlucktay.dev/rest-api/pkg/storage/inmemory"
-	"go.jlucktay.dev/rest-api/pkg/storage/mongo"
+	jramongo "go.jlucktay.dev/rest-api/pkg/storage/mongo"
 	"go.jlucktay.dev/rest-api/test"
 )
 
 func TestStorage(t *testing.T) { //nolint:funlen
+	is := is.New(t)
 	randTestID := uuid.Must(uuid.NewV4())
+
+	purgeFn, cs := test.SetupDocker(t)
+	defer purgeFn()
 
 	testCases := map[string]storage.PaymentStorage{
 		"In-memory storage (map); won't persist across app restarts": &inmemory.Storage{},
 
-		"Database storage (MongoDB); will persist across app restarts": mongo.New(
-			mongo.Option{Key: mongo.Database, Value: "test"},
-			mongo.Option{Key: mongo.Collection, Value: "test-" + randTestID.String()},
+		"Database storage (MongoDB); will persist across app restarts": jramongo.New(
+			jramongo.Option{Key: jramongo.Server, Value: cs},
+			jramongo.Option{Key: jramongo.Database, Value: "test"},
+			jramongo.Option{Key: jramongo.Collection, Value: "test-" + randTestID.String()},
 		),
 	}
 
@@ -31,10 +36,9 @@ func TestStorage(t *testing.T) { //nolint:funlen
 		name, tC := name, tC
 
 		t.Run(name, func(t *testing.T) {
-			t.Parallel() // Don't use .Parallel() without pinning.
+			// t.Parallel() // Don't use .Parallel() without pinning.
 
 			t.Logf("Current implementation based on: %s", reflect.TypeOf(tC))
-			is := is.New(t)
 			is.NoErr(tC.Initialise())
 			testPayment := storage.Payment{
 				Amount: test.Amount,

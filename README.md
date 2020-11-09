@@ -44,6 +44,22 @@ The Magefile contains targets for various tasks, which can be listed out with `m
 
 Launching the API server:
 
+### Running with Docker
+
+```shell
+$ docker-compose up
+Starting rest-api_web_1   ... done
+Starting rest-api_mongo_1 ... done
+Attaching to rest-api_mongo_1, rest-api_web_1
+web_1    | Connected to MongoDB!
+web_1    | Collection 'payments' contains 0 records.
+...
+```
+
+The API server will be listening at <http://localhost:8080/v1/>.
+
+### Running the server directly
+
 ``` shell
 $ jra
 Connected to MongoDB!
@@ -79,8 +95,8 @@ $ curl --silent --request GET http://localhost:8080/v1/payments
 
 ### Documentation
 
-Here is [the full design doc] for this API, which describes the various endpoints, how to call them, and
-what to expect in return.
+Here is [the full design doc] for this API, which describes the various endpoints, how to call them, and what to expect
+in return.
 
 ## Testing
 

@@ -12,7 +12,7 @@ import (
 
 // New creates a new Server utilising the given StorageType to handle Payment storage, and sets up the HTTP router.
 // It takes an optional string argument which will set the hostname of the MongoDB server to connect to.
-func New(st StorageType, logDebug bool, host ...string) *Server {
+func New(st StorageType, logDebug bool, cs ...string) *Server {
 	s := &Server{Router: chi.NewRouter()}
 	s.setupRoutes()
 
@@ -21,8 +21,8 @@ func New(st StorageType, logDebug bool, host ...string) *Server {
 		s.Storage = &inmemory.Storage{}
 	case Mongo:
 		mongoServer := defaultServer
-		if len(host) > 0 {
-			mongoServer = "mongodb://" + host[0] + ":27017"
+		if len(cs) > 0 {
+			mongoServer = cs[0]
 		}
 
 		s.Storage = mongo.New(

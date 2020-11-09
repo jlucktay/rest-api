@@ -35,14 +35,13 @@ func (Linter) Lint() {
 
 // LintDocker lints the Dockerfile.
 func (Linter) LintDocker() error {
-	return sh.Run("hadolint", "build/Dockerfile")
+	return sh.Run("hadolint", "Dockerfile")
 }
 
 // LintGo lints all Go files.
 func (Linter) LintGo() error {
 	return sh.Run("golangci-lint",
 		"run",
-		"--exclude-use-default=false",
 		"--max-same-issues=0",
 		"--uniq-by-line=false",
 	)
@@ -69,18 +68,18 @@ func Build() error {
 // DockerBuild will build the Docker image, which executes a layered build of the REST API.
 func DockerBuild() error {
 	//     --label list              Set metadata for an image // todo?
-	return sh.Run("docker", "build", "--file", "build/Dockerfile", "--tag", "jlucktay/rest-api", ".")
+	return sh.Run("docker", "build", "--tag", "jlucktay/rest-api", ".")
 }
 
 // DockerRun will run the Docker image.
 func DockerRun() error {
 	mg.Deps(DockerBuild)
-	return sh.RunV("docker", "run", "--publish", "8080:8080", "jlucktay/rest-api")
+	return sh.RunV("docker-compose", "up", "--detach")
 }
 
 // Clean will removed compiled binaries.
 func Clean() error {
-	return sh.Run("rm", "-fv", "rest-api")
+	return sh.Run("rm", "-fv", "jra")
 }
 
 // Full runs all targets; linting and testing in parallel, then the Docker build.

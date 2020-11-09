@@ -11,15 +11,15 @@ import (
 	"go.jlucktay.dev/rest-api/pkg/server"
 )
 
-const defaultMongo = "localhost"
+const defaultMongoCS = "mongodb://localhost:27017"
 
 func main() {
-	mongoHostname := flag.String("mongo-host", defaultMongo, "the hostname of the MongoDB server to connect to")
+	mongoHostname := flag.String("mongo-cs", defaultMongoCS, "the MongoDB connection string")
 
 	flag.Parse()
 
 	// If the flag has not been given, look for an environment variable.
-	if envMongo, found := os.LookupEnv("MONGO_HOST"); found && *mongoHostname == defaultMongo {
+	if envMongo, found := os.LookupEnv("MONGO_CS"); found && *mongoHostname == defaultMongoCS {
 		*mongoHostname = envMongo
 	}
 
