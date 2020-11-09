@@ -20,7 +20,7 @@ require (
 	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/ory/dockertest v3.3.5+incompatible
-	github.com/sirupsen/logrus v1.6.0
+	github.com/sirupsen/logrus v1.7.0
 	github.com/xdg/stringprep v1.0.0 // indirect
 	go.mongodb.org/mongo-driver v1.4.1
 	gotest.tools v2.2.0+incompatible // indirect
