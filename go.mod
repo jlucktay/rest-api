@@ -22,6 +22,6 @@ require (
 	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/sirupsen/logrus v1.8.1
 	github.com/xdg/stringprep v1.0.0 // indirect
-	go.mongodb.org/mongo-driver v1.5.2
+	go.mongodb.org/mongo-driver v1.5.3
 	gotest.tools v2.2.0+incompatible // indirect
 )
