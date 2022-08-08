@@ -6,14 +6,14 @@ dist: bionic
 
 go:
   - 1.x
-  - master
+  - main
 
 env:
   - GO111MODULE=on
 
 branches:
   only:
-    - master
+    - main
 
 services:
   - mongodb
