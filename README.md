@@ -132,7 +132,7 @@ Please make sure to update tests as appropriate.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
-[Codecov-badge]: https://codecov.io/gh/jlucktay/rest-api/branch/master/graph/badge.svg
+[Codecov-badge]: https://codecov.io/gh/jlucktay/rest-api/branch/main/graph/badge.svg
 [Codecov]: https://codecov.io/gh/jlucktay/rest-api
 
 [Go Report Card-badge]: https://goreportcard.com/badge/go.jlucktay.dev/rest-api
@@ -142,9 +142,9 @@ Please make sure to update tests as appropriate.
 [GoDoc]: https://godoc.org/github.com/jlucktay/rest-api
 
 [License-badge]: https://img.shields.io/github/license/jlucktay/rest-api.svg
-[License]: https://github.com/jlucktay/rest-api/blob/master/LICENSE
+[License]: https://github.com/jlucktay/rest-api/blob/main/LICENSE
 
-[Travis-badge]: https://travis-ci.org/jlucktay/rest-api.svg?branch=master
+[Travis-badge]: https://travis-ci.org/jlucktay/rest-api.svg?branch=main
 [Travis]: https://travis-ci.org/jlucktay/rest-api
 
 [the full design doc]: https://docs.google.com/document/d/1xtqwQDhdwTe3BUEyf3lGWycPIvl66uxDdJgHLqa9hz4
